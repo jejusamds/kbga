@@ -66,7 +66,7 @@ $category_map = [
         </ul>
     </div>
 
-    <form action="/Madmin/exec/exec.php?<?= $param ?>" method="post" onsubmit="return confirm('저장하시겠습니까?');">
+    <form action="/Madmin/application/exec.php?<?= $param ?>" method="post" onsubmit="return confirm('저장하시겠습니까?');">
         <input type="hidden" name="table" value="<?= $table ?>">
         <input type="hidden" name="mode" value="<?= $mode ?>">
         <?php if ($idx): ?><input type="hidden" name="idx" value="<?= $idx ?>"><?php endif; ?>
@@ -198,7 +198,7 @@ $category_map = [
                     <button class="btn btn-info btn-sm" type="submit"><?= $mode === 'insert' ? '등록' : '저장' ?></button>
                     <?php if ($mode === 'update'): ?>
                         <button class="btn btn-danger btn-sm" type="button"
-                            onclick="if(confirm('삭제하시겠습니까?'))location.href='/Madmin/exec/exec.php?table=<?= $table ?>&mode=delete&selidx=<?= $idx ?>&<?= $param ?>';">삭제</button>
+                            onclick="if(confirm('삭제하시겠습니까?'))location.href='/Madmin/application/exec.php?table=<?= $table ?>&mode=delete&selidx=<?= $idx ?>&<?= $param ?>';">삭제</button>
                     <?php endif; ?>
                 </div>
                 <div class="clear"></div>
