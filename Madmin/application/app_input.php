@@ -27,6 +27,9 @@ $row = [
     'f_registration_period' => '',
     'f_exam_date' => '',
     'f_pass_announce' => '',
+    'f_registration_period_2' => '',
+    'f_exam_date_2' => '',
+    'f_pass_announce_2' => '',
     'f_cert_application' => ''
 ];
 
@@ -64,7 +67,7 @@ $category_map = [
         </ul>
     </div>
 
-    <form action="/Madmin/exec/exec.php?<?= $param ?>" method="post" onsubmit="return confirm('저장하시겠습니까?');">
+    <form action="/Madmin/application/exec.php?<?= $param ?>" method="post" onsubmit="return confirm('저장하시겠습니까?');">
         <input type="hidden" name="table" value="<?= $table ?>">
         <input type="hidden" name="mode" value="<?= $mode ?>">
         <?php if ($idx): ?><input type="hidden" name="idx" value="<?= $idx ?>"><?php endif; ?>
@@ -127,7 +130,10 @@ $category_map = [
                         </td>
                     </tr>
 
-                    <!-- 접수기간 -->
+                    <!-- 필기 일정 -->
+                    <tr>
+                        <th colspan="4">필기</th>
+                    </tr>
                     <tr>
                         <th><label for="f_registration_period">접수기간</label></th>
                         <td colspan="3" class="comALeft">
@@ -136,8 +142,6 @@ $category_map = [
                                 class="form-control" style="width:60%;" placeholder="예: 2025.03.04~10">
                         </td>
                     </tr>
-
-                    <!-- 시험일 -->
                     <tr>
                         <th><label for="f_exam_date">시험일</label></th>
                         <td colspan="3" class="comALeft">
@@ -146,14 +150,41 @@ $category_map = [
                                 style="width:60%;" placeholder="예: 2025.03.15">
                         </td>
                     </tr>
-
-                    <!-- 합격자 발표 -->
                     <tr>
                         <th><label for="f_pass_announce">합격자 발표</label></th>
                         <td colspan="3" class="comALeft">
                             <input type="text" name="f_pass_announce" id="f_pass_announce"
                                 value="<?= htmlspecialchars($row['f_pass_announce'], ENT_QUOTES) ?>" class="form-control"
                                 style="width:60%;" placeholder="예: 2025.03.28">
+                        </td>
+                    </tr>
+
+                    <!-- 실기 일정 -->
+                    <tr>
+                        <th colspan="4">실기</th>
+                    </tr>
+                    <tr>
+                        <th><label for="f_registration_period_2">접수기간</label></th>
+                        <td colspan="3" class="comALeft">
+                            <input type="text" name="f_registration_period_2" id="f_registration_period_2"
+                                value="<?= htmlspecialchars($row['f_registration_period_2'], ENT_QUOTES) ?>"
+                                class="form-control" style="width:60%;" placeholder="예: 2025.04.04~10">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="f_exam_date_2">시험일</label></th>
+                        <td colspan="3" class="comALeft">
+                            <input type="text" name="f_exam_date_2" id="f_exam_date_2"
+                                value="<?= htmlspecialchars($row['f_exam_date_2'], ENT_QUOTES) ?>" class="form-control"
+                                style="width:60%;" placeholder="예: 2025.04.15">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="f_pass_announce_2">합격자 발표</label></th>
+                        <td colspan="3" class="comALeft">
+                            <input type="text" name="f_pass_announce_2" id="f_pass_announce_2"
+                                value="<?= htmlspecialchars($row['f_pass_announce_2'], ENT_QUOTES) ?>" class="form-control"
+                                style="width:60%;" placeholder="예: 2025.04.28">
                         </td>
                     </tr>
 
@@ -180,7 +211,7 @@ $category_map = [
                     <button class="btn btn-info btn-sm" type="submit"><?= $mode === 'insert' ? '등록' : '저장' ?></button>
                     <?php if ($mode === 'update'): ?>
                         <button class="btn btn-danger btn-sm" type="button"
-                            onclick="if(confirm('삭제하시겠습니까?'))location.href='/Madmin/exec/exec.php?table=<?= $table ?>&mode=delete&selidx=<?= $idx ?>&<?= $param ?>';">삭제</button>
+                            onclick="if(confirm('삭제하시겠습니까?'))location.href='/Madmin/application/exec.php?table=<?= $table ?>&mode=delete&selidx=<?= $idx ?>&<?= $param ?>';">삭제</button>
                     <?php endif; ?>
                 </div>
                 <div class="clear"></div>
@@ -193,3 +224,4 @@ $category_map = [
 </body>
 
 </html>
+
