@@ -43,8 +43,7 @@ if ($total > 0) {
         SELECT *
         FROM {$this_table} s
         WHERE 1 = 1 " . $addSql . "
-        -- [변경] 정렬 순서: 회차, 구분 순으로 정렬
-        ORDER BY s.f_round ASC, s.f_type ASC
+        ORDER BY s.f_round ASC, s.idx ASC
         LIMIT " . $offset . ", " . $page_set;
     $list = $db->query($sql);
 }
@@ -86,7 +85,7 @@ $category_map = [
             var selIdx = selIdxArr.join('|');
             // --- [변경] 삭제 후 돌아올 페이지의 파라미터 변경 ---
             var searchParams = "year=<?= $search_year ?>&category=<?= $search_category ?>";
-            document.location = "/Madmin/exec/exec.php?table=<?= $table ?>&mode=delete&selidx=" + selIdx + "&page=<?= $page ?>&" + searchParams;
+            document.location = "/Madmin/application/exec.php?table=<?= $table ?>&mode=delete&selidx=" + selIdx + "&page=<?= $page ?>&" + searchParams;
         }
     }
 </script>
@@ -142,11 +141,13 @@ $category_map = [
                     <col width="40" />
                     <col width="60" />
                     <col width="80" />
-                    <col width="80" />
+                    <col width="180" />
+                    <col width="120" />
+                    <col width="120" />
+                    <col width="180" />
+                    <col width="120" />
+                    <col width="120" />
                     <col width="200" />
-                    <col width="150" />
-                    <col width="150" />
-                    <col />
                     <col width="120" />
                 </colgroup>
                 <thead>
@@ -154,10 +155,12 @@ $category_map = [
                         <th><input type="checkbox" id="select_all" onclick="onSelectAll(this)"></th>
                         <th>번호</th>
                         <th>회차</th>
-                        <th>구분</th>
-                        <th>접수기간</th>
-                        <th>시험일</th>
-                        <th>합격자발표</th>
+                        <th>필기 접수기간</th>
+                        <th>필기 시험일</th>
+                        <th>필기 합격자발표</th>
+                        <th>실기 접수기간</th>
+                        <th>실기 시험일</th>
+                        <th>실기 합격자발표</th>
                         <th>자격증 신청</th>
                         <th>작성일</th>
                     </tr>
@@ -170,22 +173,24 @@ $category_map = [
                                     <input type="checkbox" class="select_checkbox" name="select_checkbox" value="<?= $item['idx'] ?>">
                                 </td>
                                 <td><?= $total - ($page - 1) * $page_set - $i ?></td>
-                                <td><?= htmlspecialchars($item['f_round'], ENT_QUOTES) ?>회</td>
                                 <td class="comALeft">
                                     <a href="<?= $table ?>_input.php?mode=update&idx=<?= $item['idx'] ?>&page=<?= $page ?>&year=<?= $search_year ?>&category=<?= $search_category ?>">
-                                        <?= htmlspecialchars($item['f_type'], ENT_QUOTES) ?>
+                                        <?= htmlspecialchars($item['f_round'], ENT_QUOTES) ?>회
                                     </a>
                                 </td>
-                                <td><?= htmlspecialchars($item['f_registration_period'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($item['f_exam_date'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($item['f_pass_announce'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_registration_period_written'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_exam_date_written'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_pass_announce_written'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_registration_period_practical'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_exam_date_practical'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_pass_announce_practical'], ENT_QUOTES) ?></td>
                                 <td><?= htmlspecialchars($item['f_cert_application'], ENT_QUOTES) ?></td>
                                 <td><?= substr($item['wdate'], 0, 10) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td height="50" colspan="9" class="comACenter">등록된 데이터가 없습니다.</td>
+                            <td height="50" colspan="11" class="comACenter">등록된 데이터가 없습니다.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
