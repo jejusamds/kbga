@@ -45,6 +45,7 @@ switch ($mode) {
                 exit;
             }
         }
+
         $sql = "INSERT INTO {$table} (" . implode(',', $cols) . ", wdate) " .
                "VALUES (" . implode(',', $vals) . ", NOW())";
         $db->query($sql, $params);
@@ -77,6 +78,7 @@ switch ($mode) {
                 exit;
             }
         }
+
         $params['idx'] = $idx;
         $sql = "UPDATE {$table} SET " . implode(',', $sets) . " WHERE idx = :idx";
         $db->query($sql, $params);

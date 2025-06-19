@@ -118,43 +118,32 @@ $category_map = [
                         </td>
                     </tr>
 
-                    <!-- 구분 (필기/실기) -->
-                    <tr>
-                        <th><label for="f_type">구분</label></th>
-                        <td colspan="3" class="comALeft">
-                            <select name="f_type" id="f_type" class="form-control" style="width:20%;">
-                                <option value="">선택</option>
-                                <option value="필기" <?= $row['f_type'] === '필기' ? 'selected' : '' ?>>필기</option>
-                                <option value="실기" <?= $row['f_type'] === '실기' ? 'selected' : '' ?>>실기</option>
-                            </select>
-                        </td>
-                    </tr>
-
                     <!-- 필기 일정 -->
                     <tr>
                         <th colspan="4">필기</th>
                     </tr>
+
                     <tr>
-                        <th><label for="f_registration_period">접수기간</label></th>
+                        <th><label for="f_registration_period_written">접수기간</label></th>
                         <td colspan="3" class="comALeft">
-                            <input type="text" name="f_registration_period" id="f_registration_period"
-                                value="<?= htmlspecialchars($row['f_registration_period'], ENT_QUOTES) ?>"
+                            <input type="text" name="f_registration_period_written" id="f_registration_period_written"
+                                value="<?= htmlspecialchars($row['f_registration_period_written'], ENT_QUOTES) ?>"
                                 class="form-control" style="width:60%;" placeholder="예: 2025.03.04~10">
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="f_exam_date">시험일</label></th>
+                        <th><label for="f_exam_date_written">시험일</label></th>
                         <td colspan="3" class="comALeft">
-                            <input type="text" name="f_exam_date" id="f_exam_date"
-                                value="<?= htmlspecialchars($row['f_exam_date'], ENT_QUOTES) ?>" class="form-control"
+                            <input type="text" name="f_exam_date_written" id="f_exam_date_written"
+                                value="<?= htmlspecialchars($row['f_exam_date_written'], ENT_QUOTES) ?>" class="form-control"
                                 style="width:60%;" placeholder="예: 2025.03.15">
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="f_pass_announce">합격자 발표</label></th>
+                        <th><label for="f_pass_announce_written">합격자 발표</label></th>
                         <td colspan="3" class="comALeft">
-                            <input type="text" name="f_pass_announce" id="f_pass_announce"
-                                value="<?= htmlspecialchars($row['f_pass_announce'], ENT_QUOTES) ?>" class="form-control"
+                            <input type="text" name="f_pass_announce_written" id="f_pass_announce_written"
+                                value="<?= htmlspecialchars($row['f_pass_announce_written'], ENT_QUOTES) ?>" class="form-control"
                                 style="width:60%;" placeholder="예: 2025.03.28">
                         </td>
                     </tr>
