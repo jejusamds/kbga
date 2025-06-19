@@ -11,12 +11,13 @@ $fields = [
     'f_category',
     'f_year',
     'f_round',
-    'f_registration_period_written',
-    'f_exam_date_written',
-    'f_pass_announce_written',
-    'f_registration_period_practical',
-    'f_exam_date_practical',
-    'f_pass_announce_practical',
+    'f_type',
+    'f_registration_period',
+    'f_exam_date',
+    'f_pass_announce',
+    'f_registration_period_2',
+    'f_exam_date_2',
+    'f_pass_announce_2',
     'f_cert_application'
 ];
 

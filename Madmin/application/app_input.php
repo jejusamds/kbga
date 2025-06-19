@@ -23,12 +23,15 @@ $row = [
     'f_category' => $f_category,
     'f_year' => $f_year,
     'f_round' => '',
-    'f_registration_period_written' => '',
-    'f_exam_date_written' => '',
-    'f_pass_announce_written' => '',
-    'f_registration_period_practical' => '',
-    'f_exam_date_practical' => '',
-    'f_pass_announce_practical' => '',
+
+    'f_type' => '',
+    'f_registration_period' => '',
+    'f_exam_date' => '',
+    'f_pass_announce' => '',
+    'f_registration_period_2' => '',
+    'f_exam_date_2' => '',
+    'f_pass_announce_2' => '',
+
     'f_cert_application' => ''
 ];
 
@@ -121,6 +124,13 @@ $category_map = [
                     <tr>
                         <th colspan="4">필기</th>
                     </tr>
+
+
+                    <!-- 필기 일정 -->
+                    <tr>
+                        <th colspan="4">필기</th>
+                    </tr>
+
                     <tr>
                         <th><label for="f_registration_period_written">접수기간</label></th>
                         <td colspan="3" class="comALeft">
@@ -151,26 +161,28 @@ $category_map = [
                         <th colspan="4">실기</th>
                     </tr>
                     <tr>
-                        <th><label for="f_registration_period_practical">접수기간</label></th>
+
+                        <th><label for="f_registration_period_2">접수기간</label></th>
                         <td colspan="3" class="comALeft">
-                            <input type="text" name="f_registration_period_practical" id="f_registration_period_practical"
-                                value="<?= htmlspecialchars($row['f_registration_period_practical'], ENT_QUOTES) ?>"
+                            <input type="text" name="f_registration_period_2" id="f_registration_period_2"
+                                value="<?= htmlspecialchars($row['f_registration_period_2'], ENT_QUOTES) ?>"
                                 class="form-control" style="width:60%;" placeholder="예: 2025.04.04~10">
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="f_exam_date_practical">시험일</label></th>
+                        <th><label for="f_exam_date_2">시험일</label></th>
                         <td colspan="3" class="comALeft">
-                            <input type="text" name="f_exam_date_practical" id="f_exam_date_practical"
-                                value="<?= htmlspecialchars($row['f_exam_date_practical'], ENT_QUOTES) ?>" class="form-control"
+                            <input type="text" name="f_exam_date_2" id="f_exam_date_2"
+                                value="<?= htmlspecialchars($row['f_exam_date_2'], ENT_QUOTES) ?>" class="form-control"
                                 style="width:60%;" placeholder="예: 2025.04.15">
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="f_pass_announce_practical">합격자 발표</label></th>
+
+                        <th><label for="f_pass_announce_2">합격자 발표</label></th>
                         <td colspan="3" class="comALeft">
-                            <input type="text" name="f_pass_announce_practical" id="f_pass_announce_practical"
-                                value="<?= htmlspecialchars($row['f_pass_announce_practical'], ENT_QUOTES) ?>" class="form-control"
+                            <input type="text" name="f_pass_announce_2" id="f_pass_announce_2"
+                                value="<?= htmlspecialchars($row['f_pass_announce_2'], ENT_QUOTES) ?>" class="form-control"
                                 style="width:60%;" placeholder="예: 2025.04.28">
                         </td>
                     </tr>
@@ -211,3 +223,4 @@ $category_map = [
 </body>
 
 </html>
+
