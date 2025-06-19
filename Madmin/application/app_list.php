@@ -141,6 +141,7 @@ $category_map = [
                     <col width="40" />
                     <col width="60" />
                     <col width="80" />
+                    <col width="80" />
                     <col width="180" />
                     <col width="120" />
                     <col width="120" />
@@ -155,6 +156,7 @@ $category_map = [
                         <th><input type="checkbox" id="select_all" onclick="onSelectAll(this)"></th>
                         <th>번호</th>
                         <th>회차</th>
+                        <th>구분</th>
                         <th>필기 접수기간</th>
                         <th>필기 시험일</th>
                         <th>필기 합격자발표</th>
@@ -178,19 +180,20 @@ $category_map = [
                                         <?= htmlspecialchars($item['f_round'], ENT_QUOTES) ?>회
                                     </a>
                                 </td>
-                                <td><?= htmlspecialchars($item['f_registration_period_written'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($item['f_exam_date_written'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($item['f_pass_announce_written'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($item['f_registration_period_practical'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($item['f_exam_date_practical'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($item['f_pass_announce_practical'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_type'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_registration_period'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_exam_date'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_pass_announce'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_registration_period_2'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_exam_date_2'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($item['f_pass_announce_2'], ENT_QUOTES) ?></td>
                                 <td><?= htmlspecialchars($item['f_cert_application'], ENT_QUOTES) ?></td>
                                 <td><?= substr($item['wdate'], 0, 10) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td height="50" colspan="11" class="comACenter">등록된 데이터가 없습니다.</td>
+                            <td height="50" colspan="12" class="comACenter">등록된 데이터가 없습니다.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
