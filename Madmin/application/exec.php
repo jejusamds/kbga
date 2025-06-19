@@ -31,6 +31,20 @@ switch ($mode) {
             $vals[] = ':' . $f;
             $params[$f] = $_POST[$f] ?? '';
         }
+
+        // ---- 년도와 회차 중복 검사 ----
+        $y = $params['f_year'] ?? null;
+        $r = $params['f_round'] ?? null;
+        if ($y && $r) {
+            $chk = $db->single(
+                "SELECT COUNT(*) FROM {$table} WHERE f_year = :y AND f_round = :r",
+                ['y' => $y, 'r' => $r]
+            );
+            if ($chk > 0) {
+                error('이미 동일한 년도와 회차의 데이터가 존재합니다.');
+                exit;
+            }
+        }
         $sql = "INSERT INTO {$table} (" . implode(',', $cols) . ", wdate) " .
                "VALUES (" . implode(',', $vals) . ", NOW())";
         $db->query($sql, $params);
@@ -48,6 +62,20 @@ switch ($mode) {
         foreach ($fields as $f) {
             $sets[] = "$f = :$f";
             $params[$f] = $_POST[$f] ?? '';
+        }
+
+        // ---- 년도와 회차 중복 검사 (수정 시 현재 데이터 제외) ----
+        $y = $params['f_year'] ?? null;
+        $r = $params['f_round'] ?? null;
+        if ($y && $r) {
+            $chk = $db->single(
+                "SELECT COUNT(*) FROM {$table} WHERE f_year = :y AND f_round = :r AND idx <> :idx",
+                ['y' => $y, 'r' => $r, 'idx' => $idx]
+            );
+            if ($chk > 0) {
+                error('이미 동일한 년도와 회차의 데이터가 존재합니다.');
+                exit;
+            }
         }
         $params['idx'] = $idx;
         $sql = "UPDATE {$table} SET " . implode(',', $sets) . " WHERE idx = :idx";
