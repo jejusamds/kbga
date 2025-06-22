@@ -571,7 +571,7 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_applic
 																						</li>
 																						<li>
 																							<label class="checkbox_label">
-                                                                               <input type="checkbox" name="f_payment_category[]" value="practical" data-required="y" data-label="입금 구분을" data-tag-type="clicked" />
+                                                                               <input type="checkbox" name="f_payment_category[]" value="practical" data-label="입금 구분을" data-tag-type="clicked" />
 																								<div class="check_icon"></div>
 																								<span>
 																									실기
@@ -580,7 +580,7 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_applic
 																						</li>
 																						<li>
 																							<label class="checkbox_label">
-                                                                               <input type="checkbox" name="f_payment_category[]" value="issuance" data-required="y" data-label="입금 구분을" data-tag-type="clicked" />
+                                                                               <input type="checkbox" name="f_payment_category[]" value="issuance" data-label="입금 구분을" data-tag-type="clicked" />
 																								<div class="check_icon"></div>
 																								<span>
 																									발급비
