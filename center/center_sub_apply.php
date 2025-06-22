@@ -4,10 +4,25 @@
 	$ssMenu = "03-2-4";
 	$ssMenu_slide = "3";
 
-	include $_SERVER['DOCUMENT_ROOT'].'/include/header.html'; 
+        include $_SERVER['DOCUMENT_ROOT'].'/include/header.html';
+
+        $default = [];
+        if ($is_login) {
+            $default = [
+                'f_user_name'   => htmlspecialchars($login_user_info['f_user_name'], ENT_QUOTES),
+                'f_tel'         => htmlspecialchars($login_user_info['f_tel'], ENT_QUOTES),
+                'f_birth_date'  => htmlspecialchars(str_replace('-', '.', $login_user_info['f_birth_date']), ENT_QUOTES),
+                'f_zip'         => htmlspecialchars($login_user_info['f_zip'], ENT_QUOTES),
+                'f_address1'    => htmlspecialchars($login_user_info['f_address1'], ENT_QUOTES),
+                'f_address2'    => htmlspecialchars($login_user_info['f_address2'], ENT_QUOTES),
+                'f_email'       => htmlspecialchars($login_user_info['f_email'], ENT_QUOTES),
+            ];
+        }
 ?>
 
-	<div id="container">
+    <script src="/js/form-controller.js"></script>
+
+        <div id="container">
 		<div id="sub_con" class="center_sub02">
 			<?php
 				include $_SERVER['DOCUMENT_ROOT'].'/include/sub_banner.html'; 
@@ -86,7 +101,10 @@
 					
 					<div class="contents_con">
 
-						<form action="" method="" autocomplete="off">
+                                                <form id="applyForm" action="/controller/application_controller.php" method="post" enctype="multipart/form-data" autocomplete="off">
+                                                    <input type="hidden" name="mode" value="register" />
+                                                    <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>" />
+                                                    <input type="hidden" name="f_applicant_type" value="P" />
 							<div class="write_con">
 								<div class="contents_con">
 									<div class="input_con">
@@ -103,9 +121,16 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<select name="" class="select">
-																			<option value="">자격분야를 선택해주세요.</option>
-																		</select>
+                                                                               <select name="f_category" id="f_category" data-required="y" data-label="자격분야를" class="select">
+                                                                               <option value="">자격분야를 선택해주세요.</option>
+                                                                               <option value="makeup">메이크업</option>
+                                                                               <option value="nail">네일</option>
+                                                                               <option value="hair">헤어</option>
+                                                                               <option value="skin">피부</option>
+                                                                               <option value="perm">반영구</option>
+                                                                               <option value="intl">해외인증</option>
+                                                                               <option value="teach">강사인증</option>
+                                                                               </select>
 																	</td>
 																</tr>
 															</tbody>
@@ -123,9 +148,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<select name="" class="select">
-																			<option value="">자격종목을 선택해주세요.</option>
-																		</select>
+                                                                               <select name="f_item_idx" id="f_item_idx" data-required="y" data-label="자격종목을" class="select">
+                                                                               <option value="">자격종목을 선택해주세요.</option>
+                                                                               </select>
 																	</td>
 																</tr>
 															</tbody>
@@ -142,9 +167,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<select name="" class="select">
-																			<option value="">시험일정 선택을 선택해주세요.</option>
-																		</select>
+                                                                               <select name="f_schedule_idx" id="f_schedule_idx" data-required="y" data-label="시험일정을" class="select">
+                                                                               <option value="">시험일정 선택을 선택해주세요.</option>
+                                                                               </select>
 																	</td>
 																</tr>
 															</tbody>
@@ -162,7 +187,7 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<input type="text" name="" placeholder="이름을 적어주세요." class="input" />
+                                                                               <input type="text" name="f_user_name" id="f_user_name" placeholder="이름을 적어주세요." class="input" data-required="y" data-label="이름을" value="<?= $default['f_user_name'] ?? '' ?>" />
 																	</td>
 																</tr>
 															</tbody>
@@ -179,7 +204,7 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<input type="text" name="" placeholder="영문이름을 적어주세요." class="input" />
+                                                                               <input type="text" name="f_user_name_en" id="f_user_name_en" placeholder="영문이름을 적어주세요." class="input" data-required="y" data-label="영문이름을" />
 																	</td>
 																</tr>
 															</tbody>
@@ -197,7 +222,7 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<input type="tel" name="" maxlength="13" placeholder="000-0000-0000" class="input tel_input" />
+                                                                               <input type="tel" name="f_tel" id="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= $default['f_tel'] ?? '' ?>" />
 																	</td>
 																</tr>
 															</tbody>
@@ -214,7 +239,7 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<input type="tel" name="" placeholder="0000.00.00" id="birthdate_input" class="input" />
+                                                                               <input type="tel" name="f_birth_date" placeholder="0000.00.00" id="birthdate_input" class="input" data-required="y" data-label="생년월일을" value="<?= $default['f_birth_date'] ?? '' ?>" />
 																	</td>
 																</tr>
 															</tbody>
@@ -237,7 +262,7 @@
 																				<tbody>
 																					<tr>
 																						<td align="left" class="input_td">
-																							<input type="text" name="" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" />
+                                                                               <input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="우편번호를" value="<?= $default['f_zip'] ?? '' ?>" />
 																						</td>
 																						<td align="left" class="btn_td">
 																							<a href="#" class="a_btn">
@@ -265,7 +290,7 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<input type="text" name="" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" />
+                                                                               <input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= $default['f_address1'] ?? '' ?>" />
 																	</td>
 																</tr>
 															</tbody>
@@ -282,7 +307,7 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<input type="text" name="" placeholder="상세주소를 적어주세요." class="input" />
+                                                                               <input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= $default['f_address2'] ?? '' ?>" />
 																	</td>
 																</tr>
 															</tbody>
@@ -300,7 +325,7 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
-																		<input type="text" name="" placeholder="이메일을 적어주세요." class="input" />
+                                                                               <input type="text" name="f_email" id="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email" data-label="이메일을" value="<?= $default['f_email'] ?? '' ?>" />
 																	</td>
 																</tr>
 															</tbody>
@@ -321,7 +346,7 @@
 																			<ul>
 																				<li>
 																					<label class="radio_label">
-																						<input type="radio" name="application_type" value="시험접수" checked="checked" />
+                                                                               <input type="radio" name="f_application_type" value="exam" data-required="y" data-label="신청 구분을" data-tag-type="clicked" checked="checked" />
 																						<div class="check_icon"></div>
 																						<span>
 																							시험접수
@@ -330,7 +355,7 @@
 																				</li>
 																				<li>
 																					<label class="radio_label">
-																						<input type="radio" name="application_type" value="자격증 발급" />
+                                                                               <input type="radio" name="f_application_type" value="cert" data-required="y" data-label="신청 구분을" data-tag-type="clicked" />
 																						<div class="check_icon"></div>
 																						<span>
 																							자격증 발급
@@ -360,7 +385,7 @@
 																			<ul>
 																				<li>
 																					<label class="radio_label">
-																						<input type="radio" name="hope_type" value="희망" checked="checked" />
+                                                                               <input type="radio" name="f_issue_desire" value="1" data-required="y" data-label="발급희망 여부를" data-tag-type="clicked" checked="checked" />
 																						<div class="check_icon"></div>
 																						<span>
 																							희망
@@ -369,7 +394,7 @@
 																				</li>
 																				<li>
 																					<label class="radio_label">
-																						<input type="radio" name="hope_type" value="희망하지 않음" />
+                                                                               <input type="radio" name="f_issue_desire" value="0" data-required="y" data-label="발급희망 여부를" data-tag-type="clicked" />
 																						<div class="check_icon"></div>
 																						<span>
 																							희망하지 않음
@@ -409,14 +434,14 @@
 																									<tbody>
 																										<tr>
 																											<td align="left" class="input_td">
-																												<input type="text" name="upfile_name" placeholder="선택된 파일 없음" class="file_upload input" readonly="readonly" />
+                                                                               <input type="text" name="f_issue_file_name" placeholder="선택된 파일 없음" class="file_upload input" readonly="readonly" />
 																											</td>
 																											<td align="left" class="btn_td">
 																												<label>
 																													<span>
 																														파일선택
 																													</span>
-																													<input type="file" name="upfile" class="input" onchange="file_upload(this.value)" />
+                                                                               <input type="file" name="f_issue_file" class="input" onchange="file_upload(this.value)" />
 																												</label>
 																											</td>
 																										</tr>
@@ -458,7 +483,7 @@
 																				</span>
 																			</td>
 																			<td align="left" class="info_td">
-																				<input type="text" name="" placeholder="입금자명을 적어주세요." class="input" />
+                                                                               <input type="text" name="f_payer_name" id="f_payer_name" placeholder="입금자명을 적어주세요." class="input" data-required="y" data-label="입금자명을" />
 																			</td>
 																		</tr>
 																	</tbody>
@@ -476,9 +501,13 @@
 																				</span>
 																			</td>
 																			<td align="left" class="info_td">
-																				<select name="" class="select">
-																					<option value="">은행(입금자)를 선택해주세요.</option>
-																				</select>
+                                                                               <select name="f_payer_bank" id="f_payer_bank" class="select" data-required="y" data-label="은행을">
+                                                                               <option value="">은행(입금자)를 선택해주세요.</option>
+                                                                               <option value="농협">농협</option>
+                                                                               <option value="신한">신한</option>
+                                                                               <option value="국민">국민</option>
+                                                                               <option value="기업">기업</option>
+                                                                               </select>
 																			</td>
 																		</tr>
 																	</tbody>
@@ -519,7 +548,7 @@
 																					<ul>
 																						<li>
 																							<label class="checkbox_label">
-																								<input type="checkbox" name="exam_fee_type" value="필기" />
+                                                                               <input type="checkbox" name="f_payment_category[]" value="written" data-required="y" data-label="입금 구분을" data-tag-type="clicked" />
 																								<div class="check_icon"></div>
 																								<span>
 																									필기
@@ -528,7 +557,7 @@
 																						</li>
 																						<li>
 																							<label class="checkbox_label">
-																								<input type="checkbox" name="exam_fee_type" value="실기" />
+                                                                               <input type="checkbox" name="f_payment_category[]" value="practical" data-required="y" data-label="입금 구분을" data-tag-type="clicked" />
 																								<div class="check_icon"></div>
 																								<span>
 																									실기
@@ -537,7 +566,7 @@
 																						</li>
 																						<li>
 																							<label class="checkbox_label">
-																								<input type="checkbox" name="exam_fee_type" value="발급비" />
+                                                                               <input type="checkbox" name="f_payment_category[]" value="issuance" data-required="y" data-label="입금 구분을" data-tag-type="clicked" />
 																								<div class="check_icon"></div>
 																								<span>
 																									발급비
@@ -576,7 +605,7 @@
 
 											<div class="check_con">
 												<label class="checkbox_label">
-													<input type="checkbox" name="" />
+                                                                               <input type="checkbox" name="agree_privacy" data-required="y" data-label="개인정보 수집 및 이용에" data-tag-type="clicked" />
 													<div class="check_icon"></div>
 													<span>
 														개인정보수집 및 이용에 동의합니다.
@@ -588,9 +617,9 @@
 								</div>
 
 								<div class="btn_con">
-									<a href="#" class="a_btn a_btn01">
-										접수/신청
-									</a>
+                                                                        <a href="javascript:void(0);" onclick="submitForm('applyForm');" class="a_btn a_btn01">
+                                                                               접수/신청
+                                                                        </a>
 
 									<a href="/index_tmp.html" class="a_btn a_btn02">
 										취소
