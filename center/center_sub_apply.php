@@ -18,6 +18,8 @@
                 'f_email'       => htmlspecialchars($login_user_info['f_email'], ENT_QUOTES),
             ];
         }
+$items = $db->query("SELECT idx, f_item_name FROM df_site_qualification_item ORDER BY f_item_name ASC");
+$schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_application ORDER BY f_year DESC, f_round DESC");
 ?>
 
     <script src="/js/form-controller.js"></script>
@@ -101,7 +103,7 @@
 					
 					<div class="contents_con">
 
-                                                <form id="applyForm" action="/controller/application_controller.php" method="post" enctype="multipart/form-data" autocomplete="off">
+                                                <form id="applyForm" action="/controller/applicate_controller.php" method="post" enctype="multipart/form-data" autocomplete="off">
                                                     <input type="hidden" name="mode" value="register" />
                                                     <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>" />
                                                     <input type="hidden" name="f_applicant_type" value="P" />
@@ -150,6 +152,9 @@
 																	<td align="left" class="info_td">
                                                                                <select name="f_item_idx" id="f_item_idx" data-required="y" data-label="자격종목을" class="select">
                                                                                <option value="">자격종목을 선택해주세요.</option>
+<?php foreach ($items as $it): ?>
+<option value="<?= $it['idx'] ?>"><?= htmlspecialchars($it['f_item_name'], ENT_QUOTES) ?></option>
+<?php endforeach; ?>
                                                                                </select>
 																	</td>
 																</tr>
@@ -169,6 +174,9 @@
 																	<td align="left" class="info_td">
                                                                                <select name="f_schedule_idx" id="f_schedule_idx" data-required="y" data-label="시험일정을" class="select">
                                                                                <option value="">시험일정 선택을 선택해주세요.</option>
+<?php foreach ($schedules as $sc): ?>
+<option value="<?= $sc['idx'] ?>"><?= $sc['f_year'] ?>년 <?= $sc['f_round'] ?>회차 <?= htmlspecialchars($sc['f_type'], ENT_QUOTES) ?></option>
+<?php endforeach; ?>
                                                                                </select>
 																	</td>
 																</tr>
