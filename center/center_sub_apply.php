@@ -320,9 +320,9 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                                             value="<?= $default['f_zip'] ?? '' ?>" />
                                                                                     </td>
                                                                                     <td align="left" class="btn_td">
-                                                                                        <a href="#" class="a_btn">
-                                                                                            검색
-                                                                                        </a>
+        <a href="#" class="a_btn" onclick="openPostcode(); return false;">
+            검색
+        </a>
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
@@ -804,10 +804,10 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
     const itemOptions = Array.from(itemSelect.querySelectorAll('option')).filter(opt => opt.value !== '');
 
     const itemPlaceholder = itemSelect.querySelector('option[value=""]');
+
     const scheduleSelect = document.getElementById('f_schedule_idx');
     const scheduleOptions = Array.from(scheduleSelect.querySelectorAll('option')).filter(opt => opt.value !== '');
     const schedulePlaceholder = scheduleSelect.querySelector('option[value=""]');
-
 
     function updateItemOptions() {
         const selected = categorySelect.value;
@@ -822,7 +822,6 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
         });
         itemSelect.value = '';
 
-
         scheduleSelect.innerHTML = '';
         if (schedulePlaceholder) scheduleSelect.appendChild(schedulePlaceholder);
         scheduleOptions.forEach(opt => {
@@ -831,12 +830,25 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
             }
         });
         scheduleSelect.value = '';
-
     }
 
     categorySelect.addEventListener('change', updateItemOptions);
     // 초기 호출 (페이지 로드 시 기본값 적용)
     updateItemOptions();
+
+</script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function openPostcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                document.getElementById('f_zip').value = data.zonecode;
+                document.getElementById('f_address1').value = data.address;
+                document.getElementById('f_address2').focus();
+            }
+        }).open();
+    }
+
 </script>
 
 <?php
