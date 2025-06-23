@@ -7,6 +7,8 @@ include 'include/center_sub_common.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/include/header.html';
 
 $default = [];
+// 선택된 자격분야 (GET 파라미터)
+$selected_category = $_GET['category'] ?? '';
 if ($is_login) {
     $default = [
         'f_user_name' => htmlspecialchars($login_user_info['f_user_name'], ENT_QUOTES),
@@ -19,8 +21,8 @@ if ($is_login) {
     ];
 }
 
-$items = $db->query("SELECT idx, f_item_name FROM df_site_qualification_item ORDER BY f_item_name ASC");
-$schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_application ORDER BY f_year DESC, f_round DESC");
+$items = $db->query("SELECT idx, f_item_name, f_category FROM df_site_qualification_item ORDER BY f_item_name ASC");
+$schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df_site_application ORDER BY f_year DESC, f_round DESC");
 
 ?>
 
@@ -130,16 +132,19 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_applic
                                                                 <td align="left" class="info_td">
                                                                     <select name="f_category" id="f_category"
                                                                         data-required="y" data-label="자격분야를"
-                                                                        class="select">
-                                                                        <option value="">자격분야를 선택해주세요.</option>
-                                                                        <option value="makeup">메이크업</option>
-                                                                        <option value="nail">네일</option>
-                                                                        <option value="hair">헤어</option>
-                                                                        <option value="skin">피부</option>
-                                                                        <option value="perm">반영구</option>
-                                                                        <option value="intl">해외인증</option>
-                                                                        <option value="teach">강사인증</option>
+                                                                        class="select" <?= $selected_category ? 'disabled' : '' ?>>
+                                                                        <option value="" <?= $selected_category ? '' : 'selected' ?>>자격분야를 선택해주세요.</option>
+                                                                        <option value="makeup" <?= $selected_category === 'makeup' ? 'selected' : '' ?>>메이크업</option>
+                                                                        <option value="nail" <?= $selected_category === 'nail' ? 'selected' : '' ?>>네일</option>
+                                                                        <option value="hair" <?= $selected_category === 'hair' ? 'selected' : '' ?>>헤어</option>
+                                                                        <option value="skin" <?= $selected_category === 'skin' ? 'selected' : '' ?>>피부</option>
+                                                                        <option value="perm" <?= $selected_category === 'perm' ? 'selected' : '' ?>>반영구</option>
+                                                                        <option value="intl" <?= $selected_category === 'intl' ? 'selected' : '' ?>>해외인증</option>
+                                                                        <option value="teach" <?= $selected_category === 'teach' ? 'selected' : '' ?>>강사인증</option>
                                                                     </select>
+                                                                    <?php if ($selected_category): ?>
+                                                                    <input type="hidden" name="f_category" value="<?= htmlspecialchars($selected_category) ?>" />
+                                                                    <?php endif; ?>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -163,9 +168,9 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_applic
                                                                         <option value="">자격종목을 선택해주세요.</option>
 
                                                                         <?php foreach ($items as $it): ?>
-                                                                            <option value="<?= $it['idx'] ?>">
-                                                                                <?= htmlspecialchars($it['f_item_name'], ENT_QUOTES) ?>
-                                                                            </option>
+    <option value="<?= $it['idx'] ?>" data-category="<?= $it['f_category'] ?>">
+        <?= htmlspecialchars($it['f_item_name'], ENT_QUOTES) ?>
+    </option>
                                                                         <?php endforeach; ?>
 
                                                                     </select>
@@ -190,12 +195,12 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_applic
                                                                         class="select">
                                                                         <option value="">시험일정 선택을 선택해주세요.</option>
                                                                         <?php foreach ($schedules as $sc): ?>
-                                                                            <option value="<?= $sc['idx'] ?>">
-                                                                                <?= $sc['f_year'] ?>년
-                                                                                <?= $sc['f_round'] ?>회차
-                                                                                <?= htmlspecialchars($sc['f_type'], ENT_QUOTES) ?>
-                                                                            </option>
-                                                                        <?php endforeach; ?>
+    <option value="<?= $sc['idx'] ?>" data-category="<?= $sc['f_category'] ?>">
+        <?= $sc['f_year'] ?>년
+        <?= $sc['f_round'] ?>회차
+        <?= htmlspecialchars($sc['f_type'], ENT_QUOTES) ?>
+    </option>
+<?php endforeach; ?>
 
                                                                     </select>
                                                                 </td>
@@ -791,6 +796,42 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_applic
     function file_upload(val) {
         $(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td .input_con > table > tbody > tr > .input_td .input").val(val).focus();
     }
+
+    // 자격분야 변경 시 자격종목 필터링
+    const categorySelect = document.getElementById('f_category');
+    const itemSelect = document.getElementById('f_item_idx');
+    const itemOptions = Array.from(itemSelect.querySelectorAll('option')).filter(opt => opt.value !== '');
+    const itemPlaceholder = itemSelect.querySelector('option[value=""]');
+
+    const scheduleSelect = document.getElementById('f_schedule_idx');
+    const scheduleOptions = Array.from(scheduleSelect.querySelectorAll('option')).filter(opt => opt.value !== '');
+    const schedulePlaceholder = scheduleSelect.querySelector('option[value=""]');
+
+    function updateItemOptions() {
+        const selected = categorySelect.value;
+        // 초기화
+        itemSelect.innerHTML = '';
+        if (itemPlaceholder) itemSelect.appendChild(itemPlaceholder);
+        itemOptions.forEach(opt => {
+            if (selected && opt.dataset.category === selected) {
+                itemSelect.appendChild(opt);
+            }
+        });
+        itemSelect.value = '';
+
+        scheduleSelect.innerHTML = '';
+        if (schedulePlaceholder) scheduleSelect.appendChild(schedulePlaceholder);
+        scheduleOptions.forEach(opt => {
+            if (selected && opt.dataset.category === selected) {
+                scheduleSelect.appendChild(opt);
+            }
+        });
+        scheduleSelect.value = '';
+    }
+
+    categorySelect.addEventListener('change', updateItemOptions);
+    // 초기 호출 (페이지 로드 시 기본값 적용)
+    updateItemOptions();
 </script>
 
 <?php
