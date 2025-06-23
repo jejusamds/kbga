@@ -23,8 +23,6 @@ if ($is_login) {
 
 $items = $db->query("SELECT idx, f_item_name, f_category FROM df_site_qualification_item ORDER BY f_item_name ASC");
 $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df_site_application ORDER BY f_year DESC, f_round DESC");
-
-
 ?>
 
 <script src="/js/form-controller.js"></script>
@@ -802,7 +800,6 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
     const categorySelect = document.getElementById('f_category');
     const itemSelect = document.getElementById('f_item_idx');
     const itemOptions = Array.from(itemSelect.querySelectorAll('option')).filter(opt => opt.value !== '');
-
     const itemPlaceholder = itemSelect.querySelector('option[value=""]');
 
     const scheduleSelect = document.getElementById('f_schedule_idx');
@@ -813,7 +810,6 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
         const selected = categorySelect.value;
         // 초기화
         itemSelect.innerHTML = '';
-
         if (itemPlaceholder) itemSelect.appendChild(itemPlaceholder);
         itemOptions.forEach(opt => {
             if (selected && opt.dataset.category === selected) {
@@ -835,7 +831,6 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
     categorySelect.addEventListener('change', updateItemOptions);
     // 초기 호출 (페이지 로드 시 기본값 적용)
     updateItemOptions();
-
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -848,7 +843,6 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
             }
         }).open();
     }
-
 </script>
 
 <?php
