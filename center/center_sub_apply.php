@@ -294,9 +294,9 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                     </table>
                                                 </div>
                                             </li>
-                                            <li>
-                                                <div class="list_div fl">
-                                                    <table cellpadding="0" cellspacing="0">
+        <a href="#" class="a_btn" onclick="openPostcode(); return false;">
+            검색
+        </a>
                                                         <tbody>
                                                             <tr>
                                                                 <td align="left" class="title_td">
@@ -809,6 +809,18 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
     const schedulePlaceholder = scheduleSelect.querySelector('option[value=""]');
 
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function openPostcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                document.getElementById('f_zip').value = data.zonecode;
+                document.getElementById('f_address1').value = data.address;
+                document.getElementById('f_address2').focus();
+            }
+        }).open();
+    }
+</script>
     function updateItemOptions() {
         const selected = categorySelect.value;
         // 초기화
