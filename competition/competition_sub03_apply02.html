@@ -18,6 +18,7 @@
                 ];
         }
 
+
         $competitions = $db->query("SELECT idx,f_title FROM df_site_competition ORDER BY idx DESC");
 ?>
         <script src="/js/form-controller.js"></script>
@@ -218,7 +219,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
+
                                                                         <input type="text" name="f_user_name" placeholder="단체명을 적어주세요." class="input" data-required="y" data-label="단체명을" value="<?= $default['f_user_name'] ?? '' ?>" />
+
 																	</td>
 																</tr>
 															</tbody>
@@ -235,7 +238,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
+
                                                                         <input type="text" name="f_user_name_en" placeholder="담당자를 적어주세요." class="input" data-required="y" data-label="담당자를" value="<?= $default['f_user_name_en'] ?? '' ?>" />
+
 																	</td>
 																</tr>
 															</tbody>
@@ -253,7 +258,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
+
                                                                         <input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= $default['f_tel'] ?? '' ?>" />
+
 																	</td>
 																</tr>
 															</tbody>
@@ -270,7 +277,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
+
                                                                         <input type="tel" name="f_contact_phone" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="담당자 연락처를" value="<?= $default['f_contact_phone'] ?? '' ?>" />
+
 																	</td>
 																</tr>
 															</tbody>
@@ -288,7 +297,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
+
                                                                         <input type="text" name="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email" data-label="이메일을" value="<?= $default['f_email'] ?? '' ?>" />
+
 																	</td>
 																</tr>
 															</tbody>
@@ -361,7 +372,9 @@
 																				<tbody>
 																					<tr>
 																						<td align="left" class="input_td">
+
                                                                         <input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="우편번호를" value="<?= $default['f_zip'] ?? '' ?>" />
+
 																						</td>
 																						<td align="left" class="btn_td">
                                                                         <a href="#" class="a_btn" onclick="openPostcode(); return false;">
@@ -389,7 +402,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
+
                                                                         <input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= $default['f_address1'] ?? '' ?>" />
+
 																	</td>
 																</tr>
 															</tbody>
@@ -406,7 +421,9 @@
 																		</span>
 																	</td>
 																	<td align="left" class="info_td">
+
                                                                         <input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= $default['f_address2'] ?? '' ?>" />
+
 																	</td>
 																</tr>
 															</tbody>

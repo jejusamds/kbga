@@ -15,6 +15,7 @@ $gb = @str_replace("marketing/", "", $gb);
 $gb = @str_replace("main_manage/", "", $gb);
 $gb = @str_replace("business/", "", $gb);
 $gb = @str_replace("application/", "", $gb);
+$gb = @str_replace("competition/", "", $gb);
 
 $gb = substr("$gb", 0, strpos($gb, ".php"));
 

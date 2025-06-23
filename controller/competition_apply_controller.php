@@ -69,8 +69,11 @@ $params=[
     'f_event'=>$filtered['f_event'],
     'f_user_name'=>$filtered['f_user_name'],
     'f_user_name_en'=>$filtered['f_user_name_en'],
+
+    'f_gender'=>$filtered['f_gender'],
     'f_tel'=>$filtered['f_tel'],
-    'f_contact_phone'=>$filtered['f_tel'],
+    'f_birth_date'=>$birth_date,
+
     'f_zip'=>$filtered['f_zip'],
     'f_address1'=>$filtered['f_address1'],
     'f_address2'=>$filtered['f_address2'],
@@ -80,10 +83,12 @@ $params=[
     'f_payer_bank'=>$filtered['f_payer_bank'],
     'f_payment_category'=>$payment_cat,
     'f_gender'=>$filtered['f_gender']
+
 ];
 
 $sql="INSERT INTO df_site_competition_registration (
         f_competition_idx,f_part,f_field,f_event,
+
         f_user_name,f_user_name_en,f_tel,f_contact_phone,
         f_zip,f_address1,f_address2,f_email,f_issue_file,
         f_payer_name,f_payer_bank,f_payment_category,f_gender
@@ -96,3 +101,4 @@ $sql="INSERT INTO df_site_competition_registration (
 $db->query($sql,$params);
 
 return_json(['result'=>'ok','msg'=>'접수가 완료되었습니다.','redirect'=>'/']);
+
