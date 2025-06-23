@@ -13,7 +13,6 @@ if ($is_login) {
     $default = [
         'f_user_name' => htmlspecialchars($login_user_info['f_user_name'], ENT_QUOTES),
         'f_tel' => htmlspecialchars($login_user_info['f_tel'], ENT_QUOTES),
-        'f_birth_date' => htmlspecialchars(str_replace('-', '.', $login_user_info['f_birth_date']), ENT_QUOTES),
         'f_zip' => htmlspecialchars($login_user_info['f_zip'], ENT_QUOTES),
         'f_address1' => htmlspecialchars($login_user_info['f_address1'], ENT_QUOTES),
         'f_address2' => htmlspecialchars($login_user_info['f_address2'], ENT_QUOTES),
@@ -55,12 +54,12 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                     <div class="list_con">
                         <ul>
                             <li>
-                                <a href="/center/center_sub02_4_apply.html" class="on">
+                                <a href="/center/center_sub02_4_apply.html">
                                     개인접수
                                 </a>
                             </li>
                             <li>
-                                <a href="/center/center_sub02_4_apply02.html">
+                                <a href="/center/center_sub_apply_o.php" class="on">
                                     단체접수
                                 </a>
                             </li>
@@ -108,12 +107,12 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
 
                 <div class="contents_con">
 
-                    <form id="applyForm" action="/controller/applicate_controller.php" method="post"
+                    <form id="applyForm" action="/controller/applicate_controller_o.php" method="post"
                         enctype="multipart/form-data" autocomplete="off">
 
                         <input type="hidden" name="mode" value="register" />
                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>" />
-                        <input type="hidden" name="f_applicant_type" value="P" />
+                        <input type="hidden" name="f_applicant_type" value="O" />
                         <div class="write_con">
                             <div class="contents_con">
                                 <div class="input_con">
@@ -216,13 +215,13 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                             <tr>
                                                                 <td align="left" class="title_td">
                                                                     <span>
-                                                                        이름
+                                                                        단체명
                                                                     </span>
                                                                 </td>
                                                                 <td align="left" class="info_td">
                                                                     <input type="text" name="f_user_name"
-                                                                        id="f_user_name" placeholder="이름을 적어주세요."
-                                                                        class="input" data-required="y" data-label="이름을"
+                                                                        id="f_user_name" placeholder="단체명을 적어주세요."
+                                                                        class="input" data-required="y" data-label="단체명을"
                                                                         value="<?= $default['f_user_name'] ?? '' ?>" />
                                                                 </td>
                                                             </tr>
@@ -236,14 +235,14 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                             <tr>
                                                                 <td align="left" class="title_td">
                                                                     <span>
-                                                                        영문이름
+                                                                        담당자
                                                                     </span>
                                                                 </td>
                                                                 <td align="left" class="info_td">
                                                                     <input type="text" name="f_user_name_en"
-                                                                        id="f_user_name_en" placeholder="영문이름을 적어주세요."
+                                                                        id="f_user_name_en" placeholder="담당자를 적어주세요."
                                                                         class="input" data-required="y"
-                                                                        data-label="영문이름을" />
+                                                                        data-label="담당자를" />
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -278,15 +277,14 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                             <tr>
                                                                 <td align="left" class="title_td">
                                                                     <span>
-                                                                        생년월일
+                                                                        담당자 연락처
                                                                     </span>
                                                                 </td>
                                                                 <td align="left" class="info_td">
-                                                                    <input type="tel" name="f_birth_date"
-                                                                        placeholder="0000.00.00" id="birthdate_input"
-                                                                        class="input" data-required="y"
-                                                                        data-label="생년월일을"
-                                                                        value="<?= $default['f_birth_date'] ?? '' ?>" />
+                                                                    <input type="tel" name="f_contact_phone" id="f_contact_phone"
+                                                                        maxlength="13" placeholder="000-0000-0000"
+                                                                        class="input tel_input" data-required="y"
+                                                                        data-validate-type="tel" data-label="담당자 연락처를" />
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -754,23 +752,6 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
 </div>
 
 <script type="text/javascript" language="javascript">
-    // 생년월일
-    const input = document.getElementById('birthdate_input');
-    input.addEventListener('input', function () {
-        let value = input.value.replace(/\D/g, ''); // 숫자 이외 제거
-        if (value.length > 8) value = value.slice(0, 8); // 최대 8자리
-
-        let formatted = '';
-        if (value.length <= 4) {
-            formatted = value;
-        } else if (value.length <= 6) {
-            formatted = `${value.slice(0, 4)}.${value.slice(4)}`;
-        } else {
-            formatted = `${value.slice(0, 4)}.${value.slice(4, 6)}.${value.slice(6)}`;
-        }
-
-        input.value = formatted;
-    });
 
     // 연락처
     $(document).on("keyup", ".tel_input", function () {
