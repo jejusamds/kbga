@@ -1,6 +1,7 @@
 <?php
 $Menu = "04";
 $sMenu = "04-2";
+
 include $_SERVER['DOCUMENT_ROOT'] . '/include/header.html';
 
 $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) ?: 1;
@@ -12,6 +13,7 @@ $totalPages = $total > 0 ? (int) ceil($total / $perPage) : 1;
 $rows = $db->query(
     "SELECT idx,f_title,f_date,f_place,f_target,f_reg_period,f_detail,f_image FROM df_site_competition ORDER BY idx DESC LIMIT :offset,:perPage",
     ['offset' => $offset, 'perPage' => $perPage]
+
 );
 $firstPage = 1;
 $lastPage = $totalPages;
@@ -20,7 +22,9 @@ $nextPage = $page < $lastPage ? $page + 1 : $lastPage;
 ?>
 <div id="container">
     <div id="sub_con">
+
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/sub_banner.html'; ?>
+
         <div class="contents_con">
             <div class="notice_list_con">
                 <div class="ts_con">
@@ -33,6 +37,7 @@ $nextPage = $page < $lastPage ? $page + 1 : $lastPage;
                     <ul>
                         <?php if (empty($rows)): ?>
                             <li class="none_li"><span>등록된 게시글이 없습니다.</span></li>
+
                         <?php else:
                             foreach ($rows as $row): ?>
                                 <li>
@@ -128,11 +133,13 @@ $nextPage = $page < $lastPage ? $page + 1 : $lastPage;
                                     </div>
                                 </li>
                             <?php endforeach; endif; ?>
+
                     </ul>
                 </div>
                 <div class="number_list_con">
                     <div class="contents_con">
                         <div class="btn_con">
+
                             <a href="?page=<?= $firstPage ?>"><img src="/img/sub/number_list_prev_btn2.svg"
                                     alt="번호목록 처음으로" class="fx" /></a>
                             <a href="?page=<?= $prevPage ?>"><img src="/img/sub/number_list_prev_btn.svg" alt="번호목록 이전"
@@ -143,14 +150,17 @@ $nextPage = $page < $lastPage ? $page + 1 : $lastPage;
                             <?php if ($lastPage > 1): ?>
                                 <a href="?page=<?= $lastPage ?>"
                                     class="list_a<?= $page === $lastPage ? ' active' : '' ?>"><?= str_pad($lastPage, 2, '0', STR_PAD_LEFT) ?></a>
+
                                 <div class="bar"></div>
                             <?php endif; ?>
                         </div>
                         <div class="btn_con">
+
                             <a href="?page=<?= $nextPage ?>"><img src="/img/sub/number_list_next_btn.svg" alt="번호목록 다음"
                                     class="fx" /></a>
                             <a href="?page=<?= $lastPage ?>"><img src="/img/sub/number_list_next_btn2.svg"
                                     alt="번호목록 마지막으로" class="fx" /></a>
+
                         </div>
                     </div>
                 </div>
@@ -159,6 +169,7 @@ $nextPage = $page < $lastPage ? $page + 1 : $lastPage;
     </div>
 </div>
 <script type="text/javascript" language="javascript">
+
     // 모바일용 상세보기 토글
     $(document).on('click', '.tournament_notice_con > ul > li .list_div > .btn_con.m_con .a_btn', function () {
         $('.tournament_notice_con > ul > li .list_div > .btn_con.m_con .a_btn').each(function () {
@@ -179,3 +190,4 @@ $nextPage = $page < $lastPage ? $page + 1 : $lastPage;
     });
 </script>
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.html'; ?>
+

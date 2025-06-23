@@ -54,12 +54,16 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                     <div class="list_con">
                         <ul>
                             <li>
+
                                 <a href="/center/center_sub_apply.php?category=<?=$category?>" >
+
                                     개인접수
                                 </a>
                             </li>
                             <li>
+
                                 <a href="/center/center_sub_apply_o.php?category=<?=$category?>" class="on">
+
                                     단체접수
                                 </a>
                             </li>
@@ -133,6 +137,7 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                         data-required="y" data-label="자격분야를"
                                                                         class="select" <?= $selected_category ? 'disabled' : '' ?>>
                                                                         <option value="" <?= $selected_category ? '' : 'selected' ?>>자격분야를 선택해주세요.</option>
+
                                                                         <option value="makeup"
                                                                             <?= $selected_category === 'makeup' ? 'selected' : '' ?>>메이크업</option>
                                                                         <option value="nail"
@@ -175,10 +180,12 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                         <option value="">자격종목을 선택해주세요.</option>
 
                                                                         <?php foreach ($items as $it): ?>
+
                                                                             <option value="<?= $it['idx'] ?>"
                                                                                 data-category="<?= $it['f_category'] ?>">
                                                                                 <?= htmlspecialchars($it['f_item_name'], ENT_QUOTES) ?>
                                                                             </option>
+
                                                                         <?php endforeach; ?>
 
                                                                     </select>
@@ -203,6 +210,7 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                         class="select">
                                                                         <option value="">시험일정 선택을 선택해주세요.</option>
                                                                         <?php foreach ($schedules as $sc): ?>
+
                                                                             <option value="<?= $sc['idx'] ?>"
                                                                                 data-category="<?= $sc['f_category'] ?>">
                                                                                 <?= $sc['f_year'] ?>년
@@ -210,6 +218,7 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                                 <?= htmlspecialchars($sc['f_type'], ENT_QUOTES) ?>
                                                                             </option>
                                                                         <?php endforeach; ?>
+
 
                                                                     </select>
                                                                 </td>
@@ -231,8 +240,10 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                 <td align="left" class="info_td">
                                                                     <input type="text" name="f_user_name"
                                                                         id="f_user_name" placeholder="단체명을 적어주세요."
+
                                                                         class="input" data-required="y"
                                                                         data-label="단체명을"
+
                                                                         value="<?= $default['f_user_name'] ?? '' ?>" />
                                                                 </td>
                                                             </tr>
@@ -292,12 +303,14 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                     </span>
                                                                 </td>
                                                                 <td align="left" class="info_td">
+
                                                                     <input type="tel" name="f_contact_phone"
                                                                         id="f_contact_phone" maxlength="13"
                                                                         placeholder="000-0000-0000"
                                                                         class="input tel_input" data-required="y"
                                                                         data-validate-type="tel"
                                                                         data-label="담당자 연락처를" />
+
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -330,10 +343,12 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                                             value="<?= $default['f_zip'] ?? '' ?>" />
                                                                                     </td>
                                                                                     <td align="left" class="btn_td">
+
                                                                                         <a href="#" class="a_btn"
                                                                                             onclick="openPostcode(); return false;">
                                                                                             검색
                                                                                         </a>
+
                                                                                     </td>
                                                                                 </tr>
                                                                             </tbody>
@@ -843,4 +858,5 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
 
 <?php
 include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.html';
+
 ?>

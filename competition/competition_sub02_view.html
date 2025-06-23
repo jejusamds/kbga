@@ -1,13 +1,16 @@
 <?php
+
 $Menu = "04";
 $sMenu = "04-2";
 include $_SERVER['DOCUMENT_ROOT'] . '/include/header.html';
 
 $idx = isset($_GET['idx']) && ctype_digit($_GET['idx']) ? (int) $_GET['idx'] : 0;
+
 if ($idx < 1) {
     echo "<script>alert('잘못된 접근입니다.');history.back();</script>";
     exit;
 }
+
 $page = isset($_GET['page']) && ctype_digit($_GET['page']) ? (int) $_GET['page'] : 1;
 
 $db->query("UPDATE df_site_competition SET `count` = `count` + 1 WHERE idx = :idx", ['idx' => $idx]);
@@ -23,6 +26,7 @@ $attachments = $db->query("SELECT upfile, upfile_name FROM df_site_competition_f
 <div id="container">
     <div id="sub_con">
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/sub_banner.html'; ?>
+
         <div class="contents_con">
             <div class="notice_view_con tournament_notice">
                 <div class="view_con">
@@ -31,6 +35,7 @@ $attachments = $db->query("SELECT upfile, upfile_name FROM df_site_competition_f
                             <tbody>
                                 <tr>
                                     <td align="left" class="text_td">
+
                                         <div class="title_con">
                                             <span><?= htmlspecialchars($row['f_title'], ENT_QUOTES) ?></span></div>
                                         <div class="info_con">
@@ -42,6 +47,7 @@ $attachments = $db->query("SELECT upfile, upfile_name FROM df_site_competition_f
                     </div>
                     <div class="contents_con">
                         <div class="posts_con">
+
                             <div class="img_con"
                                 style="background-image:url('/userfiles/competition/<?= rawurlencode($row['f_image']) ?>');">
                                 <img src="/img/sub/tournament_notice_list_img_con_blank_img.png" alt="블랭크 이미지"
@@ -50,6 +56,7 @@ $attachments = $db->query("SELECT upfile, upfile_name FROM df_site_competition_f
                             <div class="text_con">
                                 <div class="text01_con">
                                     <ul>
+
                                         <li>
                                             <div class="list_div">
                                                 <div class="title_con"><span>명칭</span></div>
@@ -122,6 +129,7 @@ $attachments = $db->query("SELECT upfile, upfile_name FROM df_site_competition_f
                                     </tbody>
                                 </table>
                             </div>
+
                         <?php endif; ?>
                     </div>
                 </div>
@@ -132,4 +140,6 @@ $attachments = $db->query("SELECT upfile, upfile_name FROM df_site_competition_f
         </div>
     </div>
 </div>
+
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.html'; ?>
+

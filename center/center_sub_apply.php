@@ -139,9 +139,11 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df
                                                                         <option value="nail" <?= $selected_category === 'nail' ? 'selected' : '' ?>>네일</option>
                                                                         <option value="hair" <?= $selected_category === 'hair' ? 'selected' : '' ?>>헤어</option>
                                                                         <option value="skin" <?= $selected_category === 'skin' ? 'selected' : '' ?>>피부</option>
+
                                                                         <option value="half" <?= $selected_category === 'half' ? 'selected' : '' ?>>반영구</option>
                                                                         <option value="foreign" <?= $selected_category === 'foreign' ? 'selected' : '' ?>>해외인증</option>
                                                                         <option value="teacher" <?= $selected_category === 'teacher' ? 'selected' : '' ?>>강사인증</option>
+
                                                                     </select>
                                                                     <?php if ($selected_category): ?>
                                                                     <input type="hidden" name="f_category" value="<?= htmlspecialchars($selected_category) ?>" />
