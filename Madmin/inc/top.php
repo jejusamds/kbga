@@ -54,6 +54,10 @@ $menu07 = array(
     "application_list",
     "application_input",
 );
+$menu09 = array(
+    "material_list",
+    "material_input",
+);
 $menu08 = array(
     "competition_list",
     "competition_input",
@@ -436,6 +440,25 @@ $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
                 <div class="lnb-submenu-item <? if ($category == 'half') { ?>on<? } ?>" href="/Madmin/application/application_list.php?category=half">시험일정 관리 [반영구]</div>
                 <div class="lnb-submenu-item <? if ($category == 'foreign') { ?>on<? } ?>" href="/Madmin/application/application_list.php?category=foreign">시험일정 관리 [해외인증]</div>
                 <div class="lnb-submenu-item <? if ($category == 'teacher') { ?>on<? } ?>" href="/Madmin/application/application_list.php?category=teacher">시험일정 관리 [강사인증]</div>
+            </div>
+
+            <div class="lnb-menu <? if (in_array($gb, $menu09)) { ?>on<? } ?>">
+                <span class="left">
+                    <i class="fa fa-file-text-o fa-lg"></i>
+                    <span>필/실기 자료 관리</span>
+                </span>
+                <span class="right">
+                    <i class="fa fa-<? if (in_array($gb, $menu09)) { ?>minus<? } else { ?>plus<? } ?>"></i>
+                </span>
+            </div>
+            <div class="lnb-submenu" style="display:<? if (in_array($gb, $menu09)) { ?>block;<? } else { ?>none;<? } ?>">
+                <div class="lnb-submenu-item <? if ($category == 'makeup' && in_array($gb, $menu09)) { ?>on<? } ?>" href="/Madmin/material/material_list.php?category=makeup">필/실기 자료 [메이크업]</div>
+                <div class="lnb-submenu-item <? if ($category == 'nail' && in_array($gb, $menu09)) { ?>on<? } ?>" href="/Madmin/material/material_list.php?category=nail">필/실기 자료 [네일]</div>
+                <div class="lnb-submenu-item <? if ($category == 'hair' && in_array($gb, $menu09)) { ?>on<? } ?>" href="/Madmin/material/material_list.php?category=hair">필/실기 자료 [헤어]</div>
+                <div class="lnb-submenu-item <? if ($category == 'skin' && in_array($gb, $menu09)) { ?>on<? } ?>" href="/Madmin/material/material_list.php?category=skin">필/실기 자료 [피부]</div>
+                <div class="lnb-submenu-item <? if ($category == 'half' && in_array($gb, $menu09)) { ?>on<? } ?>" href="/Madmin/material/material_list.php?category=half">필/실기 자료 [반영구]</div>
+                <div class="lnb-submenu-item <? if ($category == 'foreign' && in_array($gb, $menu09)) { ?>on<? } ?>" href="/Madmin/material/material_list.php?category=foreign">필/실기 자료 [해외인증]</div>
+                <div class="lnb-submenu-item <? if ($category == 'teacher' && in_array($gb, $menu09)) { ?>on<? } ?>" href="/Madmin/material/material_list.php?category=teacher">필/실기 자료 [강사인증]</div>
             </div>
 
             <div class="lnb-menu <? if (in_array($gb, $menu08)) { ?>on<? } ?>">
