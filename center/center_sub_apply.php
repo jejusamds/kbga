@@ -19,7 +19,7 @@ if ($is_login) {
     ];
 }
 
-$items = $db->query("SELECT idx, f_item_name FROM df_site_qualification_item ORDER BY f_item_name ASC");
+$items = $db->query("SELECT idx, f_item_name, f_category FROM df_site_qualification_item ORDER BY f_item_name ASC");
 $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_application ORDER BY f_year DESC, f_round DESC");
 
 ?>
@@ -163,9 +163,9 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_applic
                                                                         <option value="">자격종목을 선택해주세요.</option>
 
                                                                         <?php foreach ($items as $it): ?>
-                                                                            <option value="<?= $it['idx'] ?>">
-                                                                                <?= htmlspecialchars($it['f_item_name'], ENT_QUOTES) ?>
-                                                                            </option>
+    <option value="<?= $it['idx'] ?>" data-category="<?= $it['f_category'] ?>">
+        <?= htmlspecialchars($it['f_item_name'], ENT_QUOTES) ?>
+    </option>
                                                                         <?php endforeach; ?>
 
                                                                     </select>
@@ -791,6 +791,29 @@ $schedules = $db->query("SELECT idx, f_year, f_round, f_type FROM df_site_applic
     function file_upload(val) {
         $(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td .input_con > table > tbody > tr > .input_td .input").val(val).focus();
     }
+
+    // 자격분야 변경 시 자격종목 필터링
+    const categorySelect = document.getElementById('f_category');
+    const itemSelect = document.getElementById('f_item_idx');
+    const itemOptions = Array.from(itemSelect.querySelectorAll('option')).filter(opt => opt.value !== '');
+    const placeholderOption = itemSelect.querySelector('option[value=""]');
+
+    function updateItemOptions() {
+        const selected = categorySelect.value;
+        // 초기화
+        itemSelect.innerHTML = '';
+        if (placeholderOption) itemSelect.appendChild(placeholderOption);
+        itemOptions.forEach(opt => {
+            if (!selected || opt.dataset.category === selected) {
+                itemSelect.appendChild(opt);
+            }
+        });
+        itemSelect.value = '';
+    }
+
+    categorySelect.addEventListener('change', updateItemOptions);
+    // 초기 호출 (페이지 로드 시 기본값 적용)
+    updateItemOptions();
 </script>
 
 <?php
