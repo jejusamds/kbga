@@ -23,8 +23,6 @@ if ($is_login) {
 
 $items = $db->query("SELECT idx, f_item_name, f_category FROM df_site_qualification_item ORDER BY f_item_name ASC");
 $schedules = $db->query("SELECT idx, f_year, f_round, f_type, f_category FROM df_site_application ORDER BY f_year DESC, f_round DESC");
-
-
 ?>
 
 <script src="/js/form-controller.js"></script>
