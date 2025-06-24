@@ -1,7 +1,8 @@
 CREATE TABLE df_site_agency (
     idx INT AUTO_INCREMENT PRIMARY KEY,
     f_type VARCHAR(20) NOT NULL,
-    f_name VARCHAR(255) NOT NULL,
+    f_name VARCHAR(255) ,
+    f_url VARCHAR(500) ,
     f_img VARCHAR(255) DEFAULT NULL,
     f_img_m VARCHAR(255) DEFAULT NULL,
     f_order INT DEFAULT 0,
