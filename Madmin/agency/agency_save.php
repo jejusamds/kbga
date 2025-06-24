@@ -11,6 +11,7 @@ $query_str = '&type='.$type;
 switch($mode){
     case 'insert':
         $f_name = $_POST['f_name'] ?? '';
+        $f_url  = $_POST['f_url'] ?? '';
         $f_type = $_POST['f_type'] ?? 'cooperate';
         $order = $db->single("SELECT IFNULL(MAX(f_order),0)+1 FROM {$table} WHERE f_type=:t", ['t'=>$f_type]);
         $f_img = '';
@@ -29,8 +30,8 @@ switch($mode){
             $f_img_m = uniqid('img_m_').'.'.$ext;
             move_uploaded_file($_FILES['f_img_m']['tmp_name'],$dir.'/'.$f_img_m);
         }
-        $db->query("INSERT INTO {$table} (f_type,f_name,f_img,f_img_m,f_order,wdate) VALUES (:type,:name,:img,:img_m,:ord,NOW())",
-            ['type'=>$f_type,'name'=>$f_name,'img'=>$f_img,'img_m'=>$f_img_m,'ord'=>$order]);
+        $db->query("INSERT INTO {$table} (f_type,f_name,f_url,f_img,f_img_m,f_order,wdate) VALUES (:type,:name,:url,:img,:img_m,:ord,NOW())",
+            ['type'=>$f_type,'name'=>$f_name,'url'=>$f_url,'img'=>$f_img,'img_m'=>$f_img_m,'ord'=>$order]);
         complete('등록되었습니다.',"/Madmin/agency/agency_list.php?page={$page}{$query_str}");
         break;
     case 'update':
@@ -38,8 +39,9 @@ switch($mode){
         $row = $db->row("SELECT * FROM {$table} WHERE idx=:idx", ['idx'=>$idx]);
         if(!$row) error('잘못된 접근입니다.');
         $f_name = $_POST['f_name'] ?? '';
-        $sets = ['f_name=:name'];
-        $params = ['name'=>$f_name,'idx'=>$idx];
+        $f_url  = $_POST['f_url'] ?? '';
+        $sets = ['f_name=:name','f_url=:url'];
+        $params = ['name'=>$f_name,'url'=>$f_url,'idx'=>$idx];
         if(!empty($_FILES['f_img']['name'])){
             $dir = $_SERVER['DOCUMENT_ROOT'].'/userfiles/agency';
             if(!is_dir($dir)) mkdir($dir,0755,true);

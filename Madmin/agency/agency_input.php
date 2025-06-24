@@ -38,6 +38,10 @@ if($idx){
                         <td class="comALeft"><input type="text" name="f_name" value="<?=htmlspecialchars($row['f_name'],ENT_QUOTES)?>" class="form-control" style="width:60%;"></td>
                     </tr>
                     <tr>
+                        <th>링크 URL</th>
+                        <td class="comALeft"><input type="text" name="f_url" value="<?=htmlspecialchars($row['f_url'] ?? '',ENT_QUOTES)?>" class="form-control" style="width:60%;"></td>
+                    </tr>
+                    <tr>
                         <th>이미지(PC)</th>
                         <td class="comALeft">
                             <input type="file" name="f_img" class="form-control" style="width:60%;">
