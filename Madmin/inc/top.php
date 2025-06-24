@@ -70,6 +70,11 @@ $menu10 = array(
     "agency_input",
 );
 
+$menu11 = array(
+    "member_list",
+    "member_input"
+);
+
 $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
 
 ?>
@@ -513,6 +518,21 @@ $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
                 style="display:<? if (in_array($gb, $menu08)) { ?>block;<? } else { ?>none;<? } ?>">
                 <div class="lnb-submenu-item <? if (in_array($gb, $menu08)) { ?>on<? } ?>"
                     href="/Madmin/competition/competition_list.php">대회 관리</div>
+            </div>
+
+            <div class="lnb-menu <? if (in_array($gb, $menu11)) { ?>on<? } ?>">
+                <span class="left">
+                    <i class="fa fa-users fa-lg"></i>
+                    <span>회원 관리</span>
+                </span>
+                <span class="right">
+                    <i class="fa fa-<? if (in_array($gb, $menu11)) { ?>minus<? } else { ?>plus<? } ?>"></i>
+                </span>
+            </div>
+            <div class="lnb-submenu"
+                style="display:<? if (in_array($gb, $menu11)) { ?>block;<? } else { ?>none;<? } ?>">
+                <div class="lnb-submenu-item <? if (in_array($gb, $menu11)) { ?>on<? } ?>"
+                    href="/Madmin/member/member_list.php">회원 관리</div>
             </div>
 
 
