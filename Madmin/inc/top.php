@@ -397,7 +397,7 @@ $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
             </div>
 
 
-            <!-- <div class="lnb-menu <? if (in_array($gb, $menu05)) { ?>on<? } ?>">
+            <div class="lnb-menu <? if (in_array($gb, $menu05)) { ?>on<? } ?>">
                 <span class="left">
                     <i class="fa fa-desktop fa-lg"></i>
                     <span>메인 관리</span>
@@ -407,9 +407,8 @@ $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
                 </span>
             </div>
             <div class="lnb-submenu" style="display:<? if (in_array($gb, $menu05)) { ?>block;<? } else { ?>none;<? } ?>">
-                <div class="lnb-submenu-item <? if ($code == 'main' || $code == 'main') { ?>on<? } ?>" href="/Madmin/main_manage/main_slide_list.php?code=main">메인 슬라이드</div>
-                <div class="lnb-submenu-item <? if ($code == 'best' || $code == 'best') { ?>on<? } ?>" href="/Madmin/main_manage/main_slide_list.php?code=best">베스트 제품 슬라이드</div>
-            </div> -->
+                <div class="lnb-submenu-item <? if (in_array($gb, $menu05)) { ?>on<? } ?>" href="/Madmin/main_slide/main_slide_list.php">메인 화면 슬라이드 관리</div>
+            </div>
 
 
             <!-- <div class="lnb-menu <? if (in_array($gb, $menu03)) { ?>on<? } ?>">
