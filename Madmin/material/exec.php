@@ -30,19 +30,30 @@ switch($mode){
     case 'update':
         $idx=(int)$_POST['idx'];
         $sets=[];$params=[];
-        foreach($fields as $f){$sets[]="$f=:$f";$params[$f]=$_POST[$f]??'';}
+        // 텍스트 필드만 우선 업데이트 항목에 포함
+        foreach(['f_category','f_subject','f_type','f_level','f_description'] as $f){
+            $sets[]="$f=:$f";
+            $params[$f]=$_POST[$f]??'';
+        }
+
+        // 파일 처리
         if(!empty($_FILES['upfile']['name'])){
             $dir=$_SERVER['DOCUMENT_ROOT'].'/userfiles/material';
             if(!is_dir($dir)) mkdir($dir,0755,true);
             $ext=strtolower(pathinfo($_FILES['upfile']['name'],PATHINFO_EXTENSION));
             $new=uniqid('',true).'.'.$ext;
             move_uploaded_file($_FILES['upfile']['tmp_name'],$dir.'/'.$new);
+            $sets[]='f_file=:f_file';
             $params['f_file']=$new;
+            $sets[]='f_file_name=:f_file_name';
             $params['f_file_name']=$_FILES['upfile']['name'];
         } elseif(!empty($_POST['del_file'])){
+            $sets[]='f_file=:f_file';
             $params['f_file']='';
+            $sets[]='f_file_name=:f_file_name';
             $params['f_file_name']='';
         }
+
         $params['idx']=$idx;
         $sql="UPDATE {$table} SET ".implode(',', $sets)." WHERE idx=:idx";
         $db->query($sql,$params);
