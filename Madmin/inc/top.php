@@ -64,6 +64,11 @@ $menu08 = array(
     "competition_input",
 );
 
+$menu10 = array(
+    "agency_list",
+    "agency_input",
+);
+
 $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
 
 ?>
@@ -473,6 +478,20 @@ $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
             </div>
             <div class="lnb-submenu" style="display:<? if (in_array($gb, $menu08)) { ?>block;<? } else { ?>none;<? } ?>">
                 <div class="lnb-submenu-item <? if (in_array($gb, $menu08)) { ?>on<? } ?>" href="/Madmin/competition/competition_list.php">대회 관리</div>
+            </div>
+
+            <div class="lnb-menu <? if (in_array($gb, $menu10)) { ?>on<? } ?>">
+                <span class="left">
+                    <i class="fa fa-building-o fa-lg"></i>
+                    <span>기관 관리</span>
+                </span>
+                <span class="right">
+                    <i class="fa fa-<? if (in_array($gb, $menu10)) { ?>minus<? } else { ?>plus<? } ?>"></i>
+                </span>
+            </div>
+            <div class="lnb-submenu" style="display:<? if (in_array($gb, $menu10)) { ?>block;<? } else { ?>none;<? } ?>">
+                <div class="lnb-submenu-item <? if ($type == 'cooperate' && in_array($gb, $menu10)) { ?>on<? } ?>" href="/Madmin/agency/agency_list.php?type=cooperate">협력기관</div>
+                <div class="lnb-submenu-item <? if ($type == 'manage' && in_array($gb, $menu10)) { ?>on<? } ?>" href="/Madmin/agency/agency_list.php?type=manage">관리기관</div>
             </div>
 
             <div class="lnb-menu <? if (in_array($gb, $menu02)) { ?>on<? } ?>">
