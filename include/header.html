@@ -337,23 +337,23 @@
 							</div>
 						</td>
 						<td align="left" class="sm_td<?=$is_login ? ' login' : ''?>"><!--login-->
-							<div class="search_con">
-								<form action="" method="" autocomplete="off">
+                                                        <div class="search_con">
+                                                                <form action="/search_results.html" method="get" autocomplete="off">
 									<div class="input_con">
 										<table cellpadding="0" cellspacing="0">
 											<tbody>
 												<tr>
 													<td align="left" class="input_td">
-														<input type="text" name="" placeholder="검색해주세요." class="input" />
+                                                                               <input type="text" name="search_query" placeholder="검색해주세요." class="input" />
 													</td>
 													<td align="left" class="blank_td">
 														&nbsp;
 													</td>
 													<td align="left" class="btn_td">
-														<a href="/search_results.html">
-															<img src="/img/main/header_search_btn.svg" alt="헤더 검색 버튼" class="fx off" />
-															<img src="/img/main/header_search_btn_on.svg" alt="헤더 검색 버튼 on" class="fx on" />
-														</a>
+                                                                               <a href="javascript:;" onclick="this.closest('form').submit();">
+                                                                               <img src="/img/main/header_search_btn.svg" alt="헤더 검색 버튼" class="fx off" />
+                                                                               <img src="/img/main/header_search_btn_on.svg" alt="헤더 검색 버튼 on" class="fx on" />
+                                                                               </a>
 													</td>
 												</tr>
 											</tbody>
@@ -611,22 +611,22 @@
 	<div id="m_main_nav">
 		<div class="contents_con">
 			<div class="list_con">
-				<div class="search_con">
-					<form action="" method="" autocomplete="off">
+                                <div class="search_con">
+                                        <form action="/search_results.html" method="get" autocomplete="off">
 						<div class="input_con">
 							<table cellpadding="0" cellspacing="0">
 								<tbody>
 									<tr>
 										<td align="left" class="input_td">
-											<input type="text" name="" placeholder="검색해주세요." class="input" />
+                                                       <input type="text" name="search_query" placeholder="검색해주세요." class="input" />
 										</td>
 										<td align="left" class="blank_td">
 											&nbsp;
 										</td>
 										<td align="left" class="btn_td">
-											<a href="/search_results.html">
-												<img src="/img/main/header_search_btn_on.svg" alt="헤더 검색 버튼" class="fx" />
-											</a>
+                                                       <a href="javascript:;" onclick="this.closest('form').submit();">
+                                                       <img src="/img/main/header_search_btn_on.svg" alt="헤더 검색 버튼" class="fx" />
+                                                       </a>
 										</td>
 									</tr>
 								</tbody>
