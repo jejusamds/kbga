@@ -479,267 +479,126 @@ $pay_preMonth = $db->single($sql);
 					</div>
 				</div>
 
-				<div class="clear"></div>
-				<div class="box comMTop20" style="width:1180px;">
-					<div class="panel">
-						<div class="title">
-							<i class="fa fa-shopping-cart"></i>
-							<span>최근 주문현황</span>
-						</div>
-						<table class="table" cellpadding="0" cellspacing="0">
-							<col width="80"/><col width="80"/><col width="150"/><col width=""/><col width="100"/><col width="80"/><col width="100"/><col width="80"/><col width="80"/>
-							<thead>
-								<tr>
-									<td>주문일</td>
-									<td>결제일</td>
-									<td>주문번호</td>
-									<td>주문상품</td>
-									<td>주문자</td>
-									<td>결제방법</td>
-									<td>결제금액</td>
-									<td>처리상태</td>
-									<td>배송상태</td>
-								</tr>
-							</thead>
-							<tbody>
+<div class="box comMTop20" style="width:1180px;">
+    <div class="panel">
+        <div class="title">
+            <i class="fa fa-edit"></i>
+            <span>최근 자격시험 신청</span>
+        </div>
+        <table class="table" cellpadding="0" cellspacing="0">
+            <col width="150"/><col width="150"/><col width="200"/><col width="150"/>
+            <thead>
+                <tr>
+                    <td>분야</td>
+                    <td>이름</td>
+                    <td>연락처</td>
+                    <td>신청일</td>
+                </tr>
+            </thead>
+            <tbody>
 <?
-$sql  = "";
-$sql .= "	Select	o.*, ";
-$sql .= "			(Select CONCAT(prdname,'|',CAST(amount As CHAR)) From df_shop_order_sub Where orderid=o.orderid Order by idx Asc Limit 1) as order_goods, ";
-$sql .= "			(Select COUNT(idx) From df_shop_order_sub Where orderid=o.orderid) as order_cnt ";
-$sql .= "	From	df_shop_order o ";
-$sql .= "	Where	o.is_del = 'N' ";
-$sql .= "	And		IFNULL(o.status_payment,'') != '' ";
-$sql .= "	Order by	o.order_date Desc ";
-$sql .= "	Limit	5 ";
+$sql = "";
+$sql .= " SELECT f_category, f_user_name, f_tel, reg_date ";
+$sql .= " FROM df_site_application_registration ";
+$sql .= " ORDER BY idx DESC ";
+$sql .= " LIMIT 5 ";
 $row = $db->query($sql);
-
-for($i=0; $i<count($row); $i++){
-	if($row[$i]['status_payment'] == "1")
-		$status_payment_color = "#ff0000";
-	else if($row[$i]['status_payment'] == "2")
-		$status_payment_color = "#000000";
-	else if($row[$i]['status_payment'] == "3")
-		$status_payment_color = "#0000ff";
-	else if($row[$i]['status_payment'] == "4")
-		$status_payment_color = "#66cccc";
-	
-	if($row[$i]['status_deliver'] == "1")
-		$status_deliver_color = "#66cccc";
-	else if($row[$i]['status_deliver'] == "2")
-		$status_deliver_color = "#000000";
-	else if($row[$i]['status_deliver'] == "3")
-		$status_deliver_color = "#ff0000";
+foreach($row as $r){
 ?>
-								<tr>
-									<td><?=date("m.d H:i", strtotime($row[$i]['order_date']))?></td>
-									<td><?=$row[$i]['pay_date'] ? date("m.d H:i", strtotime($row[$i]['pay_date'])) : "-";?></td>
-									<td>
-										<a href="/Madmin/order/order_info.php?orderid=<?=$row[$i]['orderid']?>&page=<?=$page?>&<?=$param?>">
-											<?=$row[$i]['orderid']?>
-										</a>
-									</td>
-									<td>
-										<a href="/Madmin/order/order_info.php?orderid=<?=$row[$i]['orderid']?>&page=<?=$page?>&<?=$param?>">
-											<?
-											$arrItem = explode("|", $row[$i]['order_goods']);
-											echo $arrItem[0] ." (". $arrItem[1] ."개)";
-											if($row[$i]['order_cnt'] > 1)
-											echo " 외 " .($row[$i]['order_cnt']-1). "건";
-											?>
-										</a>
-									</td>
-									<td>
-										<? if($row[$i]['send_id']){ ?>
-										<a href="/Madmin/member/member_info.php?id=<?=$row[$i]['send_id']?>">
-											<?=$row[$i]['send_name']?><br/>[<?=$row[$i]['send_id']?>]
-										</a>
-										<? }else{ ?>
-										<?=$row[$i]['send_name']?><br/>[비회원]
-										<? } ?>
-									</td>
-									<td><?=$gPayMethod[$row[$i]['pay_method']]?></td>
-									<td><?=number_format($row[$i]['total_price'])?> 원</td>
-									<td style="color:<?=$status_payment_color?>;"><?=$gStatusPayment[$row[$i]['status_payment']]?></td>
-									<td style="color:<?=$status_deliver_color?>;"><?=$gStatusDeliver[$row[$i]['status_deliver']]?></td>
-								</tr>
+                <tr>
+                    <td><?=htmlspecialchars($r['f_category'])?></td>
+                    <td><?=htmlspecialchars($r['f_user_name'])?></td>
+                    <td><?=htmlspecialchars($r['f_tel'])?></td>
+                    <td><?=substr($r['reg_date'],0,10)?></td>
+                </tr>
 <?
 }
 ?>
-							</tdoby>
-						</table>
-					</div>
-				</div>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-				<div class="box comMTop20" style="width:1180px;">
-					<div class="panel">
-						<div class="title">
-							<i class="fa fa-shopping-cart"></i>
-							<span>최근 회원가입</span>
-						</div>
-						<table class="table" cellpadding="0" cellspacing="0">
-							<col width=""/><col width=""/><col width="100"/><col width="80"/><col width="120"/><col width="80"/><col width="120"/><col width="60"/><col width="120"/><col width="120"/>
-							<thead>
-								<tr>
-									<td>회원등급</td>
-									<td>아이디</td>
-									<td>이름</td>
-									<td>나이</td>
-									<td>포인트</td>
-									<td>결제횟수</td>
-									<td>총구매금액</td>
-									<td>접속수</td>
-									<td>최근접속일</td>
-									<td>회원가입일</td>
-								</tr>
-							</thead>
-							<tbody>
+<div class="box comMTop20" style="width:1180px;">
+    <div class="panel">
+        <div class="title">
+            <i class="fa fa-edit"></i>
+            <span>최근 대회 신청</span>
+        </div>
+        <table class="table" cellpadding="0" cellspacing="0">
+            <col width="150"/><col width="150"/><col width="200"/><col width="150"/>
+            <thead>
+                <tr>
+                    <td>참가분야</td>
+                    <td>이름</td>
+                    <td>연락처</td>
+                    <td>신청일</td>
+                </tr>
+            </thead>
+            <tbody>
 <?
-$sql  = "";
-$sql .= "	Select	m.*, ";
-$sql .= "			(Select IFNULL(SUM(reserve),0) From df_shop_reserve Where memid=m.id) As point, ";
-$sql .= "			(Select COUNT(*) From df_shop_order Where send_id=m.id And IFNULL(status_payment,'')='2') As order_cnt, ";
-$sql .= "			(Select IFNULL(SUM(total_price),0) From df_shop_order Where send_id=m.id And IFNULL(status_payment,'')='2') As order_amt ";
-$sql .= "	From	df_site_member m ";
-$sql .= "	Order by	m.wdate Desc ";
-$sql .= "	Limit	5 ";
+$sql = "";
+$sql .= " SELECT f_field, f_user_name, f_tel, reg_date ";
+$sql .= " FROM df_site_competition_registration ";
+$sql .= " ORDER BY idx DESC ";
+$sql .= " LIMIT 5 ";
 $row = $db->query($sql);
-
-for($i=0; $i<count($row); $i++){
+foreach($row as $r){
 ?>
-								<tr>
-									<td><?=$level_info[$row[$i]['level']]['name']?></td>
-									<td>
-										<a href="/Madmin/member/member_info.php?id=<?=$row[$i]['id']?>&page=<?=$page?>&<?=$param?>">
-											<?=$row[$i]['id']?>
-									</td>
-									<td><?=$row[$i]['name']?></td>
-									<td><?=getAge($row[$i]['birth'])?></td>
-									<td>
-										<a href="javascript:reserveList('<?=$row[$i]['id']?>','<?=$row[$i]['name']?>');">
-											<?=number_format($row[$i]['point'])?> P
-										</a>
-									</td>
-									<td><?=number_format($row[$i]['order_cnt'])?> 건</td>
-									<td><?=number_format($row[$i]['order_amt'])?> 원</td>
-									<td><?=number_format($row[$i]['visit'])?></td>
-									<td><?=date("Y.m.d H:i", strtotime($row[$i]['visit_time']))?></td>
-									<td><?=date("Y.m.d H:i", strtotime($row[$i]['wdate']))?></td>
-								</tr>
+                <tr>
+                    <td><?=htmlspecialchars($r['f_field'])?></td>
+                    <td><?=htmlspecialchars($r['f_user_name'])?></td>
+                    <td><?=htmlspecialchars($r['f_tel'])?></td>
+                    <td><?=substr($r['reg_date'],0,10)?></td>
+                </tr>
 <?
 }
 ?>
-							</tbody>
-						</table>
-					</div>
-				</div>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-				<div class="box comFLeft comMTop20 comMRight15" style="width:582px;">
-					<div class="panel">
-						<div class="title">
-							<i class="fa fa-file-text"></i>
-							<span>최근 1:1문의</span>
-						</div>
-						<table class="table" cellpadding="0" cellspacing="0">
-							<col width=""/><col width="80"/><col width="60"/><col width="60"/>
-							<thead>
-								<tr>
-									<td>제목</td>
-									<td>작성자</td>
-									<td>작성일</td>
-									<td>답변</td>
-								</tr>
-							</thead>
-							<tbody>
+<div class="box comMTop20" style="width:1180px;">
+    <div class="panel">
+        <div class="title">
+            <i class="fa fa-edit"></i>
+            <span>최근 교육 신청</span>
+        </div>
+        <table class="table" cellpadding="0" cellspacing="0">
+            <col width="150"/><col width="150"/><col width="200"/><col width="150"/>
+            <thead>
+                <tr>
+                    <td>구분</td>
+                    <td>이름</td>
+                    <td>연락처</td>
+                    <td>신청일</td>
+                </tr>
+            </thead>
+            <tbody>
 <?
-$sql  = "";
-$sql .= "	Select	b.*, ";
-$sql .= "			(Select IFNULL(COUNT(*),0) From df_site_bbs Where code=b.code And depno>0 And parno=b.idx) As re_cnt ";
-$sql .= "	From	df_site_bbs b ";
-$sql .= "	Where	b.code	= 'qna' ";
-$sql .= "	And		b.depno	= 0 ";
-$sql .= "	Order by	b.prino Desc ";
-$sql .= "	Limit	5 ";
+$sql = "";
+$sql .= " SELECT f_type, f_user_name, f_tel, reg_date ";
+$sql .= " FROM df_site_edu_registration ";
+$sql .= " ORDER BY idx DESC ";
+$sql .= " LIMIT 5 ";
 $row = $db->query($sql);
-
-for($i=0; $i<count($row); $i++){
-	$row[$i]['subject'] = mb_strimwidth($row[$i]['subject'],0,60,"..","UTF-8");
+foreach($row as $r){
 ?>
-								<tr>
-									<td class="comALeft">
-										<a href="/Madmin/bbs/bbs_view.php?code=qna&idx=<?=$row[$i]['idx']?>">
-											<?=$row[$i]['subject']?>
-										</a>
-									</td>
-									<td><?=$row[$i]['name']?></td>
-									<td><?=date("m.d",strtotime($row[$i]['wdate']))?></td>
-									<td>
-										<? if($row[$i]['re_cnt'] > 0){ ?>
-										<span style="color:#0000ff;">완료</span>
-										<? }else{ ?>
-										<span style="color:#ff0000;">대기</span>
-										<? } ?>
-									</td>
-								</tr>
+                <tr>
+                    <td><?=htmlspecialchars($r['f_type'])?></td>
+                    <td><?=htmlspecialchars($r['f_user_name'])?></td>
+                    <td><?=htmlspecialchars($r['f_tel'])?></td>
+                    <td><?=substr($r['reg_date'],0,10)?></td>
+                </tr>
 <?
 }
 ?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				
-				<div class="box comFLeft comMTop20" style="width:582px;">
-					<div class="panel">
-						<div class="title">
-							<div class="comFLeft">
-								<i class="fa fa-comments-o"></i>
-								<span>최근 샘플신청</span>
-							</div>
-							<div class="clear"></div>
-						</div>
-						<table class="table" cellpadding="0" cellspacing="0">
-							<col width="100"/><col width="100"/><col width=""/><col width="80"/><col width=""/>
-							<thead>
-								<tr>
-									<td>아이디</td>
-									<td>이름</td>
-									<td>휴대폰</td>
-									<td>발송여부</td>
-									<td>신청일</td>
-								</tr>
-							</thead>
-							<tbody>
-<?
-$sql  = "";
-$sql .= "	Select	* ";
-$sql .= "	From	df_site_sample ";
-$sql .= "	Where	1 = 1 ";
-$sql .= "	Order by	idx Desc ";
-$sql .= "	Limit	5 ";
-$row = $db->query($sql);
-
-for($i=0; $i<count($row); $i++){
-?>
-								<tr>
-									<td>
-										<a href="/Madmin/bbs/sample_view.php?idx=<?=$row[$i]['idx']?>">
-											<?=$row[$i]['user_id']?>
-										</a>
-									</td>
-									<td><?=$row[$i]['name']?></td>
-									<td><?=$row[$i]['hphone']?></td>
-									<td><?=$row[$i]['send_yn']?></td>
-									<td><?=$row[$i]['wdate']?></td>
-								</tr>
-<?
-}
-?>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="clear comMBottom50"></div>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="clear comMBottom50"></div>
 
 			</div>
 		</div>
