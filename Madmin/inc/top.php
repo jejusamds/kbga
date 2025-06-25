@@ -18,6 +18,9 @@ $gb = @str_replace("application/", "", $gb);
 $gb = @str_replace("competition/", "", $gb);
 $gb = @str_replace("material/", "", $gb);
 $gb = @str_replace("agency/", "", $gb);
+$gb = @str_replace("main_slide/", "", $gb);
+$gb = @str_replace("member/", "", $gb);
+$gb = @str_replace("registration/", "", $gb);
 
 $gb = substr("$gb", 0, strpos($gb, ".php"));
 
@@ -73,6 +76,15 @@ $menu10 = array(
 $menu11 = array(
     "member_list",
     "member_input"
+);
+
+$menu12 = array(
+    "reg_application_list",
+    "reg_application_view",
+    "reg_competition_list",
+    "reg_competition_view",
+    "reg_edu_list",
+    "reg_edu_view"
 );
 
 $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
@@ -533,6 +545,22 @@ $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
                 style="display:<? if (in_array($gb, $menu11)) { ?>block;<? } else { ?>none;<? } ?>">
                 <div class="lnb-submenu-item <? if (in_array($gb, $menu11)) { ?>on<? } ?>"
                     href="/Madmin/member/member_list.php">회원 관리</div>
+            </div>
+
+            <div class="lnb-menu <? if (in_array($gb, $menu12)) { ?>on<? } ?>">
+                <span class="left">
+                    <i class="fa fa-clipboard fa-lg"></i>
+                    <span>신청내역 조회</span>
+                </span>
+                <span class="right">
+                    <i class="fa fa-<? if (in_array($gb, $menu12)) { ?>minus<? } else { ?>plus<? } ?>"></i>
+                </span>
+            </div>
+            <div class="lnb-submenu"
+                style="display:<? if (in_array($gb, $menu12)) { ?>block;<? } else { ?>none;<? } ?>">
+                <div class="lnb-submenu-item <? if ($gb == 'reg_application_list' || $gb == 'reg_application_view') { ?>on<? } ?>" href="/Madmin/registration/reg_application_list.php">자격시험</div>
+                <div class="lnb-submenu-item <? if ($gb == 'reg_competition_list' || $gb == 'reg_competition_view') { ?>on<? } ?>" href="/Madmin/registration/reg_competition_list.php">대회신청</div>
+                <div class="lnb-submenu-item <? if ($gb == 'reg_edu_list' || $gb == 'reg_edu_view') { ?>on<? } ?>" href="/Madmin/registration/reg_edu_list.php">교육신청</div>
             </div>
 
 
