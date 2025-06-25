@@ -4,19 +4,33 @@ include $_SERVER['DOCUMENT_ROOT'] . '/Madmin/inc/top.php';
 $this_table = 'df_site_member';
 $table = 'member';
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$searchopt = $_GET['searchopt'] ?? '';
+$keyword = trim($_GET['keyword'] ?? '');
+$param = "searchopt={$searchopt}&keyword=" . urlencode($keyword);
+$addSql = '';
+$params = [];
+if ($keyword !== '') {
+    if ($searchopt === 'name') {
+        $addSql .= " AND f_user_name LIKE :kw";
+        $params['kw'] = "%{$keyword}%";
+    } elseif ($searchopt === 'mobile') {
+        $addSql .= " AND (f_mobile LIKE :kw OR f_tel LIKE :kw)";
+        $params['kw'] = "%{$keyword}%";
+    }
+}
 
 $page_set = 20;
 $block_set = 10;
 
-$total = $db->single("SELECT COUNT(*) FROM {$this_table}");
+$total = $db->single("SELECT COUNT(*) FROM {$this_table} WHERE 1 {$addSql}", $params);
 $pageCnt = (int)(($total - 1) / $page_set) + 1;
 if ($page > $pageCnt) $page = $pageCnt > 0 ? $pageCnt : 1;
 
 $list = [];
 if ($total > 0) {
     $offset = ($page - 1) * $page_set;
-    $sql = "SELECT * FROM {$this_table} ORDER BY idx DESC LIMIT {$offset}, {$page_set}";
-    $list = $db->query($sql);
+    $sql = "SELECT * FROM {$this_table} WHERE 1 {$addSql} ORDER BY idx DESC LIMIT {$offset}, {$page_set}";
+    $list = $db->query($sql, $params);
 }
 ?>
 <script>
@@ -55,6 +69,29 @@ function deleteEntries(){
 
     <div class="box comMTop20" style="width:1114px;">
         <div class="panel">
+            <form name="searchForm" action="<?= $_SERVER['PHP_SELF'] ?>" method="get">
+            <input type="hidden" name="page" value="<?= $page ?>">
+            <table class="table noMargin" cellpadding="0" cellspacing="0">
+                <tbody>
+                <tr>
+                    <td width="90" height="26" align="right" style="padding-left:5px">조건검색</td>
+                    <td class="comALeft" style="padding-left:5px">
+                        <select name="searchopt" class="form-control" style="width:auto;">
+                            <option value="name" <?= $searchopt=='name'?'selected':'' ?>>회원명</option>
+                            <option value="mobile" <?= $searchopt=='mobile'?'selected':'' ?>>연락처</option>
+                        </select>
+                        <input type="text" name="keyword" value="<?= htmlspecialchars($keyword,ENT_QUOTES) ?>" class="form-control" style="width:auto;">
+                        <button class="btn btn-info btn-sm" type="submit">검색</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
+        </div>
+    </div>
+
+    <div class="box comMTop20" style="width:1114px;">
+        <div class="panel">
             <table class="table" cellpadding="0" cellspacing="0">
                 <colgroup>
                     <col width="40" />
@@ -80,7 +117,7 @@ function deleteEntries(){
                     <tr>
                         <td><input type="checkbox" class="select_checkbox" value="<?= $row['idx'] ?>"></td>
                         <td><?= $total - ($page - 1) * $page_set - $i ?></td>
-                        <td class="comALeft"><a href="member_input.php?idx=<?= $row['idx'] ?>&page=<?= $page ?>"><?= htmlspecialchars($row['f_user_id'], ENT_QUOTES) ?></a></td>
+                        <td class="comALeft"><a href="member_input.php?idx=<?= $row['idx'] ?>&page=<?= $page ?>&<?= $param ?>"><?= htmlspecialchars($row['f_user_id'], ENT_QUOTES) ?></a></td>
                         <td><?= htmlspecialchars($row['f_user_name'], ENT_QUOTES) ?></td>
                         <td><?= $row['f_member_type'] === 'O' ? '단체' : '개인' ?></td>
                         <td><?= substr($row['wdate'],0,10) ?></td>
@@ -99,7 +136,7 @@ function deleteEntries(){
                 <button class="btn btn-danger btn-sm" type="button" onclick="deleteEntries();">삭제</button>
             </div>
             <div class="comFCenter comACenter" style="width:70%; display:inline-block;">
-                <?php print_pagelist_admin($total, $page_set, $block_set, $page, ''); ?>
+                <?php print_pagelist_admin($total, $page_set, $block_set, $page, '&' . $param); ?>
             </div>
             <div class="clear"></div>
         </div>

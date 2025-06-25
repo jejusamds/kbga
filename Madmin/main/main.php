@@ -4,20 +4,35 @@
 $level_info = level_info();
 
 
-// 오늘의 통계현황 - 총 가입회원
-$sql = " Select IFNULL(COUNT(*),0) From df_site_member ";
+// 오늘의 통계현황 - 총 신청건수
+$sql = "
+    SELECT
+        (SELECT COUNT(*) FROM df_site_competition_registration) +
+        (SELECT COUNT(*) FROM df_site_application_registration) +
+        (SELECT COUNT(*) FROM df_site_edu_registration)
+";
 $memberTotal = $db->single($sql);
-// 오늘의 통계현황 - 금일 가입회원
-$sql = " Select IFNULL(COUNT(*),0) From df_site_member Where DATE_FORMAT(wdate,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d') ";
+// 오늘의 통계현황 - 금일 신청건수
+$sql = "
+    SELECT
+        (SELECT COUNT(*) FROM df_site_competition_registration WHERE DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')) +
+        (SELECT COUNT(*) FROM df_site_application_registration WHERE DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d')) +
+        (SELECT COUNT(*) FROM df_site_edu_registration WHERE DATE_FORMAT(reg_date,'%Y-%m-%d') = DATE_FORMAT(now(),'%Y-%m-%d'))
+";
 $memberToday = $db->single($sql);
-// 오늘의 통계현황 - 10일간 가입회원
+// 오늘의 통계현황 - 10일간 신청건수
 $memberDay = "";
 for($i=9; $i>=0; $i--){
-	$selectedDate = date("Y-m-d", strtotime("-".$i." days"));
-	$sql = " Select IFNULL(COUNT(*),0) From df_site_member Where DATE_FORMAT(wdate,'%Y-%m-%d') = '" .$selectedDate. "' ";
-	$cnt = $db->single($sql);
-	if($memberDay != "") $memberDay .= ",";
-	$memberDay .= $cnt;
+        $selectedDate = date("Y-m-d", strtotime("-".$i." days"));
+        $sql = "
+            SELECT
+                (SELECT COUNT(*) FROM df_site_competition_registration WHERE DATE_FORMAT(reg_date,'%Y-%m-%d') = '".$selectedDate."') +
+                (SELECT COUNT(*) FROM df_site_application_registration WHERE DATE_FORMAT(reg_date,'%Y-%m-%d') = '".$selectedDate."') +
+                (SELECT COUNT(*) FROM df_site_edu_registration WHERE DATE_FORMAT(reg_date,'%Y-%m-%d') = '".$selectedDate."')
+        ";
+        $cnt = $db->single($sql);
+        if($memberDay != "") $memberDay .= ",";
+        $memberDay .= $cnt;
 }
 
 
