@@ -39,6 +39,20 @@ function deleteEntries(){
             <li class="active">회원 목록</li>
         </ul>
     </div>
+
+    <table class="comMTop10" cellpadding="0" cellspacing="0" style="width:1114px;">
+        <tr>
+            <td width="5"></td>
+            <td height="30" colspan="5" align="left" class="s01">총 <b>
+                    <font color="fc3d32"><?= number_format($total) ?></font>
+                </b> 명의 회원</td>
+            <td colspan="6" align="right">
+                <!-- <button class="btn btn-success btn-xs" type="button" onclick="location.href='inquiry_<?=$inquiry_gubun?>_excel.php?<?= $param ?>';">엑셀파일저장</button> -->
+            </td>
+            <td width="5"></td>
+        </tr>
+    </table>
+
     <div class="box comMTop20" style="width:1114px;">
         <div class="panel">
             <table class="table" cellpadding="0" cellspacing="0">
