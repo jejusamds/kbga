@@ -187,22 +187,48 @@ if ($idx) {
     <div class="box comMTop20" style="width:978px;">
         <div class="panel">
             <div class="title"><span>신청 내역</span></div>
+
+            <h4 style="margin-top:10px;">자격증</h4>
             <table class="table" cellpadding="0" cellspacing="0">
                 <thead>
-                    <tr><th>구분</th><th>번호</th><th>등록일</th></tr>
+                    <tr><th>번호</th><th>등록일</th></tr>
                 </thead>
                 <tbody>
                     <?php foreach ($app_list as $a): ?>
-                    <tr><td>자격증</td><td><?= $a['idx'] ?></td><td><?= $a['wdate'] ?? $a['reg_date'] ?></td></tr>
+                    <tr><td><?= $a['idx'] ?></td><td><?= $a['wdate'] ?? $a['reg_date'] ?></td></tr>
                     <?php endforeach; ?>
+                    <?php if(empty($app_list)): ?>
+                    <tr><td colspan="2" class="comACenter">신청 내역이 없습니다.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top:20px;">대회</h4>
+            <table class="table" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr><th>번호</th><th>등록일</th></tr>
+                </thead>
+                <tbody>
                     <?php foreach ($comp_list as $c): ?>
-                    <tr><td>대회</td><td><?= $c['idx'] ?></td><td><?= $c['reg_date'] ?? $c['wdate'] ?></td></tr>
+                    <tr><td><?= $c['idx'] ?></td><td><?= $c['reg_date'] ?? $c['wdate'] ?></td></tr>
                     <?php endforeach; ?>
+                    <?php if(empty($comp_list)): ?>
+                    <tr><td colspan="2" class="comACenter">신청 내역이 없습니다.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+
+            <h4 style="margin-top:20px;">교육</h4>
+            <table class="table" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr><th>번호</th><th>등록일</th></tr>
+                </thead>
+                <tbody>
                     <?php foreach ($edu_list as $e): ?>
-                    <tr><td>교육</td><td><?= $e['idx'] ?></td><td><?= $e['reg_date'] ?? $e['wdate'] ?></td></tr>
+                    <tr><td><?= $e['idx'] ?></td><td><?= $e['reg_date'] ?? $e['wdate'] ?></td></tr>
                     <?php endforeach; ?>
-                    <?php if(empty($app_list)&&empty($comp_list)&&empty($edu_list)): ?>
-                    <tr><td colspan="3" class="comACenter">신청 내역이 없습니다.</td></tr>
+                    <?php if(empty($edu_list)): ?>
+                    <tr><td colspan="2" class="comACenter">신청 내역이 없습니다.</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
