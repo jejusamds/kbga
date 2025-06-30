@@ -37,6 +37,9 @@ function printSchedule(array $row)
     if (!empty($row['f_year'])) {
         return printValue(sprintf('%s년 %s회차 %s', $row['f_year'], $row['f_round'], $row['f_type']));
     }
+    if ((int)$row['f_schedule_idx'] === 0) {
+        return '상시접수';
+    }
     return printValue($row['f_schedule_idx']);
 }
 
