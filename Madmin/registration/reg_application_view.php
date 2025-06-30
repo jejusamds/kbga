@@ -146,6 +146,10 @@ $category_map = [
                 <button class="btn btn-primary btn-sm" type="button"
                     onclick="location.href='application_list.php?page=<?= $page ?>';">목록</button>
             </div>
+            <div class="comFLeft comACenter" style="width:10%;">
+                <button class="btn btn-success btn-sm" type="button"
+                    onclick="location.href='reg_application_view_excel.php?idx=<?= $idx ?>';">엑셀파일저장</button>
+            </div>
             <div class="clear"></div>
         </div>
     </div>
