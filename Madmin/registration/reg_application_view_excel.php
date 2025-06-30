@@ -4,8 +4,11 @@ include "../../inc/util_lib.inc";
 
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
 
-$sql = "SELECT t1.*, t2.f_item_name FROM df_site_application_registration t1
+$sql = "SELECT t1.*, t2.f_item_name,
+        s.f_year, s.f_round, s.f_type
+        FROM df_site_application_registration t1
         LEFT JOIN df_site_qualification_item t2 ON t1.f_item_idx = t2.idx
+        LEFT JOIN df_site_application s ON t1.f_schedule_idx = s.idx
         WHERE t1.idx = '{$idx}'";
 $row = $db->row($sql);
 if (!$row) {
@@ -27,6 +30,14 @@ function printType($val)
         default:
             return safeAdminOutput($val);
     }
+}
+
+function printSchedule(array $row)
+{
+    if (!empty($row['f_year'])) {
+        return printValue(sprintf('%s년 %s회차 %s', $row['f_year'], $row['f_round'], $row['f_type']));
+    }
+    return printValue($row['f_schedule_idx']);
 }
 
 $category_map = [
@@ -51,7 +62,7 @@ $rows = [
     '신청자구분'     => printType($row['f_applicant_type']),
     '자격분야'       => printValue($category_map[$row['f_category']]),
     '자격종목'       => printValue($row['f_item_name']),
-    '시험일정'       => printValue($row['f_schedule_idx']),
+    '시험일정'       => printSchedule($row),
     '이름'           => printValue($row['f_user_name']),
     '영문이름'       => printValue($row['f_user_name_en']),
     '연락처'         => printValue($row['f_tel']),

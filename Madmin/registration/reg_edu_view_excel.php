@@ -4,7 +4,10 @@ include "../../inc/util_lib.inc";
 
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
 
-$sql = "SELECT * FROM df_site_edu_registration WHERE idx = '{$idx}'";
+$sql = "SELECT t1.*, b.subject
+        FROM df_site_edu_registration t1
+        LEFT JOIN df_site_bbs b ON t1.f_news_idx = b.idx
+        WHERE t1.idx = '{$idx}'";
 $row = $db->row($sql);
 if (!$row) {
     die('잘못된 접근입니다.');
@@ -37,7 +40,7 @@ echo "<table border='1'>";
 
 $rows = [
     '구분'           => printType($row['f_type']),
-    '교육구분'       => printValue($row['f_news_idx']),
+    '교육구분'       => printValue($row['subject']),
     '이름/기관명'    => printValue($row['f_user_name']),
     '영문이름/담당자' => printValue($row['f_user_name_en']),
     '성별'           => printValue($row['f_gender']),
