@@ -4,8 +4,11 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Madmin/inc/top.php";
 $idx = isset($_GET['idx']) ? (int) $_GET['idx'] : 0;
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
-$sql = "SELECT t1.*, t2.f_item_name FROM df_site_application_registration t1
+$sql = "SELECT t1.*, t2.f_item_name,
+               s.f_year, s.f_round, s.f_type
+        FROM df_site_application_registration t1
         LEFT JOIN df_site_qualification_item t2 ON t1.f_item_idx = t2.idx
+        LEFT JOIN df_site_application s ON t1.f_schedule_idx = s.idx
         WHERE t1.idx = '{$idx}'";
 
 $row = $db->row($sql);
@@ -30,6 +33,14 @@ function printType($val)
         default:
             return safeAdminOutput($val);
     }
+}
+
+function printSchedule(array $row)
+{
+    if (!empty($row['f_year'])) {
+        return printValue(sprintf('%s년 %s회차 %s', $row['f_year'], $row['f_round'], $row['f_type']));
+    }
+    return printValue($row['f_schedule_idx']);
 }
 
 $category_map = [
@@ -67,7 +78,7 @@ $category_map = [
                 </tr>
                 <tr>
                     <td style="width:200px;">시험일정</td>
-                    <td><?= printValue($row['f_schedule_idx']) ?></td>
+                    <td><?= printSchedule($row) ?></td>
                 </tr>
                 <tr>
                     <td style="width:200px;">이름</td>

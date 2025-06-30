@@ -4,7 +4,10 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Madmin/inc/top.php";
 $idx = isset($_GET['idx']) ? (int) $_GET['idx'] : 0;
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
-$sql = "SELECT * FROM df_site_competition_registration WHERE idx = '{$idx}'";
+$sql = "SELECT t1.*, c.f_title
+        FROM df_site_competition_registration t1
+        LEFT JOIN df_site_competition c ON t1.f_competition_idx = c.idx
+        WHERE t1.idx = '{$idx}'";
 $row = $db->row($sql);
 if (!$row) {
     error('잘못된 접근입니다.', 'competition_list.php');
@@ -46,7 +49,7 @@ function printType($val)
                 </tr>
                 <tr>
                     <td style="width:200px;">대회구분</td>
-                    <td><?= printValue($row['f_competition_idx']) ?></td>
+                    <td><?= printValue($row['f_title']) ?></td>
                 </tr>
                 <tr>
                     <td style="width:200px;">참가부문</td>

@@ -4,7 +4,10 @@ include "../../inc/util_lib.inc";
 
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
 
-$sql = "SELECT * FROM df_site_competition_registration WHERE idx = '{$idx}'";
+$sql = "SELECT t1.*, c.f_title
+        FROM df_site_competition_registration t1
+        LEFT JOIN df_site_competition c ON t1.f_competition_idx = c.idx
+        WHERE t1.idx = '{$idx}'";
 $row = $db->row($sql);
 if (!$row) {
     die('잘못된 접근입니다.');
@@ -37,7 +40,7 @@ echo "<table border='1'>";
 
 $rows = [
     '신청자구분' => printType($row['f_applicant_type']),
-    '대회구분'   => printValue($row['f_competition_idx']),
+    '대회구분'   => printValue($row['f_title']),
     '참가부문'   => printValue($row['f_part']),
     '종목분야'   => printValue($row['f_field']),
     '참가종목'   => printValue($row['f_event']),
