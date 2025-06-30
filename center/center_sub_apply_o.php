@@ -825,11 +825,16 @@ unset($sc);
 
         scheduleSelect.innerHTML = '';
         if (schedulePlaceholder) scheduleSelect.appendChild(schedulePlaceholder);
-        scheduleOptions.forEach(opt => {
-            if (!selected || opt.dataset.category === selected || opt.dataset.category === '') {
-                scheduleSelect.appendChild(opt);
-            }
-        });
+        if (selected) {
+            scheduleOptions.forEach(opt => {
+                if (opt.dataset.category === selected || opt.dataset.category === '') {
+                    scheduleSelect.appendChild(opt);
+                }
+            });
+            scheduleSelect.disabled = false;
+        } else {
+            scheduleSelect.disabled = true;
+        }
         scheduleSelect.value = '';
     }
 
