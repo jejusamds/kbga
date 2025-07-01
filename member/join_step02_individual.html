@@ -764,8 +764,14 @@
 				$(".email_address_input").val(val).attr("readonly",true);
 			}
 		}
-	</script>
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                new FormSubmitter('sign_up_frm');
+            });
+        </script>
 
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].'/include/footer.html'; 
+        include $_SERVER['DOCUMENT_ROOT'].'/include/footer.html';
 ?>	
