@@ -12,6 +12,7 @@ list($m1, $m2, $m3) = explode('-', $row['f_mobile']);
 
 list($o1, $o2, $o3) = explode('-', $row['f_org_phone']);
 list($c1, $c2, $c3) = explode('-', $row['f_contact_phone']);
+list($emailId, $emailDomain) = explode('@', $row['f_email']);
 ?>
 
 <div id="container">
@@ -707,7 +708,7 @@ list($c1, $c2, $c3) = explode('-', $row['f_contact_phone']);
 																									<tbody>
 																										<tr>
 																											<td align="left" class="input_td">
-																												<input type="text" name="" value="" class="input" />
+                                                                               <input type="text" name="f_email_id" value="<?= htmlspecialchars($emailId, ENT_QUOTES) ?>" class="input" />
 																											</td>
 																											<td align="center" class="text_td">
 																												<span>
@@ -715,7 +716,7 @@ list($c1, $c2, $c3) = explode('-', $row['f_contact_phone']);
 																												</span>
 																											</td>
 																											<td align="left" class="input_td">
-																												<input type="text" name="email_add" value="" class="input email_address_input" />
+                                                                               <input type="text" name="f_email_domain" value="<?= htmlspecialchars($emailDomain, ENT_QUOTES) ?>" class="input email_address_input" />
 																											</td>
 																										</tr>
 																									</tbody>
@@ -1392,14 +1393,39 @@ list($c1, $c2, $c3) = explode('-', $row['f_contact_phone']);
                                                                                         <div>
                                                                                 </td>
                                                                                 <td valign="top" align="left" class="info_td">
-                                                                                    <div class="email_con">
-                                                                                        <div class="input_con">
-                                                                                            <input type="text" id="f_email"
-                                                                                                name="f_email" class="input"
-                                                                                                data-required="y"
-                                                                                                data-label="이메일을"
-                                                                                                value="<?= htmlspecialchars($row['f_email'], ENT_QUOTES) ?>" />
-                                                                                        </div>
+            <div class="email_con">
+                <div class="input_con">
+                    <ul>
+                        <li>
+                            <table cellpadding="0" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td align="left" class="input_td">
+                                            <input type="text" name="f_email_id" value="<?= htmlspecialchars($emailId, ENT_QUOTES) ?>" class="input" />
+                                        </td>
+                                        <td align="center" class="text_td"><span>@</span></td>
+                                        <td align="left" class="input_td">
+                                            <input type="text" name="f_email_domain" value="<?= htmlspecialchars($emailDomain, ENT_QUOTES) ?>" class="input email_address_input" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </li>
+                        <li>
+                            <select class="select email_select" onchange="email_address_select(this.value)">
+                                <option value="">직접입력</option>
+                                <option value="naver.com">naver.com</option>
+                                <option value="hanmail.net">hanmail.net</option>
+                                <option value="gmail.com">gmail.com</option>
+                                <option value="nate.com">nate.com</option>
+                                <option value="daum.net">daum.net</option>
+                                <option value="hotmail.com">hotmail.com</option>
+                                <option value="yahoo.co.kr">yahoo.co.kr</option>
+                                <option value="lycos.co.kr">lycos.co.kr</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
 
                                                                                         <div class="intro_con">
                                                                                             <table cellpadding="0"

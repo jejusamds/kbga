@@ -34,6 +34,11 @@ if (empty($_POST['mode']) || !in_array($_POST['mode'], $approved, true)) {
 
 $filtered = array_map('auto_filter_input', $_POST);
 
+// 이메일 분할 입력 지원
+if (empty($filtered['f_email']) && !empty($filtered['f_email_id']) && !empty($filtered['f_email_domain'])) {
+    $filtered['f_email'] = $filtered['f_email_id'] . '@' . $filtered['f_email_domain'];
+}
+
 if ($filtered['mode'] === 'reset_csrf_token') {
     unset($_SESSION['csrf_token']);
     return_json(['result' => 'ok', 'msg' => '토큰이 재발급되었습니다.']);

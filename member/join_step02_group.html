@@ -363,64 +363,6 @@
 													</tbody>
 												</table>
 											</li>
-											<li>
-												<table cellpadding="0" cellspacing="0">
-													<tbody>
-														<tr>
-															<td valign="top" align="left" class="title_td">
-																<span>
-																	이메일
-																</span>
-
-																<div class="bar"><div>
-															</td>
-															<td valign="top" align="left" class="info_td">
-																<div class="email_con">
-																	<div class="input_con">
-                                                                        <input type="text" name="f_email" id="f_email" data-required="y" data-label="이메일을" placeholder="이메일을 적어주세요." class="input" />
-																	</div>
-
-																	<div class="intro_con">
-																		<table cellpadding="0" cellspacing="0">
-																			<tbody>
-																				<tr>
-																					<td align="left" class="text_td">
-																						<span>
-																							*이메일 수신 동의
-																						</span>
-																					</td>
-																					<td align="left" class="check_td">
-																						<ul>
-																							<li>
-																								<label class="radio_label">
-                                                                                                    <input type="radio" name="f_email_consent" id="f_email_consent_1" value="Y" checked="checked" />
-																									<div class="check_icon"></div>
-																									<span>
-																										동의함
-																									</span>
-																								</label>
-																							</li>
-																							<li>
-																								<label class="radio_label">
-                                                                                                    <input type="radio" name="f_email_consent" id="f_email_consent_2" value="N" />
-																									<div class="check_icon"></div>
-																									<span>
-																										동의안함
-																									</span>
-																								</label>
-																							</li>
-																						</ul>
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
-																</div>
-															</td>
-														</tr>
-													</tbody>
-												</table>
-											</li>
 										</ul>
 									</div>
 								</div>
@@ -456,13 +398,14 @@
         }
     </script>
 
-	<script type="text/javascript" language="javascript">
-		// 숫자만 입력
-		function onlyNumber(obj) {
-			$(obj).keyup(function(){
-				$(this).val($(this).val().replace(/[^0-9]/g,""));
-			}); 
-		}
+        <script type="text/javascript" language="javascript">
+                // 숫자만 입력
+                function onlyNumber(obj) {
+                        $(obj).keyup(function(){
+                                $(this).val($(this).val().replace(/[^0-9]/g,""));
+                        });
+                }
+
         </script>
 
         <script>

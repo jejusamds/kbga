@@ -94,6 +94,7 @@ class FormSubmitter {
         }
     }
 
+
     // ■ 아이디 중복검사 메소드
     async checkDuplicateId() {
         const el = this.form.querySelector('#f_user_id');
@@ -129,6 +130,7 @@ class FormSubmitter {
         if (!this.validator.validateForm()) {
             return false;
         }
+
 
         try {
             const response = await this.sendData();
