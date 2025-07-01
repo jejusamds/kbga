@@ -8,7 +8,7 @@
         $user_id = $_SESSION['kbga_user_id'];
 
         $exam_rows = $db->query(
-            "SELECT r.idx, i.f_item_name, r.wdate as reg_date
+            "SELECT r.idx, r.f_applicant_status, i.f_item_name, r.wdate as reg_date
                FROM df_site_application_registration r
                LEFT JOIN df_site_qualification_item i ON r.f_item_idx = i.idx
               WHERE r.f_user_id = :uid AND r.f_application_type = 'exam'
@@ -17,7 +17,7 @@
         );
 
         $cert_rows = $db->query(
-            "SELECT r.idx, i.f_item_name, r.wdate as reg_date
+            "SELECT r.idx, r.f_applicant_status, i.f_item_name, r.wdate as reg_date
                FROM df_site_application_registration r
                LEFT JOIN df_site_qualification_item i ON r.f_item_idx = i.idx
               WHERE r.f_user_id = :uid AND r.f_application_type = 'cert'
@@ -33,6 +33,20 @@
               ORDER BY r.idx DESC",
             ['uid' => $user_id]
         );
+
+        function printStatus($val)
+        {
+            switch ((int) $val) {
+                case 1:
+                    return '접수완료';
+                case 2:
+                    return '발급완료';
+                case 3:
+                    return '발급보류';
+                default:
+                    return '';
+            }
+        }
 ?>
 
 <div id="container">
@@ -95,7 +109,7 @@
                                                                         <td align="center"><span>
                                                                                 <?= htmlspecialchars($row['f_item_name'], ENT_QUOTES) ?>
                                                                             </span></td>
-                                                                        <td align="center"><span>접수완료</span></td>
+                                                                        <td align="center"><span><?= printStatus($row['f_applicant_status']) ?></span></td>
                                                                         <td align="center"><span>
                                                                                 <?= date('Y.m.d', strtotime($row['reg_date'])) ?>
                                                                             </span></td>
@@ -145,7 +159,7 @@
                                                                         <td align="center"><span>
                                                                                 <?= htmlspecialchars($row['f_item_name'], ENT_QUOTES) ?>
                                                                             </span></td>
-                                                                        <td align="center"><span>접수완료</span></td>
+                                                                        <td align="center"><span><?= printStatus($row['f_applicant_status']) ?></span></td>
                                                                         <td align="center"><span>
                                                                                 <?= date('Y.m.d', strtotime($row['reg_date'])) ?>
                                                                             </span></td>
