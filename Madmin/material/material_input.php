@@ -36,6 +36,15 @@ if ($idx) {
     $mode = 'update';
 }
 
+$subjects = $db->query(
+    "SELECT f_item_name FROM df_site_qualification_item WHERE f_category = :cat ORDER BY f_item_name ASC",
+    ['cat' => $category]
+);
+$subject_names = array_column($subjects, 'f_item_name');
+if ($row['f_subject'] && !in_array($row['f_subject'], $subject_names)) {
+    $subjects[] = ['f_item_name' => $row['f_subject']];
+}
+
 $category_map = [
     'makeup' => '메이크업',
     'nail' => '네일',
@@ -72,9 +81,17 @@ $category_map = [
                     </tr>
                     <tr>
                         <th><label for="f_subject">과목</label></th>
-                        <td class="comALeft"><input type="text" name="f_subject" id="f_subject"
-                                value="<?= htmlspecialchars($row['f_subject'], ENT_QUOTES) ?>" class="form-control"
-                                style="width:60%;"></td>
+                        <td class="comALeft">
+                            <select name="f_subject" id="f_subject" class="form-control" style="width:60%;">
+                                <option value="">과목 선택</option>
+                                <?php foreach ($subjects as $s): ?>
+                                    <option value="<?= htmlspecialchars($s['f_item_name']) ?>"
+                                        <?= $s['f_item_name'] == $row['f_subject'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($s['f_item_name']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="f_type">구분</label></th>
