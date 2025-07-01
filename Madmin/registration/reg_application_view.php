@@ -55,6 +55,11 @@ $category_map = [
     'foreign' => '해외인증',
     'teacher' => '강사인증',
 ];
+
+$application_type_map = [
+    'exam' => '시헙 접수',
+    'cert' => '자격증 발급',
+];
 ?>
 <div class="pageWrap">
     <div class="page-heading">
@@ -121,7 +126,7 @@ $category_map = [
                 </tr>
                 <tr>
                     <td style="width:200px;">신청구분</td>
-                    <td><?= printValue($row['f_application_type']) ?></td>
+                    <td><?= printValue($application_type_map[$row['f_application_type']]) ?></td>
                 </tr>
                 <tr>
                     <td style="width:200px;">발급희망 여부</td>
@@ -158,7 +163,7 @@ $category_map = [
         <div class="comPTop20 comPBottom20">
             <div class="comFLeft comACenter" style="width:10%;">
                 <button class="btn btn-primary btn-sm" type="button"
-                    onclick="location.href='application_list.php?page=<?= $page ?>';">목록</button>
+                    onclick="location.href='reg_application_list.php?page=<?= $page ?>';">목록</button>
             </div>
             <div class="comFRight comACenter" style="width:10%;">
                 <button class="btn btn-success btn-sm" type="button"
