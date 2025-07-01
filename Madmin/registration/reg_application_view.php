@@ -156,6 +156,21 @@ $application_type_map = [
                     <td style="width:200px;">등록일</td>
                     <td><?= printValue($row['reg_date']) ?></td>
                 </tr>
+                <tr>
+                    <td style="width:200px;">신청결과</td>
+                    <td>
+                        <form method="post" action="reg_application_status_update.php" style="display:inline-block;">
+                            <input type="hidden" name="idx" value="<?= $idx ?>">
+                            <input type="hidden" name="page" value="<?= $page ?>">
+                            <select name="f_applicant_status" class="form-control" style="width:auto;display:inline-block;">
+                                <option value="1" <?= $row['f_applicant_status'] == 1 ? 'selected' : '' ?>>접수완료</option>
+                                <option value="2" <?= $row['f_applicant_status'] == 2 ? 'selected' : '' ?>>발급완료</option>
+                                <option value="3" <?= $row['f_applicant_status'] == 3 ? 'selected' : '' ?>>발급보류</option>
+                            </select>
+                            <button type="submit" class="btn btn-info btn-sm" style="margin-left:5px;">변경</button>
+                        </form>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
