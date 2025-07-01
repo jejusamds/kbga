@@ -109,8 +109,7 @@ $subConClass = 'center_sub0' . substr($sMenu, -1);
                                     <div class="data_notice_div">
                                         <div class="title_con">
                                             <div class="bar"></div>
-                                            <span>뷰티 <br />
-                                                디자인디렉터</span>
+                                            <span><?=$row['f_subject']?></span>
                                         </div>
                                         <div class="list_con">
                                             <ul>
