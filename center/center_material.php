@@ -105,7 +105,7 @@ $subConClass = 'center_sub0' . substr($sMenu, -1);
                     <ul>
                         <?php if ($list):
                             foreach ($list as $row): ?>
-                                <li>
+                                <li class="center_material_subject_li">
                                     <div class="data_notice_div">
                                         <div class="title_con">
                                             <div class="bar"></div>
@@ -113,7 +113,7 @@ $subConClass = 'center_sub0' . substr($sMenu, -1);
                                         </div>
                                         <div class="list_con">
                                             <ul>
-                                                <li>
+                                                <li class="center_material_items_li">
                                                     <div class="list_div">
                                                         <table cellpadding="0" cellspacing="0">
                                                             <tbody>
