@@ -14,51 +14,36 @@ if ($searchQuery !== '') {
     $like = "%{$searchQuery}%";
     switch ($searchField) {
         case 'subject':
-            $searchSql .= ' AND f_subject LIKE :search';
+            $searchSql .= ' AND qi.f_item_name LIKE :search';
             $params['search'] = $like;
             break;
         case 'description':
-            $searchSql .= ' AND f_description LIKE :search';
+            $searchSql .= ' AND m.f_description LIKE :search';
             $params['search'] = $like;
             break;
         default:
-            $searchSql .= ' AND (f_subject LIKE :search OR f_description LIKE :search2)';
+            $searchSql .= ' AND (qi.f_item_name LIKE :search OR m.f_description LIKE :search2)';
             $params['search'] = $like;
             $params['search2'] = $like;
             break;
     }
 }
 
-$page = (isset($_GET['page']) && ctype_digit($_GET['page']) && $_GET['page'] > 0) ? (int) $_GET['page'] : 1;
-$perPage = 10;
-$offset = ($page - 1) * $perPage;
-
-$total = $db->single("SELECT COUNT(DISTINCT f_subject) FROM df_site_material WHERE f_category=:cat{$searchSql}", $params);
-$totalPages = (int) ceil($total / $perPage);
-
-$subjects = $db->query(
-    "SELECT DISTINCT f_subject FROM df_site_material WHERE f_category=:cat {$searchSql} ORDER BY f_subject ASC LIMIT :offset, :perPage",
-    array_merge($params, ['offset' => $offset, 'perPage' => $perPage])
+$rows = $db->query(
+    "SELECT m.*, qi.f_item_name FROM df_site_material m LEFT JOIN df_site_qualification_item qi ON m.f_subject_idx = qi.idx WHERE m.f_category=:cat {$searchSql} ORDER BY qi.f_item_name ASC, m.idx DESC",
+    $params
 );
 
 $grouped = [];
-foreach ($subjects as $sub) {
-    $items = $db->query(
-        "SELECT * FROM df_site_material WHERE f_category=:cat AND f_subject=:sub {$searchSql} ORDER BY idx DESC",
-        array_merge($params, ['sub' => $sub['f_subject']])
-    );
-    $grouped[$sub['f_subject']] = $items;
+foreach ($rows as $row) {
+    $key = (int)$row['f_subject_idx'];
+    $name = $row['f_item_name'] ?: $row['f_subject'];
+    if (!isset($grouped[$key])) {
+        $grouped[$key] = ['name' => $name, 'items' => []];
+    }
+    $grouped[$key]['items'][] = $row;
 }
 
-$queryExtra = '&category=' . $category;
-if ($searchQuery !== '') {
-    $queryExtra = '&search_field=' . urlencode($searchField) . '&search_query=' . urlencode($searchQuery);
-}
-
-$firstPage = 1;
-$lastPage = $totalPages;
-$prevPage = $page > 1 ? $page - 1 : $firstPage;
-$nextPage = $page < $lastPage ? $page + 1 : $lastPage;
 $subConClass = 'center_sub0' . substr($sMenu, -1);
 ?>
 <div id="container">
@@ -112,16 +97,16 @@ $subConClass = 'center_sub0' . substr($sMenu, -1);
                 <div class="data_notice_con">
                     <ul>
                         <?php if ($grouped): ?>
-                            <?php foreach ($grouped as $subject => $items): ?>
+                            <?php foreach ($grouped as $g): ?>
                                 <li class="center_material_subject_li">
                                     <div class="data_notice_div">
                                         <div class="title_con">
                                             <div class="bar"></div>
-                                            <span><?= htmlspecialchars($subject) ?></span>
+                                            <span><?= htmlspecialchars($g['name']) ?></span>
                                         </div>
                                         <div class="list_con">
                                             <ul>
-                                                <?php foreach ($items as $row): ?>
+                                                <?php foreach ($g['items'] as $row): ?>
                                                     <li class="center_material_items_li">
                                                         <div class="list_div">
                                                             <table cellpadding="0" cellspacing="0">
@@ -156,33 +141,6 @@ $subConClass = 'center_sub0' . substr($sMenu, -1);
                             <li class="none_li"><span>등록된 게시글이 없습니다.</span></li>
                         <?php endif; ?>
                     </ul>
-                </div>
-                <div class="number_list_con">
-                    <div class="contents_con">
-                        <div class="btn_con">
-                            <a href="?page=<?= $firstPage . $queryExtra ?>">
-                                <img src="/img/sub/number_list_prev_btn2.svg" alt="번호목록 처음" class="fx" />
-                            </a>
-                            <a href="?page=<?= $prevPage . $queryExtra ?>">
-                                <img src="/img/sub/number_list_prev_btn.svg" alt="번호목록 이전" class="fx" />
-                            </a>
-                        </div>
-                        <div class="list_con">
-                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                                <a href="?page=<?= $i . $queryExtra ?>"
-                                    class="list_a<?= $page === $i ? ' on' : '' ?>"><?= str_pad($i, 2, '0', STR_PAD_LEFT) ?></a>
-                            <?php endfor; ?>
-                            <div class="bar"></div>
-                        </div>
-                        <div class="btn_con">
-                            <a href="?page=<?= $nextPage . $queryExtra ?>">
-                                <img src="/img/sub/number_list_next_btn.svg" alt="번호목록 다음" class="fx" />
-                            </a>
-                            <a href="?page=<?= $lastPage . $queryExtra ?>">
-                                <img src="/img/sub/number_list_next_btn2.svg" alt="번호목록 끝" class="fx" />
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
