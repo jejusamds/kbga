@@ -19,6 +19,7 @@ $param = http_build_query($paramArr);
 
 $row = [
     'f_category' => $category,
+    'f_subject_idx' => 0,
     'f_subject' => '',
     'f_type' => '필기',
     'f_level' => '',
@@ -37,12 +38,12 @@ if ($idx) {
 }
 
 $subjects = $db->query(
-    "SELECT f_item_name FROM df_site_qualification_item WHERE f_category = :cat ORDER BY f_item_name ASC",
+    "SELECT idx, f_item_name FROM df_site_qualification_item WHERE f_category = :cat ORDER BY f_item_name ASC",
     ['cat' => $category]
 );
-$subject_names = array_column($subjects, 'f_item_name');
-if ($row['f_subject'] && !in_array($row['f_subject'], $subject_names)) {
-    $subjects[] = ['f_item_name' => $row['f_subject']];
+$subject_map = array_column($subjects, 'f_item_name', 'idx');
+if ($row['f_subject_idx'] && !isset($subject_map[$row['f_subject_idx']]) && $row['f_subject']) {
+    $subjects[] = ['idx' => $row['f_subject_idx'], 'f_item_name' => $row['f_subject']];
 }
 
 $category_map = [
@@ -80,17 +81,17 @@ $category_map = [
                         <td class="comALeft"><?= $category_map[$category] ?></td>
                     </tr>
                     <tr>
-                        <th><label for="f_subject">과목</label></th>
+                        <th><label for="f_subject_idx">과목</label></th>
                         <td class="comALeft">
-                            <select name="f_subject" id="f_subject" class="form-control" style="width:60%;">
+                            <select name="f_subject_idx" id="f_subject_idx" class="form-control" style="width:60%;">
                                 <option value="">과목 선택</option>
                                 <?php foreach ($subjects as $s): ?>
-                                    <option value="<?= htmlspecialchars($s['f_item_name']) ?>"
-                                        <?= $s['f_item_name'] == $row['f_subject'] ? 'selected' : '' ?>>
+                                    <option value="<?= $s['idx'] ?>" <?= (int)$s['idx'] === (int)$row['f_subject_idx'] ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($s['f_item_name']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
+                            <input type="hidden" name="f_subject" id="f_subject" value="<?= htmlspecialchars($row['f_subject']) ?>">
                         </td>
                     </tr>
                     <tr>
@@ -146,6 +147,21 @@ $category_map = [
         </div>
     </form>
 </div>
+<script>
+    (function(){
+        var select = document.getElementById('f_subject_idx');
+        var hidden = document.getElementById('f_subject');
+        function updateName(){
+            if(!select) return;
+            var txt = select.options[select.selectedIndex] ? select.options[select.selectedIndex].text : '';
+            if(hidden) hidden.value = txt;
+        }
+        if(select){
+            select.addEventListener('change', updateName);
+            updateName();
+        }
+    })();
+</script>
 </body>
 
 </html>

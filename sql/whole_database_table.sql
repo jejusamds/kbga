@@ -459,6 +459,7 @@ CREATE TABLE IF NOT EXISTS `df_site_main_slide` (
 CREATE TABLE IF NOT EXISTS `df_site_material` (
   `idx` int NOT NULL AUTO_INCREMENT,
   `f_category` varchar(20) NOT NULL,
+  `f_subject_idx` int DEFAULT NULL,
   `f_subject` varchar(255) NOT NULL,
   `f_type` varchar(10) NOT NULL,
   `f_level` varchar(50) NOT NULL,
