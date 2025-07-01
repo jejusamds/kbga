@@ -33,14 +33,22 @@ $page = (isset($_GET['page']) && ctype_digit($_GET['page']) && $_GET['page'] > 0
 $perPage = 10;
 $offset = ($page - 1) * $perPage;
 
-$total = $db->single("SELECT COUNT(*) FROM df_site_material WHERE f_category=:cat{$searchSql}", $params);
+$total = $db->single("SELECT COUNT(DISTINCT f_subject) FROM df_site_material WHERE f_category=:cat{$searchSql}", $params);
 $totalPages = (int) ceil($total / $perPage);
 
-
-$list = $db->query(
-    "SELECT * FROM df_site_material WHERE f_category = :cat {$searchSql} ORDER BY idx DESC LIMIT :offset, :perPage",
+$subjects = $db->query(
+    "SELECT DISTINCT f_subject FROM df_site_material WHERE f_category=:cat {$searchSql} ORDER BY f_subject ASC LIMIT :offset, :perPage",
     array_merge($params, ['offset' => $offset, 'perPage' => $perPage])
 );
+
+$grouped = [];
+foreach ($subjects as $sub) {
+    $items = $db->query(
+        "SELECT * FROM df_site_material WHERE f_category=:cat AND f_subject=:sub {$searchSql} ORDER BY idx DESC",
+        array_merge($params, ['sub' => $sub['f_subject']])
+    );
+    $grouped[$sub['f_subject']] = $items;
+}
 
 $queryExtra = '&category=' . $category;
 if ($searchQuery !== '') {
@@ -103,46 +111,48 @@ $subConClass = 'center_sub0' . substr($sMenu, -1);
                 </div>
                 <div class="data_notice_con">
                     <ul>
-                        <?php if ($list):
-                            foreach ($list as $row): ?>
+                        <?php if ($grouped): ?>
+                            <?php foreach ($grouped as $subject => $items): ?>
                                 <li class="center_material_subject_li">
                                     <div class="data_notice_div">
                                         <div class="title_con">
                                             <div class="bar"></div>
-                                            <span><?=$row['f_subject']?></span>
+                                            <span><?= htmlspecialchars($subject) ?></span>
                                         </div>
                                         <div class="list_con">
                                             <ul>
-                                                <li class="center_material_items_li">
-                                                    <div class="list_div">
-                                                        <table cellpadding="0" cellspacing="0">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td align="center" class="category_td">
-                                                                        <span><?= htmlspecialchars($row['f_type']) ?></span>
-                                                                    </td>
-                                                                    <td align="center" class="level_td">
-                                                                        <span><?= htmlspecialchars($row['f_level']) ?></span>
-                                                                    </td>
-                                                                    <td align="left" class="text_td">
-                                                                        <span><?= htmlspecialchars($row['f_description']) ?></span>
-                                                                    </td>
-                                                                    <td align="left" class="btn_td">
-                                                                        <?php if ($row['f_file_name']): ?>
-                                                                            <a href="/userfiles/material/<?= htmlspecialchars($row['f_file']) ?>"
-                                                                                class="a_btn" target="_blank">자료 다운로드</a>
-                                                                        <?php endif; ?>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </li>
+                                                <?php foreach ($items as $row): ?>
+                                                    <li class="center_material_items_li">
+                                                        <div class="list_div">
+                                                            <table cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td align="center" class="category_td">
+                                                                            <span><?= htmlspecialchars($row['f_type']) ?></span>
+                                                                        </td>
+                                                                        <td align="center" class="level_td">
+                                                                            <span><?= htmlspecialchars($row['f_level']) ?></span>
+                                                                        </td>
+                                                                        <td align="left" class="text_td">
+                                                                            <span><?= htmlspecialchars($row['f_description']) ?></span>
+                                                                        </td>
+                                                                        <td align="left" class="btn_td">
+                                                                            <?php if ($row['f_file_name']): ?>
+                                                                                <a href="/userfiles/material/<?= htmlspecialchars($row['f_file']) ?>" class="a_btn" target="_blank">자료 다운로드</a>
+                                                                            <?php endif; ?>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </li>
+                                                <?php endforeach; ?>
                                             </ul>
                                         </div>
                                     </div>
                                 </li>
-                            <?php endforeach; else: ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
                             <li class="none_li"><span>등록된 게시글이 없습니다.</span></li>
                         <?php endif; ?>
                     </ul>
