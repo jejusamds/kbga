@@ -14,8 +14,7 @@
 
 			<div class="contents_con">
 
-                                <form id="findPwForm" action="/controller/account_recovery.php" method="post" autocomplete="off">
-                                        <input type="hidden" name="mode" value="send_code_pw" />
+				<form action="" method="" autocomplete="off">
 					<div class="find_con">
 						<div class="contents_con">
 							<div class="write_con">
@@ -76,7 +75,7 @@
 													</div>
 
 													<div class="info_con">
-                                                                               <input type="text" id="find_pw_user_id" name="user_id" placeholder="아이디를 적어주세요." class="input" />
+														<input type="text" name="" placeholder="아이디를 적어주세요." class="input" />
 													</div>
 												</div>
 											</li>
@@ -163,7 +162,6 @@
 													</div>
 												</div>
 											</li>
-<!-- 휴대폰 인증 기능 보류로 인해 입력 폼 숨김 처리
 											<li class="tel_li">
 												<div class="list_div">
 													<div class="title_con">
@@ -196,7 +194,7 @@
 																			&nbsp;
 																		</td>
 																		<td align="left" class="btn_td">
-																			<a href="javascript:void(0);" class="a_btn a_btn01">
+																			<a href="javascript:code_tel();" class="a_btn a_btn01">
 																				인증요청
 																			</a>
 																		</td>
@@ -221,7 +219,7 @@
 																<tbody>
 																	<tr>
 																		<td align="left" class="input_td">
-                                                                               <input type="tel" id="find_pw_code" name="code" maxlength="6" placeholder="인증번호을 적어주세요." class="input" onkeydown="onlyNumber(this);" />
+																			<input type="tel" name="" maxlength="" placeholder="인증번호을 적어주세요." class="input" onkeydown="onlyNumber(this);" />
 																		</td>
 																		<td align="left" class="blank_td">
 																			&nbsp;
@@ -237,7 +235,6 @@
 														</div>
 													</div>
 												</div>
--->
 											</li>
 											<li class="email_li">
 												<div class="list_div">
@@ -253,13 +250,13 @@
 																<tbody>
 																	<tr>
 																		<td align="left" class="input_td">
-                                                                               <input type="text" id="find_pw_email" name="email" placeholder="이메일을 적어주세요." class="input" />
+																			<input type="text" name="" placeholder="이메일을 적어주세요." class="input" />
 																		</td>
 																		<td align="left" class="blank_td">
 																			&nbsp;
 																		</td>
 																		<td align="left" class="btn_td">
-                                                                               <a href="javascript:void(0);" id="btn_send_pw_code" class="a_btn a_btn01">
+																			<a href="javascript:code_email();" class="a_btn a_btn01">
 																				인증요청
 																			</a>
 																		</td>
@@ -312,9 +309,9 @@
 								취소
 							</a>
 							
-                                                        <a href="javascript:void(0);" id="btn_verify_pw_code" class="a_btn a_btn02">
-                                                                다음
-                                                        </a>
+							<a href="/member/find_pw_end.html" class="a_btn a_btn02">
+								다음
+							</a>
 						</div>
 					</div>
 				</form>
@@ -366,45 +363,24 @@
 			}
 		});
 
-                // 숫자만 입력
-                function onlyNumber(obj) {
-                        $(obj).keyup(function(){
-                                $(this).val($(this).val().replace(/[^0-9]/g,""));
-                        });
-                }
+		// 전화번호 인증번호
+		function code_tel(){
+			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .tel_li .list_div > .info_con .tel_con > table > tbody > tr > .btn_td .a_btn").html("재발송");
+			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .tel_li.code_li").show();
+		}
 
-                document.addEventListener('DOMContentLoaded', function(){
-                        const sendBtn = document.getElementById('btn_send_pw_code');
-                        const verifyBtn = document.getElementById('btn_verify_pw_code');
-                        const codeLi = document.querySelector('.email_li.code_li');
+		// 이메일 인증번호
+		function code_email(){
+			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .email_li .list_div > .info_con .email_con > table > tbody > tr > .btn_td .a_btn").html("재발송");
+			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .email_li.code_li").show();
+		}
 
-                        async function sendCode(){
-                                const email = document.getElementById('find_pw_email').value.trim();
-                                const userId = document.getElementById('find_pw_user_id').value.trim();
-                                if(!userId){ alert('아이디를 입력해주세요.'); return; }
-                                if(!email){ alert('이메일을 입력해주세요.'); return; }
-                                const fd = new FormData();
-                                fd.append('mode','send_code_pw');
-                                fd.append('user_id', userId);
-                                fd.append('email', email);
-                                const res = await fetch('/controller/account_recovery.php',{method:'POST',body:fd});
-                                const json = await res.json();
-                                alert(json.msg);
-                                if(json.result==='ok' && codeLi) codeLi.style.display='';
-                        }
-                        if(sendBtn) sendBtn.addEventListener('click', sendCode);
-
-                        verifyBtn.addEventListener('click', async function(){
-                                const code = document.getElementById('find_pw_code').value.trim();
-                                if(!code){ alert('인증번호를 입력해주세요.'); return; }
-                                const fd=new FormData();
-                                fd.append('mode','verify_code_pw');
-                                fd.append('code', code);
-                                const res=await fetch('/controller/account_recovery.php',{method:'POST',body:fd});
-                                const json=await res.json();
-                                if(json.result==='ok'){ location.href=json.redirect; } else { alert(json.msg); }
-                        });
-                });
+		// 숫자만 입력
+		function onlyNumber(obj) {
+			$(obj).keyup(function(){
+				$(this).val($(this).val().replace(/[^0-9]/g,""));
+			}); 
+		}
 	</script>
 
 <?php
