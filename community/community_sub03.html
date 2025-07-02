@@ -9,9 +9,15 @@ $code = 'faq';
 $searchField = $_GET['search_field'] ?? '';
 $searchQuery = trim($_GET['search_query'] ?? '');
 $searchQueryNs = preg_replace('/\s+/', '', $searchQuery);
+$searchGrp = $_GET['search_grp'] ?? '';
 
 $searchSql = '';
 $params = ['code' => $code];
+$categoryRows = $db->query(
+    "SELECT DISTINCT grp FROM df_site_bbs WHERE code = :code ORDER BY grp",
+    ['code' => $code]
+);
+$categories = array_column($categoryRows, 'grp');
 
 if ($searchQueryNs !== '') {
     $like = "%{$searchQueryNs}%";
@@ -34,6 +40,11 @@ if ($searchQueryNs !== '') {
             $params['faq_a'] = $like;
             break;
     }
+}
+
+if ($searchGrp !== '') {
+    $searchSql .= " AND grp = :search_grp";
+    $params['search_grp'] = $searchGrp;
 }
 
 $page = 1;
@@ -75,6 +86,9 @@ $queryExtra = '';
 if ($searchQueryNs !== '') {
     $queryExtra = '&search_field=' . urlencode($searchField)
         . '&search_query=' . urlencode($searchQuery);
+}
+if ($searchGrp !== '') {
+    $queryExtra .= '&search_grp=' . urlencode($searchGrp);
 }
 
 $startNum = $total - $offset;
@@ -122,6 +136,16 @@ $nextPage = $page < $lastPage ? $page + 1 : $lastPage;
                                                     <!-- <option value="subject" <?= $searchField === 'subject' ? 'selected' : '' ?>>제목</option>
                                                     <option value="name" <?= $searchField === 'name' ? 'selected' : '' ?>>
                                                         작성자</option> -->
+                                                </select>
+                                            </td>
+                                            <td class="blank01_td">&nbsp;</td>
+                                            <td class="select_td">
+                                                <select name="search_grp" class="select">
+                                                    <option value="" <?= $searchGrp === '' ? 'selected' : '' ?>>카테고리
+                                                    </option>
+                                                    <?php foreach ($categories as $cat): ?>
+                                                        <option value="<?= htmlspecialchars($cat, ENT_QUOTES) ?>" <?= $searchGrp === $cat ? 'selected' : '' ?>><?= htmlspecialchars($cat, ENT_QUOTES) ?></option>
+                                                    <?php endforeach; ?>
                                                 </select>
                                             </td>
                                             <td class="blank01_td">&nbsp;</td>
