@@ -15,15 +15,15 @@ if ($searchQueryNs !== '') {
     $like = "%{$searchQueryNs}%";
     switch ($searchField) {
         case 'subject':
-            $searchSql .= ' AND REPLACE(qi.f_item_name, ' ', '') LIKE :search';
+            $searchSql .= " AND REPLACE(qi.f_item_name, ' ', '') LIKE :search";
             $params['search'] = $like;
             break;
         case 'description':
-            $searchSql .= ' AND REPLACE(m.f_description, ' ', '') LIKE :search';
+            $searchSql .= " AND REPLACE(m.f_description, ' ', '') LIKE :search";
             $params['search'] = $like;
             break;
         default:
-            $searchSql .= ' AND (REPLACE(qi.f_item_name, ' ', '') LIKE :search OR REPLACE(m.f_description, ' ', '') LIKE :search2)';
+            $searchSql .= " AND (REPLACE(qi.f_item_name, ' ', '') LIKE :search OR REPLACE(m.f_description, ' ', '') LIKE :search2)";
             $params['search'] = $like;
             $params['search2'] = $like;
             break;
