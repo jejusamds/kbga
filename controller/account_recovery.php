@@ -56,7 +56,7 @@ switch ($mode) {
             safe_json(['result' => 'error', 'msg' => '인증번호가 일치하지 않습니다.']);
         }
         $_SESSION['find_id_verified'] = true;
-        safe_json(['result' => 'ok', 'redirect' => '/member/find_id_end.html']);
+        safe_json(['result' => 'ok', 'redirect' => '/member/find_id_end.html', 'msg' => "인증되었습니다."]);
         break;
     case 'send_code_pw':
         if (empty($filtered['user_id']) || empty($filtered['email'])) {
