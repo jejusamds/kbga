@@ -2,7 +2,39 @@
 	$Menu = "07";
 	$sMenu = "07-2";
 	
-	include $_SERVER['DOCUMENT_ROOT'].'/include/header.html';
+        include $_SERVER['DOCUMENT_ROOT'].'/include/header.html';
+
+        $idx = (int)($_GET['idx'] ?? 0);
+        $user_id = $_SESSION['kbga_user_id'] ?? '';
+        $row = $db->row(
+            "SELECT r.*, i.f_item_name, a.f_year, a.f_round, a.f_type
+               FROM df_site_application_registration r
+               LEFT JOIN df_site_qualification_item i ON r.f_item_idx = i.idx
+               LEFT JOIN df_site_application a ON r.f_schedule_idx = a.idx
+              WHERE r.idx = :idx AND r.f_user_id = :uid",
+            ['idx' => $idx, 'uid' => $user_id]
+        );
+        if (!$row) {
+            echo '<script>alert("잘못된 접근입니다.");history.back();</script>';
+            exit;
+        }
+
+        $schedule_str = $row['f_schedule_idx'] == 0 ? '상시접수'
+            : sprintf('%d년 %d회차 %s', $row['f_year'], $row['f_round'], $row['f_type']);
+
+        function printStatus($val)
+        {
+            switch ((int) $val) {
+                case 1:
+                    return '접수완료';
+                case 2:
+                    return '발급완료';
+                case 3:
+                    return '발급보류';
+                default:
+                    return '';
+            }
+        }
 ?>
 
 <div id="container">
@@ -55,17 +87,17 @@
 												<tr>
 													<td align="center">
 														<span>
-															뷰티디자인디렉터 2급
+                                                                               <?= htmlspecialchars($row['f_item_name'], ENT_QUOTES) ?>
 														</span>
 													</td>
 													<td align="center">
 														<span>
-															접수완료
+                                                                               <?= printStatus($row['f_applicant_status']) ?>
 														</span>
 													</td>
 													<td align="center">
 														<span>
-															2025.05.25
+                                                                               <?= date('Y.m.d', strtotime($row['wdate'])) ?>
 														</span>
 													</td>
 												</tr>
@@ -101,7 +133,7 @@
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="자격분야" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_category'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -125,7 +157,7 @@
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="자격종목" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_item_name'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -152,7 +184,7 @@
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="시험일정" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($schedule_str, ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -170,7 +202,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="" value="이름" placeholder="이름을 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_user_name'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -187,7 +219,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="" value="영문이름" placeholder="영문이름을 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_user_name_en'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -205,7 +237,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="" maxlength="13" value="000-0000-0000" placeholder="000-0000-0000" class="input tel_input" readonly="readonly" />
+                                                                           <input type="tel" name="" maxlength="13" value="<?= htmlspecialchars($row['f_tel'], ENT_QUOTES) ?>" class="input tel_input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -222,7 +254,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="" value="0000.00.00" placeholder="0000.00.00" id="birthdate_input" class="input" readonly="readonly" />
+                                                                           <input type="tel" name="" value="<?= htmlspecialchars(str_replace('-', '.', $row['f_birth_date']), ENT_QUOTES) ?>" id="birthdate_input" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -245,7 +277,7 @@
 																										<tbody>
 																											<tr>
 																												<td align="left" class="input_td">
-																													<input type="text" name="" value="00000" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_zip'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																												</td>
 																												<!--
 																												<td align="left" class="btn_td">
@@ -275,7 +307,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="" value="기본주소" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_address1'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -292,7 +324,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="" value="상세주소" placeholder="상세주소를 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_address2'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -310,7 +342,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="" value="이메일" placeholder="이메일을 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_email'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -444,7 +476,7 @@
 																													</div>
 																													-->
 
-																													<input type="text" name="" value="사진첨부명" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_issue_file'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																												</td>
 																											</tr>
 																										</tbody>
@@ -480,7 +512,7 @@
 																										</span>
 																									</td>
 																									<td align="left" class="info_td">
-																										<input type="text" name="" value="입금자" placeholder="입금자명을 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_payer_name'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																									</td>
 																								</tr>
 																							</tbody>
@@ -504,7 +536,7 @@
 																										</select>
 																										-->
 
-																										<input type="text" name="" value="은행(입금자)" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_payer_bank'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																									</td>
 																								</tr>
 																							</tbody>
@@ -621,7 +653,7 @@
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="자격분야" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_category'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -645,7 +677,7 @@
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="자격종목" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_item_name'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -672,7 +704,7 @@
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="자격분야" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_category'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -725,7 +757,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="" maxlength="13" value="000-0000-0000" placeholder="000-0000-0000" class="input tel_input" readonly="readonly" />
+                                                                           <input type="tel" name="" maxlength="13" value="<?= htmlspecialchars($row['f_tel'], ENT_QUOTES) ?>" class="input tel_input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -742,7 +774,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="" maxlength="13" placeholder="000-0000-0000" class="input tel_input" />
+                                                                           <input type="tel" name="" maxlength="13" value="<?= htmlspecialchars($row['f_contact_phone'], ENT_QUOTES) ?>" class="input tel_input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -765,7 +797,7 @@
 																										<tbody>
 																											<tr>
 																												<td align="left" class="input_td">
-																													<input type="text" name="" value="00000" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_zip'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																												</td>
 																												<!--
 																												<td align="left" class="btn_td">
@@ -795,7 +827,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="" value="기본주소" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_address1'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -812,7 +844,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="" value="상세주소" placeholder="상세주소를 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_address2'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -830,7 +862,7 @@
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="" value="이메일" placeholder="이메일을 적어주세요." class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_email'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -922,7 +954,7 @@
 																													</div>
 																													-->
 
-																													<input type="text" name="" value="사진첨부명" class="input" readonly="readonly" />
+                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_issue_file'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																												</td>
 																											</tr>
 																										</tbody>
@@ -980,7 +1012,7 @@
 																										</span>
 																									</td>
 																									<td align="left" class="info_td">
-																										<input type="text" name="" value="입금자" placeholder="입금자명을 적어주세요." class="input" readonly="readonly" />
+                                                                          <input type="text" name="" value="<?= htmlspecialchars($row['f_payer_name'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																									</td>
 																								</tr>
 																							</tbody>
@@ -1004,7 +1036,7 @@
 																										</select>
 																										-->
 
-																										<input type="text" name="" value="은행(입금자)" class="input" readonly="readonly" />
+                                                                          <input type="text" name="" value="<?= htmlspecialchars($row['f_payer_bank'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																									</td>
 																								</tr>
 																							</tbody>
