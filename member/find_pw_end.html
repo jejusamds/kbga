@@ -1,9 +1,14 @@
 <?php
-	$Menu = "06";
-	$sMenu = "06-3";
-	$ssMenu = "06-3-2";
+        $Menu = "06";
+        $sMenu = "06-3";
+        $ssMenu = "06-3-2";
 
-	include $_SERVER['DOCUMENT_ROOT'].'/include/header.html'; 
+        include $_SERVER['DOCUMENT_ROOT'].'/include/header.html';
+
+        if (empty($_SESSION['find_pw_verified']) || empty($_SESSION['find_pw']['user_id'])) {
+                header('Location: /member/find_pw.html');
+                exit;
+        }
 ?>
 
 	<div id="container">
@@ -14,7 +19,8 @@
 
 			<div class="contents_con">
 				
-				<form action="" method="" autocomplete="off">
+                                <form id="resetPwForm" action="/controller/account_recovery.php" method="post" autocomplete="off">
+                                        <input type="hidden" name="mode" value="reset_password" />
 					<div class="find_end_con">
 						<div class="contents_con">
 							<div class="text_con">
@@ -40,7 +46,7 @@
 														<td valign="top" align="left" class="info_td">
 															<div class="password_con">
 																<div class="input_con">
-																	<input type="password" name="" maxlength="12" placeholder="비밀번호를 적어주세요." class="input" autocomplete="new-password" />
+                                                                               <input type="password" id="new_password" name="password" maxlength="12" placeholder="비밀번호를 적어주세요." class="input" autocomplete="new-password" />
 																</div>
 
 																<div class="intro_con">
@@ -81,7 +87,7 @@
 														<td valign="top" align="left" class="info_td">
 															<div class="password_con">
 																<div class="input_con">
-																	<input type="password" name="" maxlength="12" placeholder="비밀번호를 적어주세요." class="input" autocomplete="new-password" />
+                                                                               <input type="password" id="new_password_chk" name="password_chk" maxlength="12" placeholder="비밀번호를 적어주세요." class="input" autocomplete="new-password" />
 																</div>
 															</div>
 														</td>
@@ -94,18 +100,36 @@
 							</div>
 						</div>
 
-						<div class="btn_con">
-							<a href="#" class="a_btn">
-								확인
-							</a>
-						</div>
+                                                <div class="btn_con">
+                                                        <a href="javascript:void(0);" id="btn_reset_pw" class="a_btn">
+                                                                확인
+                                                        </a>
+                                                </div>
 					</div>
 				</form>
 
 			</div>
 		</div>
-	</div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                const btn = document.getElementById('btn_reset_pw');
+                btn.addEventListener('click', async function(){
+                    const pw = document.getElementById('new_password').value.trim();
+                    const pwc = document.getElementById('new_password_chk').value.trim();
+                    if(!pw){ alert('비밀번호를 입력해주세요.'); return; }
+                    if(!pwc){ alert('비밀번호 확인을 입력해주세요.'); return; }
+                    const fd = new FormData(document.getElementById('resetPwForm'));
+                    fd.append('password', pw);
+                    fd.append('password_chk', pwc);
+                    const res = await fetch('/controller/account_recovery.php',{method:'POST',body:fd});
+                    const json = await res.json();
+                    if(json.result==='ok'){ alert(json.msg); location.href=json.redirect; } else { alert(json.msg); }
+                });
+            });
+        </script>
 
 <?php
-	include $_SERVER['DOCUMENT_ROOT'].'/include/footer.html'; 
-?>	
+        include $_SERVER['DOCUMENT_ROOT'].'/include/footer.html';
+?>
