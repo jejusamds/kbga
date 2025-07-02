@@ -3,8 +3,11 @@
 	$sMenu = "06-3";
 	$ssMenu = "06-3-1";
 
-	include $_SERVER['DOCUMENT_ROOT'].'/include/header.html'; 
+        include $_SERVER['DOCUMENT_ROOT'].'/include/header.html';
+    $csrf_token = $_SESSION['csrf_token'] ?? bin2hex(random_bytes(20));
+    $_SESSION['csrf_token'] = $csrf_token;
 ?>
+
 
 	<div id="container">
 		<div id="sub_con">
@@ -212,13 +215,13 @@
 																<tbody>
 																	<tr>
 																		<td align="left" class="input_td">
-																			<input type="tel" name="" maxlength="" placeholder="인증번호을 적어주세요." class="input" onkeydown="onlyNumber(this);" />
+                                                                               <input type="tel" id="f_code" maxlength="" placeholder="인증번호을 적어주세요." class="input" onkeydown="onlyNumber(this);" />
 																		</td>
 																		<td align="left" class="blank_td">
 																			&nbsp;
 																		</td>
 																		<td align="left" class="btn_td">
-																			<a href="#" class="a_btn a_btn02">
+                                                                               <a href="javascript:verify_email_code();" class="a_btn a_btn02" id="btn_verify_code">
 																				인증확인
 																			</a>
 																		</td>
@@ -228,7 +231,7 @@
 														</div>
 
 														<div class="btn_con m_con">
-															<a href="#" class="a_btn a_btn02">
+                                                                               <a href="javascript:verify_email_code();" class="a_btn a_btn02" id="btn_verify_code_m">
 																인증확인
 															</a>
 														</div>
@@ -249,13 +252,13 @@
 																<tbody>
 																	<tr>
 																		<td align="left" class="input_td">
-																			<input type="text" name="" placeholder="이메일을 적어주세요." class="input" />
+                                                                               <input type="text" id="f_email" placeholder="이메일을 적어주세요." class="input" />
 																		</td>
 																		<td align="left" class="blank_td">
 																			&nbsp;
 																		</td>
 																		<td align="left" class="btn_td">
-																			<a href="javascript:code_email();" class="a_btn a_btn01">
+                                                                               <a href="javascript:code_email();" id="btn_send_code" class="a_btn a_btn01">
 																				인증요청
 																			</a>
 																		</td>
@@ -265,7 +268,7 @@
 														</div>
 
 														<div class="btn_con m_con">
-															<a href="javascript:code_email();" class="a_btn a_btn01">
+                                                                               <a href="javascript:code_email();" class="a_btn a_btn01" id="btn_send_code_m">
 																인증요청
 															</a>
 														</div>
@@ -380,11 +383,55 @@
 			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .tel_li.code_li").show();
 		}
 
-		// 이메일 인증번호
-		function code_email(){
-			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .email_li .list_div > .info_con .email_con > table > tbody > tr > .btn_td .a_btn").html("재발송");
-			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .email_li.code_li").show();
-		}
+                // 이메일 인증번호 발송
+                async function code_email(){
+                        const email = document.getElementById('f_email').value.trim();
+                        if(!email){
+                                alert('이메일을 입력해 주세요.');
+                                return;
+                        }
+                        const fd = new FormData();
+                        fd.append('mode','send_code_id');
+                        fd.append('email',email);
+                        fd.append('csrf_token','<?=$csrf_token?>');
+                        try{
+                                const res = await fetch('/controller/account_recovery.php',{method:'POST',body:fd});
+                                const data = await res.json();
+                                if(data.result==='ok'){
+                                        alert(data.msg);
+                                        $(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .email_li .list_div > .info_con .email_con > table > tbody > tr > .btn_td .a_btn").html("재발송");
+                                        $(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .email_li.code_li").show();
+                                }else{
+                                        alert(data.msg);
+                                }
+                        }catch(e){
+                                alert('오류가 발생했습니다.');
+                        }
+                }
+
+                // 이메일 인증번호 확인
+                async function verify_email_code(){
+                        const code = document.getElementById('f_code').value.trim();
+                        if(!code){
+                                alert('인증번호를 입력해 주세요.');
+                                return;
+                        }
+                        const fd = new FormData();
+                        fd.append('mode','verify_code_id');
+                        fd.append('code',code);
+                        fd.append('csrf_token','<?=$csrf_token?>');
+                        try{
+                                const res = await fetch('/controller/account_recovery.php',{method:'POST',body:fd});
+                                const data = await res.json();
+                                if(data.result==='ok'){
+                                        location.href = data.redirect;
+                                }else{
+                                        alert(data.msg);
+                                }
+                        }catch(e){
+                                alert('오류가 발생했습니다.');
+                        }
+                }
 
 		// 숫자만 입력
 		function onlyNumber(obj) {
