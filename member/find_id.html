@@ -14,8 +14,7 @@
 
 			<div class="contents_con">
 
-                               <form id="findIdForm" action="/controller/account_recovery.php" method="post" autocomplete="off">
-                                       <input type="hidden" name="mode" value="send_code_id" />
+				<form action="" method="" autocomplete="off">
 					<div class="find_con">
 						<div class="contents_con">
 							<div class="write_con">
@@ -150,94 +149,92 @@
 													</div>
 												</div>
 											</li>
-<!-- 휴대폰 인증 기능 보류로 인해 입력 폼 숨김 처리
-                                                                  <li class="tel_li" style="display:none;">
-                                                                       <div class="list_div">
-                                                                               <div class="title_con">
-                                                                               <span>
-                                                                               휴대전화번호 <span class="dot">*</span>
-                                                                               </span>
-                                                                               </div>
+											<li class="tel_li">
+												<div class="list_div">
+													<div class="title_con">
+														<span>
+															휴대전화번호 <span class="dot">*</span>
+														</span>
+													</div>
 
-                                                                               <div class="info_con">
-                                                                               <div class="tel_con">
-                                                                               <table cellpadding="0" cellspacing="0">
-                                                                               <tbody>
-                                                                               <tr>
-                                                                               <td align="left" class="input_td">
-                                                                               <input type="tel" name="" maxlength="3" class="input" onkeydown="onlyNumber(this);" />
-                                                                               </td>
-                                                                               <td align="center" class="text_td">
-                                                                               -
-                                                                               </td>
-                                                                               <td align="left" class="input_td">
-                                                                               <input type="tel" name="" maxlength="4" class="input" onkeydown="onlyNumber(this);" />
-                                                                               </td>
-                                                                               <td align="center" class="text_td">
-                                                                               -
-                                                                               </td>
-                                                                               <td align="left" class="input_td">
-                                                                               <input type="tel" name="" maxlength="4" class="input" onkeydown="onlyNumber(this);" />
-                                                                               </td>
-                                                                               <td align="left" class="blank_td">
-                                                                               &nbsp;
-                                                                               </td>
-                                                                               <td align="left" class="btn_td">
-                                                                               <a href="javascript:void(0);" class="a_btn a_btn01">
-                                                                               인증요청
-                                                                               </a>
-                                                                               </td>
-                                                                               </tr>
-                                                                               </tbody>
-                                                                               </table>
-                                                                               </div>
+													<div class="info_con">
+														<div class="tel_con">
+															<table cellpadding="0" cellspacing="0">
+																<tbody>
+																	<tr>
+																		<td align="left" class="input_td">
+																			<input type="tel" name="" maxlength="3" class="input" onkeydown="onlyNumber(this);" />
+																		</td>
+																		<td align="center" class="text_td">
+																			-
+																		</td>
+																		<td align="left" class="input_td">
+																			<input type="tel" name="" maxlength="4" class="input" onkeydown="onlyNumber(this);" />
+																		</td>
+																		<td align="center" class="text_td">
+																			-
+																		</td>
+																		<td align="left" class="input_td">
+																			<input type="tel" name="" maxlength="4" class="input" onkeydown="onlyNumber(this);" />
+																		</td>
+																		<td align="left" class="blank_td">
+																			&nbsp;
+																		</td>
+																		<td align="left" class="btn_td">
+																			<a href="javascript:code_tel();" class="a_btn a_btn01">
+																				인증요청
+																			</a>
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
 
-                                                                               <div class="btn_con m_con">
-                                                                               <a href="javascript:void(0);" class="a_btn a_btn01">
-                                                                               인증요청
-                                                                               </a>
-                                                                               </div>
-                                                                               </div>
-                                                                       </div>
-                                                                  </li>
-                                                                  <li class="tel_li code_li" style="display:none;">
-                                                                       <div class="list_div">
-                                                                               <div class="title_con">
-                                                                               <span>
-                                                                               인증번호 <span class="dot">*</span>
-                                                                               </span>
-                                                                               </div>
+														<div class="btn_con m_con">
+															<a href="javascript:code_tel();" class="a_btn a_btn01">
+																인증요청
+															</a>
+														</div>
+													</div>
+												</div>
+											</li>
+											<li class="tel_li code_li">
+												<div class="list_div">
+													<div class="title_con">
+														<span>
+															인증번호 <span class="dot">*</span>
+														</span>
+													</div>
 
-                                                                               <div class="info_con">
-                                                                               <div class="code_con">
-                                                                               <table cellpadding="0" cellspacing="0">
-                                                                               <tbody>
-                                                                               <tr>
-                                                                               <td align="left" class="input_td">
-       <input type="tel" id="find_id_code" name="code" maxlength="6" placeholder="인증번호을 적어주세요." class="input" onkeydown="onlyNumber(this);" />
-                                                                               </td>
-                                                                               <td align="left" class="blank_td">
-                                                                               &nbsp;
-                                                                               </td>
-                                                                               <td align="left" class="btn_td">
-                                                                               <a href="#" class="a_btn a_btn02">
-                                                                               인증확인
-                                                                               </a>
-                                                                               </td>
-                                                                               </tr>
-                                                                               </tbody>
-                                                                               </table>
-                                                                               </div>
+													<div class="info_con">
+														<div class="code_con">
+															<table cellpadding="0" cellspacing="0">
+																<tbody>
+																	<tr>
+																		<td align="left" class="input_td">
+																			<input type="tel" name="" maxlength="" placeholder="인증번호을 적어주세요." class="input" onkeydown="onlyNumber(this);" />
+																		</td>
+																		<td align="left" class="blank_td">
+																			&nbsp;
+																		</td>
+																		<td align="left" class="btn_td">
+																			<a href="#" class="a_btn a_btn02">
+																				인증확인
+																			</a>
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
 
-                                                                               <div class="btn_con m_con">
-                                                                               <a href="#" class="a_btn a_btn02">
-                                                                               인증확인
-                                                                               </a>
-                                                                               </div>
-                                                                               </div>
-                                                                       </div>
-                                                                  </li>
--->
+														<div class="btn_con m_con">
+															<a href="#" class="a_btn a_btn02">
+																인증확인
+															</a>
+														</div>
+													</div>
+												</div>
+											</li>
 											<li class="email_li">
 												<div class="list_div">
 													<div class="title_con">
@@ -252,13 +249,13 @@
 																<tbody>
 																	<tr>
 																		<td align="left" class="input_td">
-                                                                               <input type="text" id="find_id_email" name="email" placeholder="이메일을 적어주세요." class="input" />
+																			<input type="text" name="" placeholder="이메일을 적어주세요." class="input" />
 																		</td>
 																		<td align="left" class="blank_td">
 																			&nbsp;
 																		</td>
 																		<td align="left" class="btn_td">
-                                                                               <a href="javascript:void(0);" id="btn_send_id_code" class="a_btn a_btn01">
+																			<a href="javascript:code_email();" class="a_btn a_btn01">
 																				인증요청
 																			</a>
 																		</td>
@@ -268,7 +265,7 @@
 														</div>
 
 														<div class="btn_con m_con">
-                                                                               <a href="javascript:void(0);" id="btn_send_id_code_m" class="a_btn a_btn01">
+															<a href="javascript:code_email();" class="a_btn a_btn01">
 																인증요청
 															</a>
 														</div>
@@ -323,9 +320,9 @@
 								취소
 							</a>
 							
-                                                        <a href="javascript:void(0);" id="btn_verify_id_code" class="a_btn a_btn02">
-                                                                다음
-                                                        </a>
+							<a href="/member/find_id_end.html" class="a_btn a_btn02">
+								다음
+							</a>
 						</div>
 					</div>
 				</form>
@@ -377,44 +374,24 @@
 			}
 		});
 
-                // 숫자만 입력
-                function onlyNumber(obj) {
-                        $(obj).keyup(function(){
-                                $(this).val($(this).val().replace(/[^0-9]/g,""));
-                        });
-                }
+		// 전화번호 인증번호
+		function code_tel(){
+			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .tel_li .list_div > .info_con .tel_con > table > tbody > tr > .btn_td .a_btn").html("재발송");
+			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .tel_li.code_li").show();
+		}
 
-                document.addEventListener('DOMContentLoaded', function(){
-                        const sendBtn = document.getElementById('btn_send_id_code');
-                        const sendBtnM = document.getElementById('btn_send_id_code_m');
-                        const verifyBtn = document.getElementById('btn_verify_id_code');
-                        const codeLi = document.querySelector('.email_li.code_li');
+		// 이메일 인증번호
+		function code_email(){
+			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .email_li .list_div > .info_con .email_con > table > tbody > tr > .btn_td .a_btn").html("재발송");
+			$(".find_con > .contents_con > .write_con > .contents_con > .input_con > ul > .email_li.code_li").show();
+		}
 
-                        async function sendCode(){
-                                const email = document.getElementById('find_id_email').value.trim();
-                                if(!email){ alert('이메일을 입력해주세요.'); return; }
-                                const fd = new FormData();
-                                fd.append('mode','send_code_id');
-                                fd.append('email', email);
-                                const res = await fetch('/controller/account_recovery.php',{method:'POST',body:fd});
-                                const json = await res.json();
-                                alert(json.msg);
-                                if(json.result==='ok' && codeLi) codeLi.style.display='';
-                        }
-                        if(sendBtn) sendBtn.addEventListener('click', sendCode);
-                        if(sendBtnM) sendBtnM.addEventListener('click', sendCode);
-
-                        verifyBtn.addEventListener('click', async function(){
-                                const code = document.getElementById('find_id_code').value.trim();
-                                if(!code){ alert('인증번호를 입력해주세요.'); return; }
-                                const fd=new FormData();
-                                fd.append('mode','verify_code_id');
-                                fd.append('code', code);
-                                const res=await fetch('/controller/account_recovery.php',{method:'POST',body:fd});
-                                const json=await res.json();
-                                if(json.result==='ok'){ location.href=json.redirect; } else { alert(json.msg); }
-                        });
-                });
+		// 숫자만 입력
+		function onlyNumber(obj) {
+			$(obj).keyup(function(){
+				$(this).val($(this).val().replace(/[^0-9]/g,""));
+			}); 
+		}
 	</script>
 
 <?php
