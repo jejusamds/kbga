@@ -3,10 +3,12 @@
 	$sMenu = "06-3";
 	$ssMenu = "06-3-1";
 
-	include $_SERVER['DOCUMENT_ROOT'].'/include/header.html'; 
+        include $_SERVER['DOCUMENT_ROOT'].'/include/header.html';
 ?>
 
-	<div id="container">
+    <script src="/js/find_id.js"></script>
+
+        <div id="container">
 		<div id="sub_con">
 			<?php
 				include $_SERVER['DOCUMENT_ROOT'].'/include/sub_banner.html'; 
@@ -212,13 +214,13 @@
 																<tbody>
 																	<tr>
 																		<td align="left" class="input_td">
-																			<input type="tel" name="" maxlength="" placeholder="인증번호을 적어주세요." class="input" onkeydown="onlyNumber(this);" />
+                                                                               <input type="tel" name="code" id="find_email_code" maxlength="" placeholder="인증번호을 적어주세요." class="input" onkeydown="onlyNumber(this);" />
 																		</td>
 																		<td align="left" class="blank_td">
 																			&nbsp;
 																		</td>
 																		<td align="left" class="btn_td">
-																			<a href="#" class="a_btn a_btn02">
+                                                                               <a href="#" class="a_btn a_btn02" id="verify_code_btn">
 																				인증확인
 																			</a>
 																		</td>
@@ -249,13 +251,13 @@
 																<tbody>
 																	<tr>
 																		<td align="left" class="input_td">
-																			<input type="text" name="" placeholder="이메일을 적어주세요." class="input" />
+                                                                               <input type="text" name="email" id="find_email" placeholder="이메일을 적어주세요." class="input" />
 																		</td>
 																		<td align="left" class="blank_td">
 																			&nbsp;
 																		</td>
 																		<td align="left" class="btn_td">
-																			<a href="javascript:code_email();" class="a_btn a_btn01">
+                                                                               <a href="javascript:code_email();" class="a_btn a_btn01" id="send_code_btn">
 																				인증요청
 																			</a>
 																		</td>
@@ -320,7 +322,7 @@
 								취소
 							</a>
 							
-							<a href="/member/find_id_end.html" class="a_btn a_btn02">
+                                                        <a href="/member/find_id_end.html" class="a_btn a_btn02" id="btn_next">
 								다음
 							</a>
 						</div>
