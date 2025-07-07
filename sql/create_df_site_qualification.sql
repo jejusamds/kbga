@@ -6,5 +6,6 @@ CREATE TABLE df_site_qualification (
     f_reg_no VARCHAR(100) NOT NULL,
     f_manage_org VARCHAR(255) NOT NULL,
     f_ministry VARCHAR(255) NOT NULL,
+    prior BIGINT,
     wdate DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

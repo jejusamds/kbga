@@ -6,19 +6,9 @@ $table = 'qualification';
 $page = isset($_GET['page']) ? max(1,(int)$_GET['page']) : 1;
 $category = isset($_GET['category']) ? (int)$_GET['category'] : 1;
 
-$page_set = 20;
-$block_set = 10;
-
-$total = $db->single("SELECT COUNT(*) FROM {$this_table} WHERE page_no=:c", ['c'=>$category]);
-$pageCnt = (int)(($total - 1) / $page_set) + 1;
-if ($page > $pageCnt) $page = $pageCnt > 0 ? $pageCnt : 1;
-
-$list = [];
-if ($total > 0) {
-    $offset = ($page - 1) * $page_set;
-    $sql = "SELECT * FROM {$this_table} WHERE page_no=:c ORDER BY idx DESC LIMIT {$offset}, {$page_set}";
-    $list = $db->query($sql, ['c'=>$category]);
-}
+// 페이징 없이 전체 조회
+$list = $db->query("SELECT * FROM {$this_table} WHERE page_no=:c ORDER BY prior DESC", ['c'=>$category]);
+$total = count($list);
 ?>
 <script>
 function onSelectAll(allChk){
@@ -58,6 +48,7 @@ function deleteEntries(){
                     <col width="120" />
                     <col width="160" />
                     <col width="160" />
+                    <col width="80" />
                     <col width="120" />
                 </colgroup>
                 <thead>
@@ -67,8 +58,9 @@ function deleteEntries(){
                         <td>자격명</td>
                         <td>자격구분</td>
                         <td>등록번호</td>
-                        <td>자격관리기관</td> 
+                        <td>자격관리기관</td>
                         <td>주무부처</td>
+                        <td>순서</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,12 +68,39 @@ function deleteEntries(){
                     <?php foreach ($list as $i => $row): ?>
                     <tr>
                         <td><input type="checkbox" class="select_checkbox" value="<?= $row['idx'] ?>"></td>
-                        <td><?= $total - ($page-1)*$page_set - $i ?></td>
+                        <td><?= $total - $i ?></td>
                         <td class=""><a href="qualification_input.php?mode=update&idx=<?= $row['idx'] ?>&page=<?= $page ?>&category=<?= $category ?>"><?= htmlspecialchars($row['f_name'],ENT_QUOTES) ?></a></td>
                         <td><?= htmlspecialchars($row['f_type'],ENT_QUOTES) ?></td>
                         <td><?= htmlspecialchars($row['f_reg_no'],ENT_QUOTES) ?></td>
                         <td><?= htmlspecialchars($row['f_manage_org'],ENT_QUOTES) ?></td>
                         <td><?= htmlspecialchars($row['f_ministry'],ENT_QUOTES) ?></td>
+                        <td>
+                            <ul style="width:40px;margin:0 auto;padding:0;list-style:none;">
+                                <li style="float:left;width:20px;height:12px;text-align:center;">
+                                    <a href="exec.php?table=<?= $table ?>&mode=prior&posi=upup&idx=<?= $row['idx'] ?>&prior=<?= $row['prior'] ?>&page=<?= $page ?>&category=<?= $category ?>">
+                                        <img src="../img/upup_icon.gif" border="0" alt="10단계 위로">
+                                    </a>
+                                </li>
+                                <li style="float:left;width:20px;height:12px;text-align:center;"></li>
+                                <li style="float:left;width:20px;height:12px;text-align:center;">
+                                    <a href="exec.php?table=<?= $table ?>&mode=prior&posi=up&idx=<?= $row['idx'] ?>&prior=<?= $row['prior'] ?>&page=<?= $page ?>&category=<?= $category ?>">
+                                        <img src="../img/up_icon.gif" border="0" alt="1단계 위로">
+                                    </a>
+                                </li>
+                                <li style="float:left;width:20px;height:12px;text-align:center;">
+                                    <a href="exec.php?table=<?= $table ?>&mode=prior&posi=down&idx=<?= $row['idx'] ?>&prior=<?= $row['prior'] ?>&page=<?= $page ?>&category=<?= $category ?>">
+                                        <img src="../img/down_icon.gif" border="0" alt="1단계 아래로">
+                                    </a>
+                                </li>
+                                <li style="float:left;width:20px;height:12px;text-align:center;"></li>
+                                <li style="float:left;width:20px;height:12px;text-align:center;">
+                                    <a href="exec.php?table=<?= $table ?>&mode=prior&posi=downdown&idx=<?= $row['idx'] ?>&prior=<?= $row['prior'] ?>&page=<?= $page ?>&category=<?= $category ?>">
+                                        <img src="../img/downdown_icon.gif" border="0" alt="10단계 아래로">
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="clear"></div>
+                        </td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -95,9 +114,6 @@ function deleteEntries(){
         <div class="comPTop20 comPBottom20">
             <div class="comFLeft comALeft" style="width:10%; padding-left:10px;">
                 <button class="btn btn-danger btn-sm" type="button" onclick="deleteEntries();">삭제</button>
-            </div>
-            <div class="comFCenter comACenter" style="width:70%; display:inline-block;">
-                <?php print_pagelist_admin($total,$page_set,$block_set,$page,'&category='.$category); ?>
             </div>
             <div class="comFRight comARight" style="width:15%; padding-right:10px;">
                 <button class="btn btn-default btn-sm" type="button" onclick="location.href='qualification_input.php?page=<?= $page ?>&category=<?= $category ?>';">등록</button>
