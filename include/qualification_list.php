@@ -1,5 +1,10 @@
 <?php
-$list = $db->query("SELECT * FROM df_site_qualification ORDER BY idx DESC", null, PDO::FETCH_OBJ);
+$qual_page = isset($qual_page) ? (int)$qual_page : 1;
+$list = $db->query(
+    "SELECT * FROM df_site_qualification WHERE page_no=:page ORDER BY idx DESC",
+    ['page'=>$qual_page],
+    PDO::FETCH_OBJ
+);
 ?>
 <ul>
         <?php foreach ($list as $row): ?>

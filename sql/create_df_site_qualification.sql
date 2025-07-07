@@ -1,5 +1,6 @@
 CREATE TABLE df_site_qualification (
     idx INT AUTO_INCREMENT PRIMARY KEY,
+    page_no TINYINT NOT NULL DEFAULT 1,
     f_name VARCHAR(255) NOT NULL,
     f_type VARCHAR(100) NOT NULL,
     f_reg_no VARCHAR(100) NOT NULL,

@@ -5,10 +5,11 @@ $this_table = 'df_site_qualification';
 $table = 'qualification';
 $idx = isset($_GET['idx']) ? (int)$_GET['idx'] : 0;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$param = "page={$page}";
+$category = isset($_GET['category']) ? (int)$_GET['category'] : 1;
+$param = "page={$page}&category={$category}";
 
 $mode = 'insert';
-$row = ['f_name'=>'','f_type'=>'','f_reg_no'=>'','f_manage_org'=>'','f_ministry'=>''];
+$row = ['page_no'=>1,'f_name'=>'','f_type'=>'','f_reg_no'=>'','f_manage_org'=>'','f_ministry'=>''];
 if ($idx) {
     $row = $db->row("SELECT * FROM {$this_table} WHERE idx=:idx", ['idx'=>$idx]);
     if (!$row) { echo "<script>alert('잘못된 접근입니다.');location.href='qualification_list.php?{$param}';</script>"; exit; }
@@ -27,10 +28,21 @@ if ($idx) {
         <input type="hidden" name="table" value="<?= $table ?>">
         <input type="hidden" name="mode" value="<?= $mode ?>">
         <?php if($idx): ?><input type="hidden" name="idx" value="<?= $idx ?>"><?php endif; ?>
+        <input type="hidden" name="category" value="<?= $category ?>">
         <div class="box" style="width:978px;">
             <div class="panel">
                 <table class="table orderInfo" cellpadding="0" cellspacing="0">
                     <col width="20%"><col width="80%">
+                    <tr>
+                        <th>페이지구분</th>
+                        <td class="comALeft">
+                            <select name="page_no" class="form-control" style="width:40%;">
+                                <?php for($i=1;$i<=5;$i++): ?>
+                                <option value="<?= $i ?>" <?= $row['page_no']==$i?'selected':'' ?>><?= $i ?>페이지</option>
+                                <?php endfor; ?>
+                            </select>
+                        </td>
+                    </tr>
                     <tr>
                         <th>자격명</th>
                         <td class="comALeft"><input type="text" name="f_name" value="<?= htmlspecialchars($row['f_name'],ENT_QUOTES) ?>" class="form-control" style="width:60%;"></td>
