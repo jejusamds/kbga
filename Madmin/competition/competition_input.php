@@ -15,6 +15,9 @@ if ($idx) {
         echo "<script>alert('잘못된 접근입니다.');location.href='competition_list.php?{$param}';</script>";
         exit;
     }
+    $parts  = $db->query("SELECT f_part FROM df_site_competition_part WHERE competition_idx=:idx ORDER BY idx ASC", ['idx'=>$idx]);
+    $fields = $db->query("SELECT f_field FROM df_site_competition_field WHERE competition_idx=:idx ORDER BY idx ASC", ['idx'=>$idx]);
+    $events = $db->query("SELECT f_event FROM df_site_competition_event WHERE competition_idx=:idx ORDER BY idx ASC", ['idx'=>$idx]);
 } else {
     $mode = 'insert';
     $row = [
@@ -26,6 +29,7 @@ if ($idx) {
         'f_detail'=>'',
         'f_image'=>''
     ];
+    $parts = $fields = $events = [];
 }
 ?>
 <script language="JavaScript">
@@ -117,6 +121,86 @@ function deleteImage(idx, field){
                 </table>
             </div>
         </div>
+        <div class="box comMTop20" style="width:978px;">
+            <div class="panel">
+                <div class="title">
+                    <i class="fa fa-list"></i>
+                    <span>참가부문</span>
+                    <button class="btn btn-success btn-xs comMLeft15 btnAddPart" type="button">항목추가</button>
+                </div>
+                <table id="tablePart" class="table orderInfo" cellpadding="0" cellspacing="0">
+                    <col width="85%"><col width="15%">
+                    <tbody>
+                        <?php if($mode=='insert' && empty($parts)): ?>
+                        <tr>
+                            <td class="comALeft"><input type="text" name="parts[]" class="form-control" style="width:60%;"></td>
+                            <td><button class="btn btn-warning btn-xs btnDelPart" type="button">삭제</button></td>
+                        </tr>
+                        <?php endif; ?>
+                        <?php foreach ($parts as $p): ?>
+                        <tr>
+                            <td class="comALeft"><input type="text" name="parts[]" value="<?= htmlspecialchars($p['f_part'], ENT_QUOTES) ?>" class="form-control" style="width:60%;"></td>
+                            <td><button class="btn btn-warning btn-xs btnDelPart" type="button">삭제</button></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="box comMTop20" style="width:978px;">
+            <div class="panel">
+                <div class="title">
+                    <i class="fa fa-list"></i>
+                    <span>종목분야</span>
+                    <button class="btn btn-success btn-xs comMLeft15 btnAddField" type="button">항목추가</button>
+                </div>
+                <table id="tableField" class="table orderInfo" cellpadding="0" cellspacing="0">
+                    <col width="85%"><col width="15%">
+                    <tbody>
+                        <?php if($mode=='insert' && empty($fields)): ?>
+                        <tr>
+                            <td class="comALeft"><input type="text" name="fields[]" class="form-control" style="width:60%;"></td>
+                            <td><button class="btn btn-warning btn-xs btnDelField" type="button">삭제</button></td>
+                        </tr>
+                        <?php endif; ?>
+                        <?php foreach ($fields as $f): ?>
+                        <tr>
+                            <td class="comALeft"><input type="text" name="fields[]" value="<?= htmlspecialchars($f['f_field'], ENT_QUOTES) ?>" class="form-control" style="width:60%;"></td>
+                            <td><button class="btn btn-warning btn-xs btnDelField" type="button">삭제</button></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="box comMTop20" style="width:978px;">
+            <div class="panel">
+                <div class="title">
+                    <i class="fa fa-list"></i>
+                    <span>참가종목</span>
+                    <button class="btn btn-success btn-xs comMLeft15 btnAddEvent" type="button">항목추가</button>
+                </div>
+                <table id="tableEvent" class="table orderInfo" cellpadding="0" cellspacing="0">
+                    <col width="85%"><col width="15%">
+                    <tbody>
+                        <?php if($mode=='insert' && empty($events)): ?>
+                        <tr>
+                            <td class="comALeft"><input type="text" name="events[]" class="form-control" style="width:60%;"></td>
+                            <td><button class="btn btn-warning btn-xs btnDelEvent" type="button">삭제</button></td>
+                        </tr>
+                        <?php endif; ?>
+                        <?php foreach ($events as $e): ?>
+                        <tr>
+                            <td class="comALeft"><input type="text" name="events[]" value="<?= htmlspecialchars($e['f_event'], ENT_QUOTES) ?>" class="form-control" style="width:60%;"></td>
+                            <td><button class="btn btn-warning btn-xs btnDelEvent" type="button">삭제</button></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="box comMTop10 comMBottom20" style="width:978px;">
             <div class="comPTop10 comPBottom10">
                 <div class="comFLeft comACenter" style="width:10%;">
@@ -133,5 +217,19 @@ function deleteImage(idx, field){
         </div>
     </form>
 </div>
+<script>
+$(document).on('click','.btnAddPart',function(){
+    $('#tablePart tbody').append('<tr><td class="comALeft"><input type="text" name="parts[]" class="form-control" style="width:60%;"></td><td><button class="btn btn-warning btn-xs btnDelPart" type="button">삭제</button></td></tr>');
+});
+$(document).on('click','.btnDelPart',function(){ $(this).closest('tr').remove(); });
+$(document).on('click','.btnAddField',function(){
+    $('#tableField tbody').append('<tr><td class="comALeft"><input type="text" name="fields[]" class="form-control" style="width:60%;"></td><td><button class="btn btn-warning btn-xs btnDelField" type="button">삭제</button></td></tr>');
+});
+$(document).on('click','.btnDelField',function(){ $(this).closest('tr').remove(); });
+$(document).on('click','.btnAddEvent',function(){
+    $('#tableEvent tbody').append('<tr><td class="comALeft"><input type="text" name="events[]" class="form-control" style="width:60%;"></td><td><button class="btn btn-warning btn-xs btnDelEvent" type="button">삭제</button></td></tr>');
+});
+$(document).on('click','.btnDelEvent',function(){ $(this).closest('tr').remove(); });
+</script>
 </body>
 </html>
