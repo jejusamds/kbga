@@ -74,6 +74,7 @@ $menu10 = array(
     "agency_list",
     "agency_input",
 );
+$menu13 = array("qualification_list","qualification_input");
 
 $menu11 = array(
     "member_list",
@@ -467,6 +468,19 @@ $menu99 = array("stat_visit", "stat_url", "stat_url_view");    // 통계 현황
                     href="/Madmin/agency/agency_list.php?type=manage">관련기관</div>
             </div>
 
+            <div class="lnb-menu <? if (in_array($gb, $menu13)) { ?>on<? } ?>">
+                <span class="left">
+                    <i class="fa fa-list fa-lg"></i>
+                    <span>민간자격 관리</span>
+                </span>
+                <span class="right">
+                    <i class="fa fa-<? if (in_array($gb, $menu13)) { ?>minus<? } else { ?>plus<? } ?>"></i>
+                </span>
+            </div>
+            <div class="lnb-submenu"
+                style="display:<? if (in_array($gb, $menu13)) { ?>block;<? } else { ?>none;<? } ?>">
+                <div class="lnb-submenu-item <? if (in_array($gb, $menu13)) { ?>on<? } ?>" href="/Madmin/qualification/qualification_list.php">목록</div>
+            </div>
             <div class="lnb-menu <? if (in_array($gb, $menu07)) { ?>on<? } ?>">
                 <span class="left">
                     <i class="fa fa-calendar fa-lg"></i>
