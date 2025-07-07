@@ -14,7 +14,7 @@ switch($mode){
         foreach($fields as $f){$cols[]=$f;$vals[]=':'.$f;$params[$f]=$_POST[$f]??'';}
         $sql="INSERT INTO {$table} (".implode(',', $cols).", wdate) VALUES (".implode(',', $vals).", NOW())";
         $db->query($sql,$params);
-        $url = "qualification_list.php?page={$page}&category=".(int)$_POST['page_no'];
+        $url = "qualification_list.php?page={$page}&category=".(int)$_POST['category'];
         complete('등록되었습니다.',$url);
         break;
     case 'update':
@@ -23,7 +23,7 @@ switch($mode){
         foreach($fields as $f){$sets[]="$f=:$f";$params[$f]=$_POST[$f]??'';}
         $sql="UPDATE {$table} SET ".implode(',', $sets)." WHERE idx=:idx";
         $db->query($sql,$params);
-        $url = "qualification_list.php?page={$page}&category=".(int)$_POST['page_no'];
+        $url = "qualification_list.php?page={$page}&category=".(int)$_POST['category'];
         complete('수정되었습니다.',$url);
         break;
     case 'delete':
