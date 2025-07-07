@@ -144,7 +144,7 @@
                                                                         data-required="y" data-label="대회구분을">
                                                                         <option value="">대회구분을 선택해주세요.</option>
                                                                         <?php foreach ($competitions as $c): ?>
-                                                                        <option value="<?= $c['idx'] ?>">
+                                                                        <option value="<?= $c['idx'] ?>" <?=!empty($_GET['idx']) && $_GET['idx'] == $c['idx'] ? 'selected' : ''?> >
                                                                             <?= htmlspecialchars($c['f_title'], ENT_QUOTES) ?>
                                                                         </option>
                                                                         <?php endforeach; ?>
@@ -728,9 +728,18 @@
             $('#f_event').html(html);
         });
     }
+    // $(function(){
+    //     loadOptions($('#f_competition_idx').val());
+    //     $('#f_competition_idx').on('change', function(){ loadOptions(this.value); });
+    // });
     $(function(){
-        loadOptions($('#f_competition_idx').val());
-        $('#f_competition_idx').on('change', function(){ loadOptions(this.value); });
+        const idx = $('#f_competition_idx').val();
+        if (idx) {
+            loadOptions(idx);
+        }
+        $('#f_competition_idx').on('change', function(){
+            loadOptions(this.value);
+        });
     });
 </script>
 
