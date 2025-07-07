@@ -582,7 +582,7 @@ unset($sc);
 																															<span>
 																																파일선택
 																															</span>
-																															<input type="file" name="upfile" class="input" onchange="file_upload(this.value)" />
+																															<input type="file" name="upfile[]" class="input" onchange="file_upload(this.value)" />
 																														</label>
 																													</td>
 																												</tr>
