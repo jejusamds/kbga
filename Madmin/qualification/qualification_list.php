@@ -40,21 +40,20 @@ function deleteEntries(){
             <li class="active">목록</li>
         </ul>
     </div>
-    <form method="get" style="margin-bottom:10px;">
+    <!-- <form method="get" style="margin-bottom:10px;">
         <select name="category" onchange="this.form.submit()" class="form-control" style="width:150px; display:inline-block;">
             <?php for($i=1;$i<=5;$i++): ?>
             <option value="<?= $i ?>" <?= $category==$i?'selected':'' ?>><?= $i ?>페이지</option>
             <?php endfor; ?>
         </select>
         <input type="hidden" name="page" value="<?= $page ?>">
-    </form>
+    </form> -->
     <div class="box comMTop20" style="width:1114px;">
         <div class="panel">
             <table class="table" cellpadding="0" cellspacing="0">
                 <colgroup>
                     <col width="40" />
                     <col width="60" />
-                    <col width="80" />
                     <col width="200" />
                     <col width="120" />
                     <col width="160" />
@@ -63,14 +62,13 @@ function deleteEntries(){
                 </colgroup>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="select_all" onclick="onSelectAll(this)"></th>
-                        <th>번호</th>
-                        <th>페이지</th>
-                        <th>자격명</th>
-                        <th>자격구분</th>
-                        <th>등록번호</th>
-                        <th>자격관리기관</th>
-                        <th>주무부처</th>
+                        <td><input type="checkbox" id="select_all" onclick="onSelectAll(this)"></td>
+                        <td>번호</td>
+                        <td>자격명</td>
+                        <td>자격구분</td>
+                        <td>등록번호</td>
+                        <td>자격관리기관</td> 
+                        <td>주무부처</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,8 +77,7 @@ function deleteEntries(){
                     <tr>
                         <td><input type="checkbox" class="select_checkbox" value="<?= $row['idx'] ?>"></td>
                         <td><?= $total - ($page-1)*$page_set - $i ?></td>
-                        <td><?= $row['page_no'] ?></td>
-                        <td class="comALeft"><a href="qualification_input.php?mode=update&idx=<?= $row['idx'] ?>&page=<?= $page ?>&category=<?= $category ?>"><?= htmlspecialchars($row['f_name'],ENT_QUOTES) ?></a></td>
+                        <td class=""><a href="qualification_input.php?mode=update&idx=<?= $row['idx'] ?>&page=<?= $page ?>&category=<?= $category ?>"><?= htmlspecialchars($row['f_name'],ENT_QUOTES) ?></a></td>
                         <td><?= htmlspecialchars($row['f_type'],ENT_QUOTES) ?></td>
                         <td><?= htmlspecialchars($row['f_reg_no'],ENT_QUOTES) ?></td>
                         <td><?= htmlspecialchars($row['f_manage_org'],ENT_QUOTES) ?></td>
