@@ -466,7 +466,7 @@ unset($sc);
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="list_div fl">
+                                                <!-- <div class="list_div fl">
                                                     <table cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                             <tr>
@@ -511,9 +511,9 @@ unset($sc);
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                </div>
+                                                </div> -->
 
-                                                <div class="list_div fr">
+                                                <div class="list_div fl">
                                                     <table cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                             <tr>
@@ -616,6 +616,26 @@ unset($sc);
                                                             </tr>
                                                         </tbody>
                                                     </table>
+
+                                                    <div class="file_intro_con">
+                                                        <table cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="left" class="dot_td">
+                                                                        <span>
+                                                                            *
+                                                                        </span>
+                                                                    </td>
+                                                                    <td align="left">
+                                                                        <span>
+                                                                            자격증 발급 신청시 <br />
+                                                                            자격증서에 들어갈 대상자 증명사진첨부 필수
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
