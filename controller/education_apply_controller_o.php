@@ -56,6 +56,7 @@ if(empty($filtered['csrf_token']) || $filtered['csrf_token']!==$_SESSION['csrf_t
 
 $required=[
     'f_news_idx'=>'잘못된 접근입니다.',
+    'f_edu_type'=>'교육구분을 선택해주세요.',
     'f_org_name'=>'단체명을 입력해주세요.',
     'f_manager_name'=>'담당자를 입력해주세요.',
     'f_tel'=>'연락처를 입력해주세요.',
@@ -94,6 +95,7 @@ $f_user_id = isset($_SESSION['kbga_user_id']) && $_SESSION['kbga_user_id'] != ''
 $params=[
     'f_type'=>'O',
     'f_news_idx'=>(int)$filtered['f_news_idx'],
+    'f_edu_type_idx'=>(int)$filtered['f_edu_type'],
     'f_user_name'=>$filtered['f_org_name'],
     'f_user_name_en'=>$filtered['f_manager_name'],
     'f_tel'=>$filtered['f_tel'],
@@ -111,11 +113,11 @@ $params=[
 ];
 
 $sql="INSERT INTO df_site_edu_registration (
-        f_type,f_news_idx,f_user_name,f_user_name_en,f_tel,f_contact_phone,
+        f_type,f_news_idx,f_edu_type_idx,f_user_name,f_user_name_en,f_tel,f_contact_phone,
         f_zip,f_address1,f_address2,f_email,f_issue_file,f_issue_file_name,
         f_payer_name,f_payer_bank,f_payment_category, f_user_id
     ) VALUES (
-        :f_type,:f_news_idx,:f_user_name,:f_user_name_en,:f_tel,:f_contact_phone,
+        :f_type,:f_news_idx,:f_edu_type_idx,:f_user_name,:f_user_name_en,:f_tel,:f_contact_phone,
         :f_zip,:f_address1,:f_address2,:f_email,:f_issue_file,:f_issue_file_name,
         :f_payer_name,:f_payer_bank,:f_payment_category, :f_user_id
     )";

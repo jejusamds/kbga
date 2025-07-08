@@ -404,6 +404,7 @@ CREATE TABLE IF NOT EXISTS `df_site_edu_registration` (
   `idx` int NOT NULL AUTO_INCREMENT,
   `f_type` char(1) NOT NULL COMMENT 'P:개인, O:단체',
   `f_news_idx` int NOT NULL,
+  `f_edu_type_idx` int NOT NULL,
   `f_user_name` varchar(100) NOT NULL,
   `f_user_name_en` varchar(100) DEFAULT NULL,
   `f_gender` varchar(10) DEFAULT NULL,
