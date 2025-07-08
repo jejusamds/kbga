@@ -9,5 +9,8 @@ CREATE TABLE `df_site_main_slide` (
   `bottom_contents_m` MEDIUMTEXT,
   `thumbnail_pc` VARCHAR(500) COMMENT 'pc: 1920 * 998, m: 1080 * 1920',
   `thumbnail_m` VARCHAR(500) COMMENT 'pc: 1920 * 998, m: 1080 * 1920',
+  `media_type` VARCHAR(20) DEFAULT 'image' COMMENT 'image or video',
+  `video_pc` VARCHAR(500) DEFAULT NULL,
+  `video_m` VARCHAR(500) DEFAULT NULL,
   `prior` BIGINT
 ) ENGINE=InnoDB;
