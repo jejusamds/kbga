@@ -70,10 +70,11 @@ $application_type_map = [
                 <col width="60" />
                 <col width="150" />
                 <col width="150" />
-                <col width="200" />
-                <col width="180" />
-                <col width="150" />
-                <col width="200" />
+                <col width="140" />
+                <col width="130" />
+                <col width="120" />
+                <col width="170" />
+                <col width="190" />
                 <col width="150" />
                 <thead>
                     <tr>
