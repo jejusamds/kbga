@@ -39,7 +39,8 @@ if ($total > 0) {
         <tr>
             <td width="5"></td>
             <td colspan="6" align="right">
-                <button class="btn btn-success btn-xs" type="button" onclick="location.href='reg_competition_excel.php?<?= $param ?>'">엑셀파일저장</button>
+                <button class="btn btn-success btn-xs" type="button"
+                    onclick="location.href='reg_competition_excel.php?<?= $param ?>'">엑셀파일저장</button>
             </td>
             <td width="5"></td>
         </tr>
@@ -54,9 +55,8 @@ if ($total > 0) {
                 <col width="120" />
                 <col width="150" />
                 <col width="150" />
+                <col width="190" />
                 <col width="150" />
-                <col width="150" />
-                <col width="200" />
                 <thead>
                     <tr>
                         <td>번호</td>
@@ -76,9 +76,9 @@ if ($total > 0) {
                             <tr>
                                 <td><?= $total - ($page - 1) * $page_set - $i ?></td>
                                 <td><?= htmlspecialchars($row['f_title'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($row['f_part'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($row['f_field'], ENT_QUOTES) ?></td>
-                                <td><?= htmlspecialchars($row['f_event'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($row['f_part_title'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($row['f_field_title'], ENT_QUOTES) ?></td>
+                                <td><?= htmlspecialchars($row['f_event_title'], ENT_QUOTES) ?></td>
                                 <td><a
                                         href="reg_competition_view.php?idx=<?= $row['idx'] ?>&page=<?= $page ?>"><?= htmlspecialchars($row['f_user_name'], ENT_QUOTES) ?></a>
                                 </td>
