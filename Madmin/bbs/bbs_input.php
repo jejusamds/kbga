@@ -14,6 +14,9 @@ if ($mode == "insert" || $mode == "") {
     $bbs_row['passwd'] = date('is');
     $bbs_row['count'] = 0;
     $bbs_row['ctype'] = "H";
+    if ($code == 'education_news') {
+        $edu_types = [];
+    }
 } else if ($mode == "update") {
     $sql = "select * from df_site_bbs where code = '$code' and idx='$idx'";
     $bbs_row = $db->row($sql);
@@ -24,6 +27,12 @@ if ($mode == "insert" || $mode == "") {
         $sql_r = "Select * From df_site_bbs Where code = '$code' And idx = '$parno_'  ";
         $reply_row = $db->row($sql_r);
     }
+        if ($code == 'education_news') {
+            $edu_types = $db->query(
+                "SELECT f_type FROM df_site_education_type WHERE news_idx=:idx ORDER BY idx ASC",
+                ['idx' => $idx]
+            );
+        }
 } else if ($mode == "reply") {
     $sql = "select grp, subject, content, privacy, passwd from df_site_bbs where code = '$code' and idx='$idx'";
     $bbs_row = $db->row($sql);
@@ -159,6 +168,11 @@ if ($mode == "insert" || $mode == "") {
             $this.closest('tr').remove();
         }
     });
+
+    $(document).on('click', '.btnAddEduType', function () {
+        $('#tableEduType tbody').append('<tr><td class="comALeft"><input type="text" name="edu_types[]" class="form-control" style="width:60%;"></td><td><button class="btn btn-warning btn-xs btnDelEduType" type="button">삭제</button></td></tr>');
+    });
+    $(document).on('click', '.btnDelEduType', function () { $(this).closest('tr').remove(); });
 
     function inputCheck(frm) {
         if (frm.name.value == "") {
@@ -352,6 +366,35 @@ if ($mode == "insert" || $mode == "") {
                             <td class="comALeft" colspan="3">
                                 <input type="text" name="app_target" value="<?= $bbs_row['app_target'] ?>"
                                     class="form-control" style="width:88%;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="padding:0;">
+                                <div class="panel" style="margin-top:10px;">
+                                    <div class="title">
+                                        <i class="fa fa-list"></i>
+                                        <span>교육구분</span>
+                                        <button class="btn btn-success btn-xs comMLeft15 btnAddEduType" type="button">항목추가</button>
+                                    </div>
+                                    <table id="tableEduType" class="table orderInfo" cellpadding="0" cellspacing="0">
+                                        <col width="85%">
+                                        <col width="15%">
+                                        <tbody>
+                                            <?php if ($mode == 'insert' && empty($edu_types)): ?>
+                                                <tr>
+                                                    <td class="comALeft"><input type="text" name="edu_types[]" class="form-control" style="width:60%;"></td>
+                                                    <td><button class="btn btn-warning btn-xs btnDelEduType" type="button">삭제</button></td>
+                                                </tr>
+                                            <?php endif; ?>
+                                            <?php foreach ($edu_types as $t): ?>
+                                                <tr>
+                                                    <td class="comALeft"><input type="text" name="edu_types[]" value="<?= htmlspecialchars($t['f_type'], ENT_QUOTES) ?>" class="form-control" style="width:60%;"></td>
+                                                    <td><button class="btn btn-warning btn-xs btnDelEduType" type="button">삭제</button></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </td>
                         </tr>
                     <?php } ?>
