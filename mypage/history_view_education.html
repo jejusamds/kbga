@@ -995,10 +995,7 @@ if (!$row) {
                                 </div>
 
                                 <div class="btn_con">
-                                    <form action="/mypage/application_cancel.php" method="post" style="display:inline;">
-                                        <input type="hidden" name="idx" value="<?= $idx ?>">
-                                        <button type="submit" class="a_btn a_btn01">신청취소</button>
-                                    </form>
+                                    <a href="#" class="a_btn a_btn01" onclick="submitCancelForm(<?= $idx ?>); return false;">신청취소</a>
 
                                     <a href="/mypage/history.html" class="a_btn a_btn02">
                                         목록으로
@@ -1053,8 +1050,13 @@ if (!$row) {
 
         element.value = formattedPhoneNumber;
     }
+
+    function submitCancelForm(idx) {
+        const form = document.getElementById('cancelForm');
+        form.idx.value = idx;
+        form.submit();
+    }
 </script>
 
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.html';
-?>
+include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.html';?>

@@ -1433,10 +1433,7 @@ $p_value = implode(', ', $labels);
                                 </div>
 
                                 <div class="btn_con">
-                                    <form action="/mypage/application_cancel.php" method="post" style="display:inline;">
-                                        <input type="hidden" name="idx" value="<?= $idx ?>">
-                                        <button type="submit" class="a_btn a_btn01">신청취소</button>
-                                    </form>
+                                    <a href="#" class="a_btn a_btn01" onclick="submitCancelForm(<?= $idx ?>); return false;">신청취소</a>
 
                                     <a href="/mypage/history.html" class="a_btn a_btn02">
                                         목록으로
@@ -1452,6 +1449,10 @@ $p_value = implode(', ', $labels);
         </div>
     </div>
 </div>
+
+<form id="cancelForm" action="/mypage/application_cancel.php" method="post" style="display:none;">
+    <input type="hidden" name="idx" value="">
+</form>
 
 <script type="text/javascript" language="javascript">
     // 생년월일
@@ -1496,8 +1497,13 @@ $p_value = implode(', ', $labels);
     function file_upload(val) {
         $(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td .input_con > table > tbody > tr > .input_td .input").val(val).focus();
     }
+
+    function submitCancelForm(idx) {
+        const form = document.getElementById('cancelForm');
+        form.idx.value = idx;
+        form.submit();
+    }
 </script>
 
 <?php
-include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.html';
-?>
+include $_SERVER['DOCUMENT_ROOT'] . '/include/footer.html';?>
