@@ -604,22 +604,20 @@ $p_value = implode(', ', $labels);
                                                                                                                         value="<?= htmlspecialchars($row['f_issue_file'], ENT_QUOTES) ?>"
                                                                                                                         class="input"
                                                                                                                         readonly="readonly" /> -->
-                                                                                                                        <?php if (!empty($row['f_issue_file'])): ?>
-                                                                                                                            <?php
-                                                                                                                            $fileName = $row['f_issue_file'];
-                                                                                                                            $fileUrl = '/userfiles/registration/' . rawurlencode($fileName);
-                                                                                                                            ?>
-                                                                                                                            <a href="<?= htmlspecialchars($fileUrl, ENT_QUOTES) ?>"
-                                                                                                                                download="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>"
-                                                                                                                                class="download-link">
-                                                                                                                                <?= htmlspecialchars($fileName, ENT_QUOTES) ?>
-                                                                                                                            </a>
-                                                                                                                        <?php else: ?>
-                                                                                                                            <span
-                                                                                                                                class="no-file">
-                                                                                                                                파일이
-                                                                                                                                없습니다.</span>
-                                                                                                                        <?php endif; ?>
+                                                <?php if (!empty($row['f_issue_file'])): ?>
+                                                    <?php $files_arr = explode(',', $row['f_issue_file']);
+                                                    foreach ($files_arr as $fileName):
+                                                        $fileUrl = '/userfiles/registration/' . rawurlencode($fileName);
+                                                    ?>
+                                                        <a href="<?= htmlspecialchars($fileUrl, ENT_QUOTES) ?>"
+                                                            download="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>"
+                                                            class="download-link">
+                                                            <?= htmlspecialchars($fileName, ENT_QUOTES) ?>
+                                                        </a><br>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <span class="no-file">파일이 없습니다.</span>
+                                                <?php endif; ?>
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                             </tbody>
@@ -1217,22 +1215,20 @@ $p_value = implode(', ', $labels);
                                                                                                                             value="<?= htmlspecialchars($row['f_issue_file'], ENT_QUOTES) ?>"
                                                                                                                             class="input"
                                                                                                                             readonly="readonly" /> -->
-                                                                                                                        <?php if (!empty($row['f_issue_file'])): ?>
-                                                                                                                            <?php
-                                                                                                                            $fileName = $row['f_issue_file'];
-                                                                                                                            $fileUrl = '/userfiles/registration/' . rawurlencode($fileName);
-                                                                                                                            ?>
-                                                                                                                            <a href="<?= htmlspecialchars($fileUrl, ENT_QUOTES) ?>"
-                                                                                                                                download="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>"
-                                                                                                                                class="download-link">
-                                                                                                                                <?= htmlspecialchars($fileName, ENT_QUOTES) ?>
-                                                                                                                            </a>
-                                                                                                                        <?php else: ?>
-                                                                                                                            <span
-                                                                                                                                class="no-file">
-                                                                                                                                파일이
-                                                                                                                                없습니다.</span>
-                                                                                                                        <?php endif; ?>
+                                                <?php if (!empty($row['f_issue_file'])): ?>
+                                                    <?php $files_arr = explode(',', $row['f_issue_file']);
+                                                    foreach ($files_arr as $fileName):
+                                                        $fileUrl = '/userfiles/registration/' . rawurlencode($fileName);
+                                                    ?>
+                                                        <a href="<?= htmlspecialchars($fileUrl, ENT_QUOTES) ?>"
+                                                            download="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>"
+                                                            class="download-link">
+                                                            <?= htmlspecialchars($fileName, ENT_QUOTES) ?>
+                                                        </a><br>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <span class="no-file">파일이 없습니다.</span>
+                                                <?php endif; ?>
                                                                                                                     </td>
                                                                                                                 </tr>
                                                                                                             </tbody>
