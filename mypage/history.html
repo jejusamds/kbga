@@ -36,15 +36,17 @@
 
         function printStatus($val)
         {
-            switch ((int) $val) {
-                case 1:
-                    return '접수완료';
-                case 2:
-                    return '발급완료';
-                case 3:
-                    return '발급보류';
+            switch ($val) {
+                case 'ing':
+                    return '접수중';
+                case 'done':
+                    return '완료';
+                case 'cancle':
+                    return '취소';
+                case 'hold':
+                    return '보류';
                 default:
-                    return '';
+                    return $val;
             }
         }
 ?>
