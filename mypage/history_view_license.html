@@ -1433,9 +1433,10 @@ $p_value = implode(', ', $labels);
                                 </div>
 
                                 <div class="btn_con">
-									<a href="#" class="a_btn a_btn01">
-                                        신청취소
-                                    </a>
+                                    <form action="/mypage/application_cancel.php" method="post" style="display:inline;">
+                                        <input type="hidden" name="idx" value="<?= $idx ?>">
+                                        <button type="submit" class="a_btn a_btn01">신청취소</button>
+                                    </form>
 
                                     <a href="/mypage/history.html" class="a_btn a_btn02">
                                         목록으로
