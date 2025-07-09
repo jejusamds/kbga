@@ -52,6 +52,31 @@ if ($total > 0) {
             <li class="active">대회</li>
         </ul>
     </div>
+    <div class="box comMTop20" style="width:1114px;">
+        <div class="panel">
+            <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get">
+                <input type="hidden" name="page" value="<?= $page ?>">
+                <table class="table noMargin" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td width="90" height="26" align="right" style="padding-left:5px">조건검색</td>
+                            <td class="comALeft" style="padding-left:5px">
+                                <select name="status" class="form-control" style="width:auto; display:inline-block;">
+                                    <option value="" <?= $status === '' ? 'selected' : '' ?>>전체</option>
+                                    <option value="ing" <?= $status === 'ing' ? 'selected' : '' ?>>접수중</option>
+                                    <option value="done" <?= $status === 'done' ? 'selected' : '' ?>>완료</option>
+                                    <option value="cancle" <?= $status === 'cancle' ? 'selected' : '' ?>>취소</option>
+                                    <option value="hold" <?= $status === 'hold' ? 'selected' : '' ?>>보류</option>
+                                </select>
+                                <button class="btn btn-info btn-sm" type="submit">검색</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
     <table class="comMTop20" cellpadding="0" cellspacing="0" style="width:1114px;">
         <tr>
             <td width="5"></td>
@@ -62,26 +87,6 @@ if ($total > 0) {
             <td width="5"></td>
         </tr>
     </table>
-
-    <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get">
-        <input type="hidden" name="page" value="<?= $page ?>">
-        <table class="comMTop20" cellpadding="0" cellspacing="0" style="width:1114px;">
-            <tr>
-                <td width="5"></td>
-                <td align="left">
-                    <select name="status" class="form-control" style="width:auto; display:inline-block;">
-                        <option value="" <?= $status === '' ? 'selected' : '' ?>>전체</option>
-                        <option value="ing" <?= $status === 'ing' ? 'selected' : '' ?>>접수중</option>
-                        <option value="done" <?= $status === 'done' ? 'selected' : '' ?>>완료</option>
-                        <option value="cancle" <?= $status === 'cancle' ? 'selected' : '' ?>>취소</option>
-                        <option value="hold" <?= $status === 'hold' ? 'selected' : '' ?>>보류</option>
-                    </select>
-                    <button class="btn btn-info btn-sm" type="submit">검색</button>
-                </td>
-                <td width="5"></td>
-            </tr>
-        </table>
-    </form>
     <div class="box comMTop20" style="width:1114px;">
         <div class="panel">
             <table class="table" cellpadding="0" cellspacing="0">
