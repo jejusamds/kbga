@@ -128,7 +128,7 @@ function printStatus($val)
                                             <div class="apply_con">
                                                 <div class="contents_con">
 
-                                                    <form action="/mypage/file_modify.php" method="post" enctype="multipart/form-data" autocomplete="off">
+                                                    <form id="fileModifyForm" action="/mypage/file_modify.php" method="post" enctype="multipart/form-data" autocomplete="off">
                                                         <input type="hidden" name="table" value="education" />
                                                         <input type="hidden" name="idx" value="<?= $idx ?>" />
                                                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>" />
@@ -566,7 +566,7 @@ function printStatus($val)
                                             <div class="apply_con">
                                                 <div class="contents_con">
 
-                                                    <form action="/mypage/file_modify.php" method="post" enctype="multipart/form-data" autocomplete="off">
+                                                    <form id="fileModifyForm" action="/mypage/file_modify.php" method="post" enctype="multipart/form-data" autocomplete="off">
                                                         <input type="hidden" name="table" value="education" />
                                                         <input type="hidden" name="idx" value="<?= $idx ?>" />
                                                         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>" />
@@ -1083,7 +1083,7 @@ function printStatus($val)
                                 </div>
 
                                 <div class="btn_con">
-                                    <a href="javascript:void(0);" class="a_btn a_btn00" onclick="">수정하기</a>
+                                    <a href="javascript:void(0);" class="a_btn a_btn00" onclick="submitModifyForm(); return false;">수정하기</a>
 
                                     <a href="javascript:void(0);" class="a_btn a_btn01" onclick="submitCancelForm(<?= $idx ?>, 'education'); return false;">신청취소</a>
 
@@ -1200,6 +1200,11 @@ function printStatus($val)
         form.idx.value = idx;
         form.table.value = table;
         form.submit();
+    }
+
+    function submitModifyForm() {
+        const form = document.getElementById('fileModifyForm');
+        if (form) form.submit();
     }
 
     $(function(){
