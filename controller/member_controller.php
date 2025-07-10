@@ -118,6 +118,12 @@ if ($filtered['mode'] === 'sign_up') {
             ]);
         }
 
+        if ($filtered['f_affiliation_flag'] === 'Y') {
+            if (empty($filtered['f_affiliation_name'])) {
+                return_json(['result' => 'error', 'msg' => '소속단체가 있는경우 단체명을 적어주세요.']);
+            }
+        }
+
         // **아이디 중복 체크**
         $sql = "SELECT COUNT(*) AS cnt FROM df_site_member WHERE f_user_id = :f_user_id";
         $row = $db->row($sql, ['f_user_id' => $filtered['f_user_id']]);
