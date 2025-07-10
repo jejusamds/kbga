@@ -179,8 +179,9 @@ CREATE TABLE `df_site_application_registration` (
 	`f_email` VARCHAR(255) NOT NULL COMMENT '이메일' COLLATE 'utf8mb4_0900_ai_ci',
 	`f_application_type` ENUM('exam','cert') NOT NULL COMMENT '신청구분 (exam=시험접수, certificate=자격증발급)' COLLATE 'utf8mb4_0900_ai_ci',
 	`f_issue_desire` TINYINT(1) NOT NULL DEFAULT '0' COMMENT '자격증 발급희망 여부 (개인만)',
-	`f_issue_file` VARCHAR(2000) NULL DEFAULT NULL COMMENT '발급희망 시 파일 업로드' COLLATE 'utf8mb4_0900_ai_ci',
-	`f_payer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '입금자명' COLLATE 'utf8mb4_0900_ai_ci',
+        `f_issue_file` VARCHAR(2000) NULL DEFAULT NULL COMMENT '발급희망 시 파일 업로드' COLLATE 'utf8mb4_0900_ai_ci',
+        `f_issue_file_name` VARCHAR(2000) NULL DEFAULT NULL COMMENT '발급희망 시 원본 파일명' COLLATE 'utf8mb4_0900_ai_ci',
+        `f_payer_name` VARCHAR(100) NULL DEFAULT NULL COMMENT '입금자명' COLLATE 'utf8mb4_0900_ai_ci',
 	`f_payer_bank` VARCHAR(100) NULL DEFAULT NULL COMMENT '입금 은행' COLLATE 'utf8mb4_0900_ai_ci',
 	`f_payment_category` VARCHAR(100) NULL DEFAULT NULL COMMENT '입금구분 (중복가능: written=필기, practical=실기, issuance=발급비)' COLLATE 'utf8mb4_0900_ai_ci',
 	`f_user_idx` INT NULL DEFAULT NULL,
@@ -352,8 +353,9 @@ CREATE TABLE `df_site_competition_registration` (
 	`mod_date` DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
 	`f_user_idx` INT NULL DEFAULT NULL,
 	`f_user_id` VARCHAR(128) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
-	`f_issue_file` VARCHAR(500) NULL DEFAULT NULL COMMENT '업로드 파일명' COLLATE 'utf8mb4_general_ci',
-	PRIMARY KEY (`idx`) USING BTREE
+        `f_issue_file` VARCHAR(500) NULL DEFAULT NULL COMMENT '업로드 파일명' COLLATE 'utf8mb4_general_ci',
+        `f_issue_file_name` VARCHAR(500) NULL DEFAULT NULL COMMENT '업로드 원본파일명' COLLATE 'utf8mb4_general_ci',
+        PRIMARY KEY (`idx`) USING BTREE
 )
 COMMENT='대회 접수 정보'
 COLLATE='utf8mb4_general_ci'

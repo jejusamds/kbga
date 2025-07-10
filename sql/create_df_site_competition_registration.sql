@@ -25,8 +25,9 @@ CREATE TABLE `df_site_competition_registration` (
 	`mod_date` DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
 	`f_user_idx` INT NULL DEFAULT NULL,
 	`f_user_id` VARCHAR(128) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
-	`f_issue_file` VARCHAR(500) NULL DEFAULT NULL COMMENT '업로드 파일명' COLLATE 'utf8mb4_general_ci',
-	PRIMARY KEY (`idx`) USING BTREE
+        `f_issue_file` VARCHAR(500) NULL DEFAULT NULL COMMENT '업로드 파일명' COLLATE 'utf8mb4_general_ci',
+        `f_issue_file_name` VARCHAR(500) NULL DEFAULT NULL COMMENT '업로드 원본파일명' COLLATE 'utf8mb4_general_ci',
+        PRIMARY KEY (`idx`) USING BTREE
 )
 COMMENT='대회 접수 정보'
 COLLATE='utf8mb4_general_ci'
