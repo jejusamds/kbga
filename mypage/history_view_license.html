@@ -170,7 +170,7 @@ $p_value = implode(', ', $labels);
                                                                 <div class="input_con">
                                                                     <div class="form01_con">
                                                                         <ul>
-                                                                               <li data-file="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>">
+                                                                               <li>
                                                                                 <div class="list_div fl">
                                                                                     <table cellpadding="0" cellspacing="0">
                                                                                         <tbody>
@@ -200,7 +200,7 @@ $p_value = implode(', ', $labels);
                                                                                     </table>
                                                                                 </div>
                                                                             </li>
-                                                                               <li data-file="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>">
+                                                                               <li>
                                                                                 <div class="list_div fl">
                                                                                     <table cellpadding="0" cellspacing="0">
                                                                                         <tbody>
@@ -596,7 +596,7 @@ $p_value = implode(', ', $labels);
 																																foreach ($files_arr as $fileName):
 																																	$fileUrl = '/userfiles/registration/' . rawurlencode($fileName);
 																																?>
-																																<li>
+																																<li data-file="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>">
 																																	<div class="file_div">
 																																		<div class="input_con">
 																																			<table cellpadding="0" cellspacing="0">
@@ -1257,7 +1257,7 @@ $p_value = implode(', ', $labels);
 																																foreach ($files_arr as $fileName):
 																																	$fileUrl = '/userfiles/registration/' . rawurlencode($fileName);
 																																?>
-																																<li>
+																																<li data-file="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>">
 																																	<div class="file_div">
 																																		<div class="input_con">
 																																			<table cellpadding="0" cellspacing="0">
