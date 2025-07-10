@@ -3,7 +3,10 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Madmin/inc/top.php";
 
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 $status = $_GET['status'] ?? '';
-$param = "status={$status}";
+$type = $_GET['type'] ?? '';
+$searchopt = $_GET['searchopt'] ?? '';
+$keyword = trim($_GET['keyword'] ?? '');
+$param = "status={$status}&type={$type}&searchopt={$searchopt}&keyword=" . urlencode($keyword);
 $page_set = 15;
 $block_set = 10;
 
@@ -12,6 +15,20 @@ $params = [];
 if ($status !== '') {
     $where .= ' AND t1.f_applicant_status=:status';
     $params['status'] = $status;
+}
+if ($type !== '') {
+    $where .= ' AND t1.f_applicant_type=:atype';
+    $params['atype'] = $type;
+}
+if ($keyword !== '') {
+    if ($searchopt === 'id') {
+        $where .= ' AND t1.f_user_id LIKE :kw';
+    } elseif ($searchopt === 'tel') {
+        $where .= ' AND t1.f_tel LIKE :kw';
+    } else {
+        $where .= ' AND t1.f_user_name LIKE :kw';
+    }
+    $params['kw'] = "%{$keyword}%";
 }
 
 $sql = "SELECT COUNT(*) FROM df_site_application_registration t1 {$where}";
@@ -55,6 +72,11 @@ $status_map = [
     'cancle' => '취소',
     'hold'  => '보류',
 ];
+
+$type_map = [
+    'P' => '개인',
+    'O' => '단체',
+];
 ?>
 <style>
     .pagination {
@@ -87,6 +109,17 @@ $status_map = [
                                     <option value="cancle" <?= $status === 'cancle' ? 'selected' : '' ?>>취소</option>
                                     <option value="hold" <?= $status === 'hold' ? 'selected' : '' ?>>보류</option>
                                 </select>
+                                <select name="type" class="form-control" style="width:auto; display:inline-block;">
+                                    <option value="" <?= $type === '' ? 'selected' : '' ?>>전체</option>
+                                    <option value="P" <?= $type === 'P' ? 'selected' : '' ?>>개인</option>
+                                    <option value="O" <?= $type === 'O' ? 'selected' : '' ?>>단체</option>
+                                </select>
+                                <select name="searchopt" class="form-control" style="width:auto; display:inline-block;">
+                                    <option value="id" <?= $searchopt === 'id' ? 'selected' : '' ?>>ID</option>
+                                    <option value="name" <?= $searchopt === 'name' ? 'selected' : '' ?>>이름</option>
+                                    <option value="tel" <?= $searchopt === 'tel' ? 'selected' : '' ?>>연락처</option>
+                                </select>
+                                <input type="text" name="keyword" value="<?= htmlspecialchars($keyword, ENT_QUOTES) ?>" class="form-control" style="width:auto; display:inline-block;">
                                 <button class="btn btn-info btn-sm" type="submit">검색</button>
                             </td>
                         </tr>
@@ -113,6 +146,7 @@ $status_map = [
                 <col width="150" />
                 <col width="150" />
                 <col width="140" />
+                <col width="90" />
                 <col width="130" />
                 <col width="120" />
                 <col width="170" />
@@ -125,6 +159,7 @@ $status_map = [
                         <td>분야</td>
                         <td>자격종목</td>
                         <td>시험일정</td>
+                        <td>신청자구분</td>
                         <td>이름</td>
                         <td>신청구분</td>
                         <td>연락처</td>
@@ -149,6 +184,7 @@ $status_map = [
                                         <?= htmlspecialchars($row['f_schedule_idx'], ENT_QUOTES) ?>
                                     <?php endif; ?>
                                 </td>
+                                <td><?= htmlspecialchars($type_map[$row['f_applicant_type']] ?? $row['f_applicant_type'], ENT_QUOTES) ?></td>
                                 <td><a
                                         href="reg_application_view.php?idx=<?= $row['idx'] ?>&page=<?= $page ?>"><?= htmlspecialchars($row['f_user_name'], ENT_QUOTES) ?></a>
                                 </td>
@@ -161,7 +197,7 @@ $status_map = [
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="10" align="center">등록된 데이터가 없습니다.</td>
+                            <td colspan="11" align="center">등록된 데이터가 없습니다.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
