@@ -7,9 +7,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/include/header.html';
 $idx = (int) ($_GET['idx'] ?? 0);
 $user_id = $_SESSION['kbga_user_id'] ?? '';
 $row = $db->row(
-    "SELECT r.*, b.subject
-               FROM df_site_edu_registration r
-               LEFT JOIN df_site_bbs b ON r.f_news_idx = b.idx
+    "SELECT r.*, c.f_title
+               FROM df_site_competition_registration r
+               LEFT JOIN df_site_competition c ON r.f_competition_idx = c.idx
               WHERE r.idx = :idx AND r.f_user_id = :uid",
     ['idx' => $idx, 'uid' => $user_id]
 );
@@ -33,6 +33,19 @@ function printStatus($val)
             return $val;
     }
 }
+
+$codeString = $row['f_payment_category'] ?? '';
+$pay_map = [
+    'entry' => '접수비',
+];
+$labels = [];
+if ($codeString !== '') {
+    $codes = explode(',', $codeString);
+    $labels = array_map(function ($code) use ($pay_map) {
+        return $pay_map[$code] ?? $code;
+    }, $codes);
+}
+$p_value = implode(', ', $labels);
 ?>
 
 <div id="container">
@@ -85,7 +98,7 @@ function printStatus($val)
                                                 <tr>
                                                     <td align="center">
                                                         <span>
-                                                            <?= htmlspecialchars($row['subject'], ENT_QUOTES) ?>
+                                                            <?= htmlspecialchars($row['f_title'], ENT_QUOTES) ?>
                                                         </span>
                                                     </td>
                                                     <td align="center">
@@ -143,7 +156,7 @@ function printStatus($val)
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -167,7 +180,7 @@ function printStatus($val)
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_part_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -192,7 +205,7 @@ function printStatus($val)
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_field_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -216,7 +229,7 @@ function printStatus($val)
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_event_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -234,7 +247,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_user_name" placeholder="이름을 적어주세요." class="input" data-required="y" data-label="이름을" value="<?= $default['f_user_name'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="text" name="f_user_name" placeholder="이름을 적어주세요." class="input" data-required="y" data-label="이름을" value="<?= htmlspecialchars($row['f_user_name'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -282,7 +295,7 @@ function printStatus($val)
 																								</div>
 																								-->
 
-																								<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_gender'] == 'M' ? '남자' : '여자', ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -300,7 +313,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_user_name_en" placeholder="영문이름을 적어주세요." class="input" data-required="y" data-label="영문이름을" value="<?= $default['f_user_name_en'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="text" name="f_user_name_en" placeholder="영문이름을 적어주세요." class="input" data-required="y" data-label="영문이름을" value="<?= htmlspecialchars($row['f_user_name_en'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -317,7 +330,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="f_birth_date" placeholder="0000.00.00" id="birthdate_input" class="input" data-required="y" data-label="생년월일을" value="<?= $default['f_birth_date'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="tel" name="f_birth_date" placeholder="0000.00.00" id="birthdate_input" class="input" data-required="y" data-label="생년월일을" value="<?= htmlspecialchars(str_replace('-', '.', $row['f_birth_date']), ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -335,7 +348,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= $default['f_tel'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= htmlspecialchars($row['f_tel'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -352,7 +365,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email" data-label="이메일을" value="<?= $default['f_email'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="text" name="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email" data-label="이메일을" value="<?= htmlspecialchars($row['f_email'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -375,7 +388,7 @@ function printStatus($val)
 																										<tbody>
 																											<tr>
 																												<td align="left" class="input_td">
-																													<input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="우편번호를" value="<?= $default['f_zip'] ?? '' ?>" />
+                                                                               <input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="우편번호를" value="<?= htmlspecialchars($row['f_zip'], ENT_QUOTES) ?>" />
 																												</td>
 																												<!--
 																												<td align="left" class="btn_td">
@@ -406,7 +419,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= $default['f_address1'] ?? '' ?>" />
+                                                                               <input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= htmlspecialchars($row['f_address1'], ENT_QUOTES) ?>" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -423,7 +436,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= $default['f_address2'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= htmlspecialchars($row['f_address2'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -454,7 +467,7 @@ function printStatus($val)
 																										</span>
 																									</td>
 																									<td align="left" class="info_td">
-																										<input type="text" name="f_payer_name" placeholder="입금자명을 적어주세요." class="input" data-required="y" data-label="입금자명을" readonly="readonly" />
+                                                                               <input type="text" name="f_payer_name" placeholder="입금자명을 적어주세요." class="input" data-required="y" data-label="입금자명을" value="<?= htmlspecialchars($row['f_payer_name'], ENT_QUOTES) ?>" readonly="readonly" />
 																									</td>
 																								</tr>
 																							</tbody>
@@ -484,7 +497,7 @@ function printStatus($val)
 																										</select>
 																										-->
 
-																										<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_payer_bank'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																									</td>
 																								</tr>
 																							</tbody>
@@ -532,7 +545,7 @@ function printStatus($val)
 																										</div>
 																										-->
 
-																										<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= $p_value ?>" class="input" readonly="readonly" />
 																									</td>
 																								</tr>
 																							</tbody>
@@ -592,7 +605,7 @@ function printStatus($val)
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_part_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -616,7 +629,7 @@ function printStatus($val)
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_field_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -641,7 +654,7 @@ function printStatus($val)
 																								</select>
 																								-->
 
-																								<input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="" value="<?= htmlspecialchars($row['f_event_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -683,7 +696,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_user_name" placeholder="단체명을 적어주세요." class="input" data-required="y" data-label="단체명을" value="<?= $default['f_user_name'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="text" name="f_user_name" placeholder="단체명을 적어주세요." class="input" data-required="y" data-label="단체명을" value="<?= htmlspecialchars($row['f_user_name'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -700,7 +713,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_user_name_en" placeholder="담당자를 적어주세요." class="input" data-required="y" data-label="담당자를" value="<?= $default['f_user_name_en'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="text" name="f_user_name_en" placeholder="담당자를 적어주세요." class="input" data-required="y" data-label="담당자를" value="<?= htmlspecialchars($row['f_user_name_en'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -718,7 +731,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= $default['f_tel'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= htmlspecialchars($row['f_tel'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -735,7 +748,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="f_contact_phone" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="담당자 연락처를" value="<?= $default['f_contact_phone'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="tel" name="f_contact_phone" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="담당자 연락처를" value="<?= htmlspecialchars($row['f_contact_phone'] ?? '', ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -753,8 +766,8 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email"
-																									data-label="이메일을" value="<?= $default['f_email'] ?? '' ?>" readonly="readonly" />
+                                                                               <input type="text" name="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email"
+                                                                               data-label="이메일을" value="<?= htmlspecialchars($row['f_email'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -777,8 +790,8 @@ function printStatus($val)
 																										<tbody>
 																											<tr>
 																												<td align="left" class="input_td">
-																													<input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly"
-																														data-required="y" data-label="우편번호를" value="<?= $default['f_zip'] ?? '' ?>" />
+                                                                               <input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly"
+                                                                               data-required="y" data-label="우편번호를" value="<?= htmlspecialchars($row['f_zip'], ENT_QUOTES) ?>" />
 																												</td>
 																												<!--
 																												<td align="left" class="btn_td">
@@ -809,7 +822,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= $default['f_address1'] ?? '' ?>" />
+                                                                               <input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= htmlspecialchars($row['f_address1'], ENT_QUOTES) ?>" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -826,7 +839,7 @@ function printStatus($val)
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= $default['f_address2'] ?? '' ?>" <input type="text" name="" value="" class="input" readonly="readonly" />
+                                                                               <input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= htmlspecialchars($row['f_address2'], ENT_QUOTES) ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -967,7 +980,7 @@ function printStatus($val)
 																										</span>
 																									</td>
 																									<td align="left" class="info_td">
-																										<input type="text" name="f_payer_name" placeholder="입금자명을 적어주세요." class="input" data-required="y" data-label="입금자명을" readonly="readonly" />
+                                                                               <input type="text" name="f_payer_name" placeholder="입금자명을 적어주세요." class="input" data-required="y" data-label="입금자명을" value="<?= htmlspecialchars($row['f_payer_name'], ENT_QUOTES) ?>" readonly="readonly" />
 																									</td>
 																								</tr>
 																							</tbody>
@@ -1086,6 +1099,10 @@ function printStatus($val)
     </div>
 </div>
 
+<form id="cancelForm" action="/mypage/application_cancel.php" method="post" style="display:none;">
+    <input type="hidden" name="idx" value="">
+</form>
+
 <script type="text/javascript" language="javascript">
     // 생년월일
     const input = document.getElementById('birthdate_input');
@@ -1167,10 +1184,16 @@ function printStatus($val)
 	}
 
 	// 파일 input change 이벤트도 추가로 처리
-	$(document).on("change", "input[type='file'][name='upfile']", function(){
-		var fileName = this.value.split('\\').pop().split('/').pop();
-		$(this).closest('.apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td > ul > li .file_div').find("input[name='upfile_name']").val(fileName);
-	});
+        $(document).on("change", "input[type='file'][name='upfile']", function(){
+                var fileName = this.value.split('\\').pop().split('/').pop();
+                $(this).closest('.apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td > ul > li .file_div').find("input[name='upfile_name']").val(fileName);
+        });
+
+        function submitCancelForm(idx) {
+            const form = document.getElementById('cancelForm');
+            form.idx.value = idx;
+            form.submit();
+        }
 </script>
 
 <?php
