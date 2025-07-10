@@ -1190,6 +1190,14 @@ function printStatus($val)
         form.table.value = table;
         form.submit();
     }
+
+    $(function(){
+        $(document).on('click', '.existing_delete_btn', function(e){
+            e.preventDefault();
+            // .file_div(파일 한 항목 전체)를 감싸고 있는 <li>를 찾아 제거
+            $(this).closest('.file_div').parent('li').remove();
+        });
+    });
 </script>
 
 <?php
