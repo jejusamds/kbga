@@ -1627,26 +1627,33 @@ $p_value = implode(', ', $labels);
                 var deleteArr = [];
                 // 추가 버튼 클릭 이벤트
                 $(document).on("click", ".add_btn", function(e){
-			e.preventDefault(); // a 태그 기본동작 방지
-			var lastRow = $(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td > ul > li").last(); // 마지막 li
-			var newRow = lastRow.clone(); // 복제
-			// input[type=file] 비우기
-			newRow.find("input[type='file']").val(""); 
-			// input[type=text] 비우기 (파일명 표시 input)
-			newRow.find("input[name='upfile_name']").val("").attr("placeholder", "선택된 파일 없음");
-			// 새로운 행을 마지막 li 뒤에 추가
-			$(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td > ul").append(newRow);
-		});
+                        e.preventDefault();
+                        var ul = $(this).closest('ul');
+                        var lastRow = ul.children('li').last();
+                        var newRow = lastRow.clone();
+                        newRow.removeAttr('data-file');
+                        newRow.find("input[type='file']").val("");
+                        newRow.find("input[name='upfile_name']").val("").attr("placeholder", "선택된 파일 없음");
+                        ul.append(newRow);
+                });
 
                 // 삭제 버튼 클릭 이벤트
                 $(document).on("click", ".delete_btn", function(e){
                         e.preventDefault();
                         var li = $(this).closest('li');
-                        var file = li.data('file');
-                        if (file) {
-                                deleteArr.push(file);
-                        }
-                        if($(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td > ul > li").length > 1) {
+                        var ul = li.parent('ul');
+                        if (li.find("input[name='upfile[]']").length > 0) {
+                                if (ul.children('li').length > 1) {
+                                        li.remove();
+                                } else {
+                                        li.find("input[type='file']").val('');
+                                        li.find("input[name='upfile_name']").val('').attr('placeholder', '선택된 파일 없음');
+                                }
+                        } else {
+                                var file = li.data('file');
+                                if (file) {
+                                        deleteArr.push(file);
+                                }
                                 li.remove();
                         }
                 });
