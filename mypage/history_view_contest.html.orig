@@ -7,10 +7,10 @@ include $_SERVER['DOCUMENT_ROOT'] . '/include/header.html';
 $idx = (int) ($_GET['idx'] ?? 0);
 $user_id = $_SESSION['kbga_user_id'] ?? '';
 $row = $db->row(
-    "SELECT r.*, c.f_title
-       FROM df_site_competition_registration r
-       LEFT JOIN df_site_competition c ON r.f_competition_idx = c.idx
-      WHERE r.idx = :idx AND r.f_user_id = :uid",
+    "SELECT r.*, b.subject
+               FROM df_site_edu_registration r
+               LEFT JOIN df_site_bbs b ON r.f_news_idx = b.idx
+              WHERE r.idx = :idx AND r.f_user_id = :uid",
     ['idx' => $idx, 'uid' => $user_id]
 );
 if (!$row) {
@@ -33,28 +33,6 @@ function printStatus($val)
             return $val;
     }
 }
-
-function printAppType($val)
-{
-    switch ($val) {
-        case 'P':
-            return '개인';
-        case 'O':
-            return '단체';
-        default:
-            return $val;
-    }
-}
-
-$pay_map = ['entry' => '접수비'];
-$pay_labels = [];
-if (!empty($row['f_payment_category'])) {
-    $codes = explode(',', $row['f_payment_category']);
-    $pay_labels = array_map(function ($c) use ($pay_map) {
-        return $pay_map[$c] ?? $c;
-    }, $codes);
-}
-$pay_value = implode(', ', $pay_labels);
 ?>
 
 <div id="container">
@@ -128,7 +106,6 @@ $pay_value = implode(', ', $pay_labels);
                                     <div class="contents_con">
                                         <!--개인접수-->
 										<div class="apply_con">
-                                        <?php if ($row['f_applicant_type'] == 'P') { ?>
 											<div class="contents_con">
 
 												<!--
@@ -166,7 +143,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</select>
 																								-->
 
-                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
+																								<input type="text" name="" value="" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -190,7 +167,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</select>
 																								-->
 
-                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_part_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
+																								<input type="text" name="" value="" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -215,7 +192,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</select>
 																								-->
 
-                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_field_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
+																								<input type="text" name="" value="" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -239,7 +216,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</select>
 																								-->
 
-                                                                           <input type="text" name="" value="<?= htmlspecialchars($row['f_event_title'], ENT_QUOTES) ?>" class="input" readonly="readonly" />
+																								<input type="text" name="" value="" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -257,7 +234,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_user_name" placeholder="이름을 적어주세요." class="input" data-required="y" data-label="이름을" value="<?= $row[f_user_name] ?? '' ?>" readonly="readonly" />
+																								<input type="text" name="f_user_name" placeholder="이름을 적어주세요." class="input" data-required="y" data-label="이름을" value="<?= $default['f_user_name'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -281,7 +258,7 @@ $pay_value = implode(', ', $pay_labels);
 																											<label class="radio_label">
 																												<input type="radio" name="f_gender"
 																													value="M"
-																													<?=($row[f_gender] ?? ''
+																													<?=($default['f_gender'] ?? ''
 																													)==='M' ? 'checked' : '' ?> />
 																												<div class="check_icon"></div>
 																												<span>
@@ -293,7 +270,7 @@ $pay_value = implode(', ', $pay_labels);
 																											<label class="radio_label">
 																												<input type="radio" name="f_gender"
 																													value="F"
-																													<?=($row[f_gender] ?? ''
+																													<?=($default['f_gender'] ?? ''
 																													)==='F' ? 'checked' : '' ?> />
 																												<div class="check_icon"></div>
 																												<span>
@@ -323,7 +300,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_user_name_en" placeholder="영문이름을 적어주세요." class="input" data-required="y" data-label="영문이름을" value="<?= $row[f_user_name_en] ?? '' ?>" readonly="readonly" />
+																								<input type="text" name="f_user_name_en" placeholder="영문이름을 적어주세요." class="input" data-required="y" data-label="영문이름을" value="<?= $default['f_user_name_en'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -340,7 +317,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="f_birth_date" placeholder="0000.00.00" id="birthdate_input" class="input" data-required="y" data-label="생년월일을" value="<?= $row[f_birth_date] ?? '' ?>" readonly="readonly" />
+																								<input type="tel" name="f_birth_date" placeholder="0000.00.00" id="birthdate_input" class="input" data-required="y" data-label="생년월일을" value="<?= $default['f_birth_date'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -358,7 +335,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= $row[f_tel] ?? '' ?>" readonly="readonly" />
+																								<input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= $default['f_tel'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -375,7 +352,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email" data-label="이메일을" value="<?= $row[f_email] ?? '' ?>" readonly="readonly" />
+																								<input type="text" name="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email" data-label="이메일을" value="<?= $default['f_email'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -398,7 +375,7 @@ $pay_value = implode(', ', $pay_labels);
 																										<tbody>
 																											<tr>
 																												<td align="left" class="input_td">
-																													<input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="우편번호를" value="<?= $row[f_zip] ?? '' ?>" />
+																													<input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="우편번호를" value="<?= $default['f_zip'] ?? '' ?>" />
 																												</td>
 																												<!--
 																												<td align="left" class="btn_td">
@@ -429,7 +406,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= $row[f_address1] ?? '' ?>" />
+																								<input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= $default['f_address1'] ?? '' ?>" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -446,7 +423,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= $row[f_address2] ?? '' ?>" readonly="readonly" />
+																								<input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= $default['f_address2'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -577,8 +554,8 @@ $pay_value = implode(', ', $pay_labels);
 										</div>
 
 										<!--단체 접수-->
-<?php } else { ?>
 										 <div class="apply_con">
+											<div class="contents_con">
 
 												<!--
 												<form id="applyForm" action="/controller/competition_apply_controller_o.php" method="post"
@@ -706,7 +683,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_user_name" placeholder="단체명을 적어주세요." class="input" data-required="y" data-label="단체명을" value="<?= $row[f_user_name] ?? '' ?>" readonly="readonly" />
+																								<input type="text" name="f_user_name" placeholder="단체명을 적어주세요." class="input" data-required="y" data-label="단체명을" value="<?= $default['f_user_name'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -723,7 +700,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_user_name_en" placeholder="담당자를 적어주세요." class="input" data-required="y" data-label="담당자를" value="<?= $row[f_user_name_en] ?? '' ?>" readonly="readonly" />
+																								<input type="text" name="f_user_name_en" placeholder="담당자를 적어주세요." class="input" data-required="y" data-label="담당자를" value="<?= $default['f_user_name_en'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -741,7 +718,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= $row[f_tel] ?? '' ?>" readonly="readonly" />
+																								<input type="tel" name="f_tel" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="연락처를" value="<?= $default['f_tel'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -758,7 +735,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="tel" name="f_contact_phone" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="담당자 연락처를" value="<?= $row[f_contact_phone] ?? '' ?>" readonly="readonly" />
+																								<input type="tel" name="f_contact_phone" maxlength="13" placeholder="000-0000-0000" class="input tel_input" data-required="y" data-validate-type="tel" data-label="담당자 연락처를" value="<?= $default['f_contact_phone'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -777,7 +754,7 @@ $pay_value = implode(', ', $pay_labels);
 																							</td>
 																							<td align="left" class="info_td">
 																								<input type="text" name="f_email" placeholder="이메일을 적어주세요." class="input" data-required="y" data-validate-type="email"
-																									data-label="이메일을" value="<?= $row[f_email] ?? '' ?>" readonly="readonly" />
+																									data-label="이메일을" value="<?= $default['f_email'] ?? '' ?>" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -801,7 +778,7 @@ $pay_value = implode(', ', $pay_labels);
 																											<tr>
 																												<td align="left" class="input_td">
 																													<input type="text" name="f_zip" id="f_zip" placeholder="우편번호를 적어주세요." class="input" readonly="readonly"
-																														data-required="y" data-label="우편번호를" value="<?= $row[f_zip] ?? '' ?>" />
+																														data-required="y" data-label="우편번호를" value="<?= $default['f_zip'] ?? '' ?>" />
 																												</td>
 																												<!--
 																												<td align="left" class="btn_td">
@@ -832,7 +809,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= $row[f_address1] ?? '' ?>" />
+																								<input type="text" name="f_address1" id="f_address1" placeholder="기본주소를 적어주세요." class="input" readonly="readonly" data-required="y" data-label="기본주소를" value="<?= $default['f_address1'] ?? '' ?>" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -849,7 +826,7 @@ $pay_value = implode(', ', $pay_labels);
 																								</span>
 																							</td>
 																							<td align="left" class="info_td">
-																								<input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= $row[f_address2] ?? '' ?>" <input type="text" name="" value="" class="input" readonly="readonly" />
+																								<input type="text" name="f_address2" id="f_address2" placeholder="상세주소를 적어주세요." class="input" data-required="y" data-label="상세주소를" value="<?= $default['f_address2'] ?? '' ?>" <input type="text" name="" value="" class="input" readonly="readonly" />
 																							</td>
 																						</tr>
 																					</tbody>
@@ -1089,7 +1066,6 @@ $pay_value = implode(', ', $pay_labels);
 											</div>
 										</div>
                                     </div>
-<?php } ?>
                                 </div>
 
                                 <div class="btn_con">
