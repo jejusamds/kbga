@@ -4,6 +4,8 @@ $sMenu = "07-2";
 
 include $_SERVER['DOCUMENT_ROOT'] . '/include/header.html';
 
+echo '<script src="/js/form-controller.js"></script>';
+
 $idx = (int) ($_GET['idx'] ?? 0);
 $user_id = $_SESSION['kbga_user_id'] ?? '';
 $row = $db->row(
@@ -116,22 +118,24 @@ $p_value = implode(', ', $labels);
                                             </tbody>
                                         </table>
 
-										<div class="reason_con">
-											<table cellpadding="0" cellspacing="0">
+                                       <?php if (!empty($row['f_status_reason'])): ?>
+                                                                               <div class="reason_con">
+                                                                               <table cellpadding="0" cellspacing="0">
 												<tbody>
 													<tr>
 														<td valign="top" align="left" class="icon_td">
 															<img src="/img/sub/reason_icon.svg" alt="사유 아이콘" class="fx" />
 														</td>
 														<td align="top "align="left" class="text_td">
-															<span>
-																해당 신청서가 보류된 사유를 알려드리는 공간입니다.
-															</span>
+                                                                               <span>
+                                                                               <?= htmlspecialchars($row['f_status_reason'], ENT_QUOTES) ?>
+                                                                               </span>
 														</td>
 													</tr>
 												</tbody>
 											</table>
-										</div>
+                                                                               </div>
+                                       <?php endif; ?>
                                     </div>
 
                                     <div class="contents_con">
@@ -140,18 +144,17 @@ $p_value = implode(', ', $labels);
                                             <div class="apply_con">
                                                 <div class="contents_con">
 
-                                                    <!--
-                                                <form id="applyForm" action="/controller/competition_apply_controller.php" method="post"
-                                                    enctype="multipart/form-data" autocomplete="off">
-                                                    <input type="hidden" name="mode" value="register" />
-                                                    <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>" />
-                                                -->
+                                                <form id="updateForm" action="/controller/history_update_controller.php" method="post" enctype="multipart/form-data" autocomplete="off">
+                                                    <input type="hidden" name="mode" value="update_contest" />
+                                                    <input type="hidden" name="idx" value="<?= $idx ?>" />
+                                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES) ?>" />
+                                                    <input type="hidden" name="delete_files" id="delete_files" value="" />
                                                     <div class="write_con">
                                                         <div class="contents_con">
                                                             <div class="input_con">
                                                                 <div class="form01_con">
                                                                     <ul>
-                                                                        <li>
+                                                                               <li data-file="<?= htmlspecialchars($fileName, ENT_QUOTES) ?>">
                                                                             <div class="list_div fl">
                                                                                 <table cellpadding="0" cellspacing="0">
                                                                                     <tbody>
@@ -708,9 +711,7 @@ $p_value = implode(', ', $labels);
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--
                                                 </form>
-                                                -->
 
                                                 </div>
                                             </div>
@@ -722,12 +723,11 @@ $p_value = implode(', ', $labels);
                                             <div class="apply_con">
                                                 <div class="contents_con">
 
-                                                    <!--
-                                                <form id="applyForm" action="/controller/competition_apply_controller_o.php" method="post"
-                                                    enctype="multipart/form-data" autocomplete="off">
-                                                    <input type="hidden" name="mode" value="register" />
-                                                    <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>" />
-                                                -->
+                                                <form id="updateForm" action="/controller/history_update_controller.php" method="post" enctype="multipart/form-data" autocomplete="off">
+                                                    <input type="hidden" name="mode" value="update_contest" />
+                                                    <input type="hidden" name="idx" value="<?= $idx ?>" />
+                                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token, ENT_QUOTES) ?>" />
+                                                    <input type="hidden" name="delete_files" id="delete_files" value="" />
                                                     <div class="write_con">
                                                         <div class="contents_con">
                                                             <div class="input_con">
@@ -1364,9 +1364,7 @@ $p_value = implode(', ', $labels);
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--
                                                 </form>
-                                                -->
 
                                                 </div>
                                             </div>
@@ -1375,7 +1373,7 @@ $p_value = implode(', ', $labels);
                                 </div>
 
                                 <div class="btn_con">
-                                    <a href="javascript:void(0);" class="a_btn a_btn00" onclick="">수정하기</a>
+                                    <a href="javascript:void(0);" class="a_btn a_btn00" onclick="submitUpdateForm();">수정하기</a>
 
                                     <a href="javascript:void(0);" class="a_btn a_btn01" onclick="submitCancelForm(<?= $idx ?>, 'competition'); return false;">신청취소</a>
 
@@ -1447,8 +1445,9 @@ $p_value = implode(', ', $labels);
 	}
 	*/
 
-	// 추가 버튼 클릭 이벤트
-	$(document).on("click", ".add_btn", function(e){
+        var deleteArr = [];
+        // 추가 버튼 클릭 이벤트
+        $(document).on("click", ".add_btn", function(e){
 		e.preventDefault(); // a 태그 기본동작 방지
 		var lastRow = $(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td > ul > li").last(); // 마지막 li
 		var newRow = lastRow.clone(); // 복제
@@ -1461,11 +1460,14 @@ $p_value = implode(', ', $labels);
 	});
 
 	// 삭제 버튼 클릭 이벤트
-	$(document).on("click", ".delete_btn", function(e){
-		e.preventDefault(); // a 태그 기본동작 방지
-		if($(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td > ul > li").length > 1) {
-			$(this).closest('.file_div').closest('li').remove();
-		}
+        $(document).on("click", ".delete_btn", function(e){
+                e.preventDefault();
+                var li = $(this).closest('li');
+                var file = li.data('file');
+                if (file) { deleteArr.push(file); }
+                if($(".apply_con > .contents_con .write_con > .contents_con > .input_con .list_div > table > tbody > tr > .info_td .file_con > table > tbody > tr > .info_td > ul > li").length > 1) {
+                        li.remove();
+                }
 	});
 
 	// 파일 선택 시 파일명 표시
@@ -1492,6 +1494,11 @@ $p_value = implode(', ', $labels);
         form.idx.value = idx;
         form.table.value = table;
         form.submit();
+    }
+
+    function submitUpdateForm() {
+        document.getElementById('delete_files').value = deleteArr.join(',');
+        submitForm('updateForm');
     }
 </script>
 
