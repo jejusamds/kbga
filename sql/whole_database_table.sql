@@ -162,7 +162,8 @@ CREATE TABLE IF NOT EXISTS `df_site_application` (
 CREATE TABLE `df_site_application_registration` (
 	`idx` INT NOT NULL AUTO_INCREMENT,
 	`wdate` DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-	`f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT '1' COMMENT 'ing: 접수중, done: 완료, cancle: 취소, hold: 보류',
+        `f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT '1' COMMENT 'ing: 접수중, done: 완료, cancle: 취소, hold: 보류',
+        `f_status_reason` TEXT NULL COMMENT '상태 변경 사유',
 	`f_applicant_type` ENUM('P','O') NOT NULL COMMENT '접수유형 (P=개인, O=단체)' COLLATE 'utf8mb4_0900_ai_ci',
 	`f_item_idx` INT NOT NULL COMMENT '자격종목',
 	`f_category` ENUM('makeup','nail','hair','skin','half','foreign','teacher') NOT NULL COMMENT '자격분야' COLLATE 'utf8mb4_0900_ai_ci',
@@ -325,7 +326,8 @@ CREATE TABLE IF NOT EXISTS `df_site_competition_files` (
 -- 테이블 dbkbga8800.df_site_competition_registration 구조 내보내기
 CREATE TABLE `df_site_competition_registration` (
 	`idx` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-	`f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT 'ing' COLLATE 'utf8mb4_general_ci',
+        `f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT 'ing' COLLATE 'utf8mb4_general_ci',
+        `f_status_reason` TEXT NULL COMMENT '상태 변경 사유' COLLATE 'utf8mb4_general_ci',
 	`f_competition_idx` INT NOT NULL COMMENT '대회구분',
 	`f_applicant_type` CHAR(1) NOT NULL COMMENT '접수유형 (P=개인, O=단체)' COLLATE 'utf8mb4_general_ci',
 	`f_part` VARCHAR(500) NOT NULL COMMENT '참가부문' COLLATE 'utf8mb4_general_ci',
@@ -413,7 +415,8 @@ CREATE TABLE IF NOT EXISTS `df_site_content_mobile` (
 -- 테이블 dbkbga8800.df_site_edu_registration 구조 내보내기
 CREATE TABLE `df_site_edu_registration` (
 	`idx` INT NOT NULL AUTO_INCREMENT,
-	`f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT 'ing' COLLATE 'utf8_general_ci',
+        `f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT 'ing' COLLATE 'utf8_general_ci',
+        `f_status_reason` TEXT NULL COMMENT '상태 변경 사유' COLLATE 'utf8_general_ci',
 	`f_type` CHAR(1) NOT NULL COMMENT 'P:개인, O:단체' COLLATE 'utf8_general_ci',
 	`f_news_idx` INT NOT NULL,
 	`f_edu_type_idx` INT NOT NULL,

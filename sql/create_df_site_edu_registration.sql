@@ -1,6 +1,7 @@
 CREATE TABLE `df_site_edu_registration` (
 	`idx` INT NOT NULL AUTO_INCREMENT,
-	`f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT 'ing' COLLATE 'utf8_general_ci',
+        `f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT 'ing' COLLATE 'utf8_general_ci',
+        `f_status_reason` TEXT NULL COMMENT '상태 변경 사유' COLLATE 'utf8_general_ci',
 	`f_type` CHAR(1) NOT NULL COMMENT 'P:개인, O:단체' COLLATE 'utf8_general_ci',
 	`f_news_idx` INT NOT NULL,
 	`f_edu_type_idx` INT NOT NULL,

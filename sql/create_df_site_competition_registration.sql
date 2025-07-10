@@ -1,6 +1,7 @@
 CREATE TABLE `df_site_competition_registration` (
 	`idx` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-	`f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT 'ing' COLLATE 'utf8mb4_general_ci',
+        `f_applicant_status` ENUM('ing','done','cancle','hold') NOT NULL DEFAULT 'ing' COLLATE 'utf8mb4_general_ci',
+        `f_status_reason` TEXT NULL COMMENT '상태 변경 사유' COLLATE 'utf8mb4_general_ci',
 	`f_competition_idx` INT NOT NULL COMMENT '대회구분',
 	`f_applicant_type` CHAR(1) NOT NULL COMMENT '접수유형 (P=개인, O=단체)' COLLATE 'utf8mb4_general_ci',
 	`f_part` VARCHAR(500) NOT NULL COMMENT '참가부문' COLLATE 'utf8mb4_general_ci',
