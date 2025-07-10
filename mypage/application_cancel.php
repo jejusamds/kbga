@@ -15,6 +15,11 @@ if ($row) {
     $row = $db->row('SELECT f_applicant_status FROM df_site_edu_registration WHERE idx=:idx', ['idx' => $idx]);
     if ($row) {
         $table = 'df_site_edu_registration';
+    } else {
+        $row = $db->row('SELECT f_applicant_status FROM df_site_competition_registration WHERE idx=:idx', ['idx' => $idx]);
+        if ($row) {
+            $table = 'df_site_competition_registration';
+        }
     }
 }
 
